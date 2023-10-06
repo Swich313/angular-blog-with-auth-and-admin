@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../shared/interfaces";
+import {AuthService} from "../shared/services/auth.service";
+import {Router} from "@angular/router";
 
 
 
@@ -11,6 +13,9 @@ import {User} from "../../shared/interfaces";
 })
 export class LoginPageComponent implements OnInit{
   public form: FormGroup
+
+  constructor(private authService: AuthService, private router:Router) {
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -31,7 +36,11 @@ export class LoginPageComponent implements OnInit{
       email: this.form.value.email,
       password: this.form.value.password
     }
-
+    this.authService.login(user).subscribe((res) => {
+      console.log({res})
+      this.form.reset()
+      this.router.navigate(['/admin', 'dashboard'])
+    })
   }
 
   cancel() {
