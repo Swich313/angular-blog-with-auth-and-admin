@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AuthService} from "../shared/services/auth.service";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class DashboardPageComponent {
 
+  constructor(private auth: AuthService) {
+  }
+  test() {
+    console.log(this.auth.token)
+  }
 }

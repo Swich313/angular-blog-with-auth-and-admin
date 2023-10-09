@@ -173,7 +173,7 @@ alert-dark {
 .btn-danger,
 .bg-danger,
 .badge-danger,
-alert-danger {
+.alert-danger {
   background: var(--danger-color);
   color: #fff;
 }
