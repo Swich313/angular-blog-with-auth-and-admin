@@ -1,0 +1,55 @@
+.skeleton {
+  height: 20rem;
+  width: 15rem;
+  background-color: #fff;
+  border-radius: 1em;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+  padding: 1em;
+  position: relative;
+}
+.skeleton .line {
+  font-size: 1.5em;
+  line-height: 1.2em;
+  margin: 1rem auto 0;
+  height: 1.5rem;
+  width: 90%;
+  border-radius: 5px;
+  background: rgba(130, 130, 130, 0.2);
+  background: -webkit-gradient(linear, left top, right top, color-stop(8%, rgba(130, 130, 130, 0.2)), color-stop(18%, rgba(130, 130, 130, 0.3)), color-stop(33%, rgba(130, 130, 130, 0.2)));
+  background: linear-gradient(to right, rgba(130, 130, 130, 0.2) 8%, rgba(130, 130, 130, 0.3) 18%, rgba(130, 130, 130, 0.2) 33%);
+  background-size: 800px 100px;
+  animation: wave-lines 2s infinite ease-out;
+}
+.skeleton .title {
+  margin: 8rem auto 1rem;
+}
+.skeleton .author {
+  height: 0.8rem !important;
+  width: 60% !important;
+  margin-left: 0.75rem;
+}
+.skeleton .tag {
+  height: 1rem !important;
+  width: 20% !important;
+  margin-left: 0.75rem;
+  margin-top: 0.5rem;
+}
+.skeleton .date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  height: 0.8rem !important;
+  width: 30% !important;
+}
+
+@keyframes wave-lines {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/*# sourceMappingURL=post-skeleton.component.css.map */

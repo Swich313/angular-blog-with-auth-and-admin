@@ -1,0 +1,75 @@
+<div class="page">
+  <div class="screen">
+    <div class="screen_content">
+      <form class="login" [formGroup]="form" (ngSubmit)="submit()">
+
+<!--        <div class="text-danger" *ngIf="authService.error$ | async as error">-->
+<!--          {{ error }}-->
+<!--        </div>-->
+
+        <div class="alert-info" *ngIf="message">
+          {{ message }}
+        </div>
+
+        <div
+          class="login_field"
+          [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
+        >
+          <fa-icon [icon]="emailIcon" class="login_icon"></fa-icon>
+          <input type="email" id="email" formControlName="email" class="login_input" placeholder="Email">
+          <div
+            class="validation"
+            *ngIf="form.get('email').touched && form.get('email').invalid"
+          >
+            <small *ngIf="form.get('email').errors.required" class="text-danger">Email is required</small>
+            <small *ngIf="form.get('email').errors.email" class="text-danger">Email is invalid!</small>
+          </div>
+        </div>
+
+        <div
+          class="login_field"
+          [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
+        >
+          <fa-icon [icon]="lockIcon" class="login_icon"></fa-icon>
+          <input type="password" id="password" formControlName="password" class="login_input" placeholder="Password">
+          <div
+            class="validation"
+            *ngIf="form.get('password').touched && form.get('password').invalid"
+          >
+            <small *ngIf="form.get('password').errors.required" class="text-danger">Password is required</small>
+            <small *ngIf="form.get('password').errors.minlength " class="text-danger">
+              Password should be at least
+              {{form.get('password').errors.minlength.requiredLength}}
+              symbols long! Now it is
+              {{form.get('password').errors.minlength.actualLength}} symbols.
+            </small>
+          </div>
+        </div>
+
+        <button [disabled]="form.invalid || submitted" class="button login_submit">
+          <span class="button_text">{{authMode | uppercase}} Now</span>
+          <fa-icon [icon]="chevronIcon" class="button_icon"></fa-icon>
+        </button>
+        <!--        <button class="btn btn-dark" (click)="cancel()">Cancel</button>-->
+      </form>
+
+
+      <div class="social-login">
+        <h3>{{authMode}} via</h3>
+        <div class="social-icons">
+          <a href="#" class="social-login_icon"><fa-icon [icon]="googleIcon"></fa-icon></a>
+          <a href="#" class="social-login_icon"><fa-icon [icon]="githubIcon"></fa-icon></a>
+          <a href="#" class="social-login_icon"><fa-icon [icon]="facebookIcon"></fa-icon></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen_background">
+      <span class="screen_background_shape screen_background_shape4"></span>
+      <span class="screen_background_shape screen_background_shape3"></span>
+      <span class="screen_background_shape screen_background_shape2"></span>
+      <span class="screen_background_shape screen_background_shape1"></span>
+    </div>
+
+  </div>
+</div>

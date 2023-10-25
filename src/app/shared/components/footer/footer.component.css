@@ -1,0 +1,20 @@
+footer {
+  background-color: var(--bg-gradient-light);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 4rem;
+  width: 100%;
+  font-size: 0.7rem;
+}
+footer div {
+  padding: 1rem;
+}
+footer div a {
+  color: #333333;
+  cursor: pointer;
+  font-size: 0.7rem;
+  position: relative;
+}
+
+/*# sourceMappingURL=footer.component.css.map */

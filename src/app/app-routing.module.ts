@@ -3,6 +3,7 @@ import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {MainLayoutComponent} from "./shared/components/main-layout/main-layout.component";
 import {HomePageComponent} from "./home-page/home-page.component";
 import {PostPageComponent} from "./post-page/post-page.component";
+import {NotFoundPageComponent} from "./not-found-page/not-found-page.component";
 
 const routes: Routes = [
   {path: '', component: MainLayoutComponent, children: [
@@ -13,7 +14,12 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(x => x.AdminModule)
-  }
+  },
+  {
+    path: 'author',
+    loadChildren: () => import('./user/user.module').then(x => x.UserModule)
+  },
+  {path: '**', component: NotFoundPageComponent}
 ];
 
 @NgModule({

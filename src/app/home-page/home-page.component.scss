@@ -1,4 +1,10 @@
-.posts {
-  max-width: 600px;
-  margin: 0 auto;
+.posts-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  transition: all 200ms ease-in-out;
+  margin-top: 8vw;
 }
