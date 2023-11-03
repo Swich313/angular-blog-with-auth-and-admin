@@ -3,11 +3,10 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {faGithub, faGoogle, faFacebook} from "@fortawesome/free-brands-svg-icons";
 import {faChevronRight, faLock, faEnvelope} from "@fortawesome/free-solid-svg-icons";
 import {AuthService} from "../shared/services/auth.service";
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {ActivatedRoute, ParamMap, Params, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {User} from "../../shared/interfaces";
 import {AlertService} from "../shared/services/alert.service";
-import {HttpErrorResponse} from "@angular/common/http";
 
 const ALL_AUTH_MODES = ['login', 'signup'] as const
 type AuthModeTuple = typeof ALL_AUTH_MODES
@@ -47,6 +46,14 @@ export class AuthPageComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      if(params['auth']) {
+        this.alertService.warning('Please login!')
+      }else if(params['authFailed']){
+        this.alertService.warning('Session is over, please login again!')
+      }
+    })
+
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)])

@@ -68,7 +68,14 @@ export class AuthService {
       const customMsg = `An account with email address ${this.user.email} already exists`
       this.error$.next(customMsg)
       this.alertService.warning(customMsg)
-
+    } else if(message === 'INVALID_LOGIN_CREDENTIALS'){
+      const customMsg = 'Invalid email or password'
+      this.error$.next(customMsg)
+      this.alertService.warning(customMsg)
+    } else if (message.includes('TOO_MANY_ATTEMPTS_TRY_LATER')){
+      const customMsg = 'Too many attempts! Try again later.'
+      this.error$.next(customMsg)
+      this.alertService.warning(customMsg)
     }
     return throwError(() => error)
   }

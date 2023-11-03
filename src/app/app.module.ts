@@ -17,7 +17,7 @@ import {WindowService} from "./shared/services/window.service";
 import {HttpClientModule} from "@angular/common/http";
 import {QuillModule} from "ngx-quill";
 import { ShareWithSocialComponent } from './shared/components/share-with-social/share-with-social.component';
-import {redirectGuard} from "./shared/guards/redirect.guard";
+import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 
 
 @NgModule({
@@ -30,7 +30,8 @@ import {redirectGuard} from "./shared/guards/redirect.guard";
         NotFoundPageComponent,
         FooterComponent,
         PostSkeletonComponent,
-        ShareWithSocialComponent
+        ShareWithSocialComponent,
+        SpinnerComponent
     ],
     imports: [
         BrowserModule,

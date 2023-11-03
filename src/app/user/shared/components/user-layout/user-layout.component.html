@@ -8,6 +8,9 @@
     </div>
     <ul *ngIf="authService.isAuth()" class="menu-items">
       <li routerLinkActive="active">
+        <a [routerLink]="['/author', 'profile']">Profile</a>
+      </li>
+      <li routerLinkActive="active">
         <a [routerLink]="['/author', 'dashboard']">Main</a>
       </li>
       <li routerLinkActive="active">

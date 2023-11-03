@@ -15,6 +15,8 @@ import {AlertService} from "./shared/services/alert.service";
 import {AuthService} from "./shared/services/auth.service";
 import {QuillModule} from "ngx-quill";
 import {FileUploadModule} from "ng2-file-upload";
+import { ProfileComponent } from './profile/profile.component';
+import {authGuard} from "./shared/guards/auth.guard";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {FileUploadModule} from "ng2-file-upload";
     DashboardPageComponent,
     AuthPageComponent,
     UserLayoutComponent,
-    AlertComponent
+    AlertComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
@@ -33,9 +36,10 @@ import {FileUploadModule} from "ng2-file-upload";
           {path: '', redirectTo: '/author/auth', pathMatch: 'full'},
           {path: 'auth', redirectTo: '/author/auth/login', pathMatch: 'full'},
           {path: 'auth/:authType', component: AuthPageComponent},
-          {path: 'dashboard', component: DashboardPageComponent},
-          {path: 'create', component: CreatePostPageComponent},
-          {path: 'post/:id/edit', component: EditPostPageComponent}
+          {path: 'dashboard', component: DashboardPageComponent, canActivate: [authGuard]},
+          {path: 'create', component: CreatePostPageComponent, canActivate: [authGuard]},
+          {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+          {path: 'post/:id/edit', component: EditPostPageComponent, canActivate: [authGuard]}
         ]
       }
     ]),
