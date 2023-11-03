@@ -74,11 +74,28 @@ form {
 
 .login {
   width: 320px;
-  padding: 156px 30px 30px;
+  padding: 104px 30px 30px;
+}
+.login.signup {
+  padding-top: 76px !important;
 }
 .login_field {
-  padding: 20px 0px;
+  padding: 20px 0 calc(20px + 1.6rem);
   position: relative;
+}
+.login_field.invalid {
+  padding: 20px 0;
+  color: var(--danger-color);
+}
+.login_field.invalid input {
+  border-color: var(--danger-color);
+}
+.login_field.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.login_field.link:hover {
+  color: #6A679E;
 }
 .login_icon {
   position: absolute;
@@ -101,7 +118,7 @@ form {
 .login_submit {
   background: #fff;
   font-size: 14px;
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 8px 20px;
   border-radius: 26px;
   border: 1px solid #D4D3E8;
@@ -118,6 +135,9 @@ form {
 .login_submit:active, .login_submit:focus, .login_submit:hover {
   border-color: #6A679E;
   outline: none;
+}
+.login_submit:disabled {
+  cursor: not-allowed;
 }
 
 .button_icon {
@@ -149,6 +169,10 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.text-danger {
+  color: var(--danger-color);
 }
 
 /*# sourceMappingURL=auth-page.component.css.map */

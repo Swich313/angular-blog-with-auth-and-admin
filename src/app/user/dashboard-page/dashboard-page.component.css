@@ -1,3 +1,39 @@
+.open {
+  margin-right: 10px;
+}
 
+.page {
+  padding: 1rem 2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+table th {
+  background: var(--light-color);
+}
+
+.form-control {
+  display: block;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+.form-control.invalid {
+  color: var(--primary-color);
+}
+.form-control.invalid input {
+  border-color: var(--primary-color);
+}
+.form-control .validation {
+  color: var(--primary-color);
+}
 
 /*# sourceMappingURL=dashboard-page.component.css.map */

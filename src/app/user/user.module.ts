@@ -10,6 +10,11 @@ import { UserLayoutComponent } from './shared/components/user-layout/user-layout
 import { AlertComponent } from './shared/components/alert/alert.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {HttpClientModule} from "@angular/common/http";
+import {AlertService} from "./shared/services/alert.service";
+import {AuthService} from "./shared/services/auth.service";
+import {QuillModule} from "ngx-quill";
+import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -23,20 +28,25 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
   imports: [
     CommonModule,
     RouterModule.forChild([
-      {path: '', component: UserLayoutComponent, children: [
-          {path: '', redirectTo: '/author/auth/login', pathMatch: 'full'},
+      {
+        path: '', component: UserLayoutComponent, children: [
+          {path: '', redirectTo: '/author/auth', pathMatch: 'full'},
           {path: 'auth', redirectTo: '/author/auth/login', pathMatch: 'full'},
-          {path: 'auth/login', component: AuthPageComponent},
-          {path: 'auth/signup', component: AuthPageComponent},
+          {path: 'auth/:authType', component: AuthPageComponent},
           {path: 'dashboard', component: DashboardPageComponent},
           {path: 'create', component: CreatePostPageComponent},
           {path: 'post/:id/edit', component: EditPostPageComponent}
-        ]}
+        ]
+      }
     ]),
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    HttpClientModule,
+    QuillModule.forRoot(),
+    FileUploadModule
   ],
+  providers: [AlertService, AuthService],
   exports: [RouterModule]
 })
 export class UserModule { }

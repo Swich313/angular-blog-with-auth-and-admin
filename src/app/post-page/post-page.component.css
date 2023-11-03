@@ -1,3 +1,94 @@
+.container {
+  min-width: 84%;
+  padding: 2ch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 0 40px var(--box-shadow-color);
+  margin: 8vw auto 0;
+}
+.container .header {
+  font-family: Helvetica, serif;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.container .header h2 {
+  margin: 0.5rem auto;
+}
+.container .info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0.4rem auto;
+}
+.container .info strong, .container .info small {
+  display: block;
+  margin-right: 5vw;
+}
+.container .info strong:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+.container .info .avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 5vw;
+  border: 1px solid var(--box-shadow-color);
+  box-shadow: 0 0 10px var(--box-shadow-color);
+}
+.container .tags {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  margin-left: 5vw;
+  flex-wrap: wrap;
+}
+.container .tags .tag {
+  font-size: 0.75em;
+  background: var(--bg-gradient-light);
+  border-radius: 0.3rem;
+  padding: 0 0.5rem;
+  margin: 0.25rem;
+  transition: all, var(--transition-time);
+}
+.container .tags .tag:hover {
+  box-shadow: 0 0 2px 4px var(--bg-gradient-light);
+  cursor: pointer;
+}
+.container .image-content {
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 6px;
+}
+.container .content {
+  max-width: 100%;
+  color: black;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
 
+.btn {
+  display: inline-block;
+  min-width: 4rem;
+  color: var(--dark-color);
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in;
+  background: none;
+  text-decoration: underline;
+}
+.btn:hover {
+  opacity: 0.8;
+  text-shadow: 1px 1px 2px var(--primary-color), 0 0 1rem var(--bg-gradient-light), 0 0 0.2rem var(--bg-gradient-dark);
+}
 
 /*# sourceMappingURL=post-page.component.css.map */

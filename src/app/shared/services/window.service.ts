@@ -6,4 +6,8 @@ export class WindowService {
   get windowRef() {
     return window
   }
+
+  get documentRef() {
+    return document
+  }
 }

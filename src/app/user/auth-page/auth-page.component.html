@@ -12,7 +12,7 @@
         </div>
 
         <div
-          class="login_field"
+          class="login_field si"
           [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
         >
           <fa-icon [icon]="emailIcon" class="login_icon"></fa-icon>
@@ -38,10 +38,9 @@
           >
             <small *ngIf="form.get('password').errors.required" class="text-danger">Password is required</small>
             <small *ngIf="form.get('password').errors.minlength " class="text-danger">
-              Password should be at least
+              Password is too short! At least
               {{form.get('password').errors.minlength.requiredLength}}
-              symbols long! Now it is
-              {{form.get('password').errors.minlength.actualLength}} symbols.
+              symbols!
             </small>
           </div>
         </div>
@@ -50,7 +49,10 @@
           <span class="button_text">{{authMode | uppercase}} Now</span>
           <fa-icon [icon]="chevronIcon" class="button_icon"></fa-icon>
         </button>
-        <!--        <button class="btn btn-dark" (click)="cancel()">Cancel</button>-->
+
+        <div class="login_field link" *ngIf="authMode === 'signup'">
+          <h5 (click)="loginNavigate()">{{'or login if you have an account' | uppercase}}</h5>
+        </div>
       </form>
 
 
@@ -63,6 +65,8 @@
         </div>
       </div>
     </div>
+
+
 
     <div class="screen_background">
       <span class="screen_background_shape screen_background_shape4"></span>

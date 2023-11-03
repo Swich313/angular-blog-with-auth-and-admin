@@ -1,12 +1,12 @@
 <nav class="navbar">
   <div class="nav-container content">
     <input type="checkbox" name="" id="">
-    <div class="hamburger-lines" *ngIf="authService.isAuth">
+    <div class="hamburger-lines" *ngIf="authService.isAuth()">
       <span class="line line1"></span>
       <span class="line line2"></span>
       <span class="line line3"></span>
     </div>
-    <ul *ngIf="authService.isAuth" class="menu-items">
+    <ul *ngIf="authService.isAuth()" class="menu-items">
       <li routerLinkActive="active">
         <a [routerLink]="['/author', 'dashboard']">Main</a>
       </li>
@@ -17,10 +17,12 @@
         <a href="#" (click)="logout($event)">Logout</a>
       </li>
     </ul>
-    <h1 routerLink="/" class="logo">{{authMode | titlecase}} To Author Page</h1>
+    <h1 class="logo">{{authMode | titlecase}} To Author Page</h1>
   </div>
 </nav>
 
 <div class="container" [ngClass]="{'fullWidth': isLoginPage}">
-  <router-outlet (activate)="onOutletLoaded($event)"></router-outlet>
+  <router-outlet></router-outlet>
 </div>
+
+<app-alert></app-alert>

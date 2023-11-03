@@ -1,0 +1,87 @@
+.share-wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
+.share-wrapper .share .icon {
+  display: inline-block;
+  background: var(--bg-gradient-light);
+  width: 60px;
+  height: 60px;
+  color: var(--dark-color);
+  transition: all 0.5s;
+  cursor: pointer;
+}
+.share-wrapper .share .icon:first-child {
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+.share-wrapper .share .icon + .icon:last-of-type {
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+.share-wrapper .share .icon .share-icon {
+  padding-top: 12px;
+  opacity: 0;
+  font-size: 1.5rem;
+  transition: all 0.5s;
+  color: var(--skeleton-loading-grey);
+  display: block;
+}
+.share-wrapper .share .label {
+  position: relative;
+  top: -40px;
+  color: var(--dark-color);
+  font-weight: bold;
+  pointer-events: none;
+  transition: all 0.5s;
+}
+.share-wrapper .share:hover .icon {
+  border-radius: 50%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.share-wrapper .share:hover .icon .share-icon {
+  opacity: 1;
+  display: block;
+}
+.share-wrapper .share:hover .label {
+  opacity: 0;
+}
+.share-wrapper .share:hover .facebook {
+  background: #3b5998;
+}
+.share-wrapper .share:hover .twitter {
+  background: #55acee;
+}
+.share-wrapper .share:hover .instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+.share-wrapper .share:hover .telegram {
+  background: #229ED9;
+}
+.share-wrapper .share:hover .viber {
+  background: #7360f2;
+}
+
+@media (max-width: 576px) {
+  .share-wrapper {
+    max-width: 100%;
+  }
+  .share-wrapper .share .icon {
+    height: 40px;
+    width: 40px;
+  }
+  .share-wrapper .share .icon .share-icon {
+    padding-top: 8px;
+    opacity: 0;
+    font-size: 1rem;
+  }
+  .share-wrapper .share .label {
+    font-weight: bold;
+    padding-top: 6px;
+  }
+}
+
+/*# sourceMappingURL=share-with-social.component.css.map */

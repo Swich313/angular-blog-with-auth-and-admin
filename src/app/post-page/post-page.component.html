@@ -1,1 +1,68 @@
-<p>post-page works!</p>
+<!--<div *ngIf="post$ | async as post; else loading">-->
+
+<!--  <div class="post">-->
+<!--    <img [src]="post.imageUrl" [alt]="post.title + ' by ' + post.author">-->
+<!--    <div class="header">-->
+<!--      <h1>{{post.title}}</h1>-->
+
+<!--      <button routerLink="/" class="btn btn-link">To Main</button>-->
+<!--    </div>-->
+
+<!--    <div class="info">-->
+<!--      <strong>{{post.author}}</strong>-->
+<!--      <small>Created: {{post.date | date:'MMMM d, y, h:mm:ss'}}</small>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <quill-view-html [content]="post.text"></quill-view-html>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+<!--<ng-template #loading>-->
+<!--  <p class="text-center">The Post is loading...</p>-->
+<!--</ng-template>-->
+
+<div *ngIf="post$ | async as post; else loading">
+
+  <div class="container">
+        <img [src]="post.imageUrl" class="image-content" [alt]="post.title + ' by ' + post.author">
+
+        <div class="header">
+          <h2>{{post.title}}</h2>
+          <button routerLink="/" class="btn">To Main</button>
+        </div>
+
+        <div class="info">
+          <img src="https://st3.depositphotos.com/1767687/17621/v/450/depositphotos_176214104-stock-illustration-default-avatar-profile-icon.jpg"
+               class="avatar"
+               alt="default avatar">
+          <div>
+            <strong>{{post.author}}</strong>
+            <small>Created: {{post.date | date:'MMMM d, y, h:mm:ss'}}</small>
+          </div>
+        </div>
+
+        <div class="tags" >
+          <div class="tag" *ngFor="let tag of post.tags.split(' ')">
+            {{tag | uppercase}}
+          </div>
+        </div>
+
+        <div class="content">
+                <quill-view-html [content]="post.text"></quill-view-html>
+                <button class="btn" [ngStyle]="{'float': 'right'}" (click)="scrollToTop()">Go Above</button>
+
+        </div>
+
+        <div class="share">
+            <app-share-with-social [title]="post.title"></app-share-with-social>
+        </div>
+
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="text-center">The Post is loading...</p>
+</ng-template>

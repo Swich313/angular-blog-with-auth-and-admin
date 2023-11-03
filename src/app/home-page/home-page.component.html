@@ -1,5 +1,5 @@
 <div
-  *ngIf="true; else skeleton"
+  *ngIf="posts$ | async as posts; else skeleton"
   class="posts-container"
 >
 

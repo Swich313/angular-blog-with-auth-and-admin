@@ -25,6 +25,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@types/quill": "1",
+    "ng2-file-upload": "^5.0.0",
     "ngx-quill": "^22.1.0",
     "quill": "1",
     "rxjs": "~7.8.0",

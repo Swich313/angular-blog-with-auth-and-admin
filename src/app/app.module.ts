@@ -14,6 +14,10 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { PostSkeletonComponent } from './shared/components/post-skeleton/post-skeleton.component';
 import {WindowService} from "./shared/services/window.service";
+import {HttpClientModule} from "@angular/common/http";
+import {QuillModule} from "ngx-quill";
+import { ShareWithSocialComponent } from './shared/components/share-with-social/share-with-social.component';
+import {redirectGuard} from "./shared/guards/redirect.guard";
 
 
 @NgModule({
@@ -25,13 +29,16 @@ import {WindowService} from "./shared/services/window.service";
         PostComponent,
         NotFoundPageComponent,
         FooterComponent,
-        PostSkeletonComponent
+        PostSkeletonComponent,
+        ShareWithSocialComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         RouterModule,
         FontAwesomeModule,
+        HttpClientModule,
+        QuillModule
     ],
     providers: [WindowService],
     bootstrap: [AppComponent]

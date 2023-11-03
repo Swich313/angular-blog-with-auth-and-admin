@@ -1,0 +1,42 @@
+form {
+  max-width: 600px;
+  margin: 0 auto;
+
+  .form-control {
+    display: block;
+    color: #888;
+    margin-bottom: 0.8rem;
+
+    &.invalid {
+      color: var(--primary-color);
+
+      input {
+        border-color: var(--primary-color);
+      }
+    }
+
+    .validation {
+      color: var(--primary-color);
+    }
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='date'],
+  input[type='file'],
+  select,
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+  }
+
+  input[type='submit'],
+  button {
+    font: inherit;
+  }
+
+}

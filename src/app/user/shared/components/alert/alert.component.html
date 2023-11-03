@@ -1,1 +1,20 @@
-<p>alert works!</p>
+<div class="alert-wrap" *ngIf="text" [ngClass]="{'active': text}">
+  <div class="alert-content" [ngClass]="{
+  'alert-success': type === 'success',
+  'alert-warning': type === 'warning',
+  'alert-danger': type === 'danger'
+  }">
+    <fa-icon [icon]="checkIcon" class="check" *ngIf="type === 'success'; else exclamationMark"></fa-icon>
+    <div class="message">
+      <span class="title">{{type | titlecase}}</span>
+      <span class="text">{{text}}</span>
+    </div>
+  </div>
+  <fa-icon [icon]="crossIcon" class="close" (click)="close()"></fa-icon>
+
+  <div class="progress" [ngClass]="{'active': text}"></div>
+</div>
+
+<ng-template #exclamationMark>
+  <fa-icon [icon]="exclamationIcon" class="check"></fa-icon>
+</ng-template>
