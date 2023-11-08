@@ -46,6 +46,8 @@ export class AuthPageComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    if(this.authService.isAuth()) this.router.navigate(['/author', 'dashboard'])
+
     this.route.queryParams.subscribe((params: Params) => {
       if(params['auth']) {
         this.alertService.warning('Please login!')
@@ -59,22 +61,26 @@ export class AuthPageComponent implements OnInit, OnDestroy{
       password: new FormControl(null, [Validators.required, Validators.minLength(6)])
     })
     //subscribe to params and check whether param :authType is of type AuthMode (tuple 'login' | 'signup')
-    this.authSub = this.route.paramMap.subscribe((params: ParamMap) => {
-      if(isAuthMode(params.get('authType'))){
-        this.authMode  = params.get('authType') as AuthMode
-      } else if(params.get('authType').toLowerCase().includes('login')){
-        //if param contains 'login' (case insensitive) redirect to /author/auth/login
-        this.router.navigate(['/author', 'auth', 'login'])
-      } else if(params.get('authType').toLowerCase().includes('signup')){
-        //if param contains 'signup' (case insensitive) redirect to /author/auth/signup
-        this.router.navigate(['/author', 'auth', 'signup'])
-      } else {
-        //if param contains everything else redirect to /author/auth/login
-        this.router.navigate(['/author', 'auth', 'login'])
+    this.authSub = this.route.paramMap.subscribe({
+      next: (params: ParamMap) => {
+        if(isAuthMode(params.get('authType'))){
+          this.authMode  = params.get('authType') as AuthMode
+        } else if(params.get('authType').toLowerCase().includes('login')){
+          //if param contains 'login' (case insensitive) redirect to /author/auth/login
+          this.router.navigate(['/author', 'auth', 'login'])
+        } else if(params.get('authType').toLowerCase().includes('signup')){
+          //if param contains 'signup' (case insensitive) redirect to /author/auth/signup
+          this.router.navigate(['/author', 'auth', 'signup'])
+        } else {
+          //if param contains everything else redirect to /author/auth/login
+          this.router.navigate(['/author', 'auth', 'login'])
+        }
+      },
+      error: (error) => {
+        console.log({error})
+        this.message = error.message
+        console.log('message', this.message)
       }
-    }, (error) => {
-      console.log({error})
-      console.log('message', this.message)
     })
 
     this.authService.changeData(this.authMode)
@@ -95,7 +101,6 @@ export class AuthPageComponent implements OnInit, OnDestroy{
     //AuthMode login
     if(this.authMode === ALL_AUTH_MODES[0]){
         this.authService.login(user).subscribe(res => {
-          console.log('auth-opage',res)
           this.form.reset()
           this.submitted = false
           this.router.navigate(['/author', 'dashboard'])
@@ -105,15 +110,18 @@ export class AuthPageComponent implements OnInit, OnDestroy{
     }
     //AuthMode signup
     if(this.authMode === ALL_AUTH_MODES[1]){
-      this.authService.signup(user).subscribe(res => {
-        console.log({res})
-        this.form.reset()
-        this.alertService.success('Your account was created successfully!')
-        this.submitted = false
-        this.router.navigate(['/author', 'auth', 'login'])
-      }, () => {
-        this.submitted = false
-      } )
+      this.authService.signup(user).subscribe(        {
+          next: (res) => {
+            console.log({res})
+            this.form.reset()
+            this.alertService.success('Your account was created successfully!')
+            this.submitted = false
+            this.router.navigate(['/author', 'auth', 'login'])
+          },
+          error: () => {
+            this.submitted = false
+          }
+        })
 
     }
   }

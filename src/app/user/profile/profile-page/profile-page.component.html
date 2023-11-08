@@ -1,0 +1,63 @@
+<div class="profile">
+  <h2>Personal Information</h2>
+
+  <div class="card">
+    <div class="avatar-add">
+      <div class="avatar">
+        <img class="uploadedimage" [src]="avatar" c alt="avatar">
+        <img src="https://i.imgur.com/0aDdQyR.png" alt="frame" class="avatar-frame">
+      </div>
+
+      <button (click)="openWidget()" class="btn">
+        Upload files
+      </button>
+    </div>
+    <form class="info" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="name">
+        <div>
+          <input type="text" class="input" id="name" placeholder="What's your name?" formControlName="name" (input)="editMode('name')">
+          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isName"></fa-icon>
+        </div>
+          <span class="btn" (click)="passData('name')" *ngIf="!isName">Add</span>
+      </div>
+
+      <div class="birthday">
+        <div>
+          <input type="date" class="input" id="birthday" min="01.01.1900" formControlName="birthday" (change)="editMode('birthday')">
+          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isBirthday"></fa-icon>
+        </div>
+        <span class="btn" (click)="passData('birthday')" *ngIf="!isBirthday">Add</span>
+      </div>
+
+      <select name="gender" id="gender" formControlName="gender">
+        <option value="" disabled selected>What's your gender?</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button class="btn pos-right" >Update</button>
+    </form>
+  </div>
+
+
+    <!--    <div ng2FileSelect-->
+<!--         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"-->
+<!--         (fileOver)="fileOverBase($event)"-->
+<!--         [uploader]="uploader"-->
+<!--         class="well my-drop-zone">-->
+<!--      Select Avatar-->
+<!--    </div>-->
+<!--    <div ng2FileDrop-->
+<!--         [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}"-->
+<!--         (fileOver)="fileOverAnother($event)"-->
+<!--         [uploader]="uploader"-->
+<!--         class="well my-drop-zone">-->
+<!--      Drop-->
+<!--      <input type="file" ng2FileSelect [uploader]="uploader" />-->
+<!--    </div>-->
+
+  <h2>Email</h2>
+  <input type="text" class="input" value="example@gmai.com">
+  <h2>Password</h2>
+  <input type="password" class="input" value="Heisen313berg">
+  <button class="btn" >Update</button>
+</div>

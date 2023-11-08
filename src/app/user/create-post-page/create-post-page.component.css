@@ -1,36 +1,40 @@
-form {
-  max-width: 600px;
-  margin: 0 auto;
+.container {
+  width: min(80%, 800px);
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid var(--skeleton-loading-grey);
+  border-radius: 5px;
+  box-shadow: 4px 4px 8px 6px var(--skeleton-loading-grey);
 }
-form .form-control {
+.container form .form-control {
   display: block;
   color: #888;
   margin-bottom: 0.8rem;
 }
-form .form-control.invalid {
+.container form .form-control.invalid {
   color: var(--primary-color);
 }
-form .form-control.invalid input {
+.container form .form-control.invalid input {
   border-color: var(--primary-color);
 }
-form .form-control .validation {
+.container form .form-control .validation {
   color: var(--primary-color);
 }
-form input[type=text],
-form input[type=email],
-form input[type=password],
-form input[type=date],
-form input[type=file],
-form select,
-form textarea {
+.container form input[type=text],
+.container form input[type=email],
+.container form input[type=password],
+.container form input[type=date],
+.container form input[type=file],
+.container form select,
+.container form textarea {
   display: block;
   width: 100%;
   padding: 0.4rem;
   font-size: 1.2rem;
   border: 1px solid #ccc;
 }
-form input[type=submit],
-form button {
+.container form input[type=submit],
+.container form button {
   font: inherit;
 }
 

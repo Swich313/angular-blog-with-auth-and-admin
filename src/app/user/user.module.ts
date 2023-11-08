@@ -10,13 +10,10 @@ import { UserLayoutComponent } from './shared/components/user-layout/user-layout
 import { AlertComponent } from './shared/components/alert/alert.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {HttpClientModule} from "@angular/common/http";
 import {AlertService} from "./shared/services/alert.service";
 import {AuthService} from "./shared/services/auth.service";
-import {QuillModule} from "ngx-quill";
-import {FileUploadModule} from "ng2-file-upload";
-import { ProfileComponent } from './profile/profile.component';
 import {authGuard} from "./shared/guards/auth.guard";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -26,31 +23,29 @@ import {authGuard} from "./shared/guards/auth.guard";
     AuthPageComponent,
     UserLayoutComponent,
     AlertComponent,
-    ProfileComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild([
-      {
-        path: '', component: UserLayoutComponent, children: [
+      {path: '', component: UserLayoutComponent, children: [
           {path: '', redirectTo: '/author/auth', pathMatch: 'full'},
           {path: 'auth', redirectTo: '/author/auth/login', pathMatch: 'full'},
           {path: 'auth/:authType', component: AuthPageComponent},
           {path: 'dashboard', component: DashboardPageComponent, canActivate: [authGuard]},
           {path: 'create', component: CreatePostPageComponent, canActivate: [authGuard]},
-          {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-          {path: 'post/:id/edit', component: EditPostPageComponent, canActivate: [authGuard]}
-        ]
-      }
+          {path: 'post/:id/edit', component: EditPostPageComponent, canActivate: [authGuard]},
+          {
+            path: 'profile',
+            loadChildren: () => import('./profile/profile.module').then(x => x.ProfileModule),
+            canActivate: [authGuard]
+          }
+        ]}
     ]),
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
-    HttpClientModule,
-    QuillModule.forRoot(),
-    FileUploadModule
+    SharedModule
   ],
-  providers: [AlertService, AuthService],
+  providers: [],
   exports: [RouterModule]
 })
 export class UserModule { }

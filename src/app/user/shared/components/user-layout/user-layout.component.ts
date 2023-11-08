@@ -1,5 +1,5 @@
-import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../services/auth.service";
 
@@ -12,6 +12,7 @@ import {AuthService} from "../../services/auth.service";
 export class UserLayoutComponent implements OnInit, AfterContentChecked{
   authMode: any
   authModeSub: Subscription
+  checkbox: HTMLInputElement
 
   get isLoginPage(): boolean {
     const url = this.router.url
@@ -22,8 +23,14 @@ export class UserLayoutComponent implements OnInit, AfterContentChecked{
     private router: Router,
     public route: ActivatedRoute,
     public authService: AuthService,
+    private elRef: ElementRef,
     private cdref: ChangeDetectorRef
   ) {
+    router.events.subscribe(event => {
+      if (event instanceof NavigationEnd && this.checkbox?.checked) {
+        this.checkbox.checked = !this.checkbox.checked
+      }
+    })
   }
 
   logout($event: Event): void {
@@ -38,6 +45,7 @@ export class UserLayoutComponent implements OnInit, AfterContentChecked{
       console.log({data})
     })
     console.log('user-layout authMode', this.authMode)
+    this.checkbox = this.elRef.nativeElement.querySelector('#checkbox')
   }
 
   ngAfterContentChecked(): void {
@@ -45,4 +53,7 @@ export class UserLayoutComponent implements OnInit, AfterContentChecked{
   }
 
 
+  onclick() {
+    console.log('chechbox', this.checkbox.checked = !this.checkbox.checked)
+  }
 }

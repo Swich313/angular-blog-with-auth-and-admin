@@ -1,0 +1,109 @@
+.container {
+  //width: min(80%, 800px);
+  width: 540px;
+  height: 550px;
+  margin: 10% auto 0;
+  padding: 1rem;
+  border: 1px solid var(--skeleton-loading-grey);
+  border-radius: 5px;
+  box-shadow: 4px 4px 8px 6px var(--skeleton-loading-grey);
+  position: relative;
+  overflow: visible;
+
+  .left_box {
+    float: left;
+    top: -5%;
+    left: 5%;
+    position: absolute;
+    width: 15%;
+    height: 110%;
+    background: var(--bg-gradient-light);
+    border: 0.1rem solid var(--skeleton-loading-grey);
+    //box-shadow: 4px 4px 8px 6px #039be5;
+
+    nav {
+      li {
+        list-style: none;
+
+        input[type='radio'] {
+          visibility: hidden;
+
+          &:checked ~ label {
+            color: var(--bg-gradient-dark);
+          }
+
+          &:not(:checked) ~ label {
+            color: var(--skeleton-loading-grey);
+          }
+        }
+
+        label {
+          list-style: none;
+          padding: 20px;
+          color: var(--skeleton-loading-grey);
+          font-size: 1.1rem;
+          display: block;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            color: var(--bg-gradient-dark);
+            cursor: pointer;
+            transform: scale(1.2);
+          }
+
+          &:first-child {
+            margin-top: 2rem;
+          }
+        }
+      }
+
+
+
+
+    }
+
+  }
+
+  .right_box {
+    width: 60%;
+    margin-left: 27%;
+
+    .tabShow {
+      transition: all 0.5s ease-in-out;
+      width: 80%;
+      display: none;
+    }
+
+    h2, h2 {
+      color: var(--dark-color);
+    }
+  }
+
+  .input, p {
+    border: 0;
+    border-bottom: 1px solid var(--bg-gradient-dark);
+    width: 80%;
+    color: var(--dark-color);
+    outline: none;
+  }
+
+  .btn {
+    text-transform: uppercase;
+    border: 0;
+    color: var(--skeleton-loading-grey);
+    background: var(--bg-gradient-dark);
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0, 0.2);
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+}
+
+#tab-1:checked ~ #content-1,
+#tab-2:checked ~ #content-2,
+#tab-3:checked ~ #content-3,
+#tab-4:checked ~ #content-4,
+#tab-5:checked ~ #content-5 {
+  display: block;
+}
+

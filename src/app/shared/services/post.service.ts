@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {FirebaseCreateResponse, Post} from "../interfaces";
+import {AuthService} from "../../user/shared/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,18 @@ export class PostService {
   protected _cloudinaryUrl = environment.cloudinaryUrl
   protected _cloudName = environment.cloudinaryCloudName
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+    ) { }
 
   create(post: Post): Observable<Post> {
-    return this.http.post(`${this._firebaseDBUrl}/posts.json`, post)
+    console.log('PostService', this.authService.userId)
+    const postWithUserId = {
+      ...post,
+      userId: this.authService.userId
+    }
+    return this.http.post(`${this._firebaseDBUrl}/posts.json`, postWithUserId)
       .pipe(
         map((res: FirebaseCreateResponse) => {
           return {
@@ -43,6 +52,22 @@ export class PostService {
       )
   }
 
+  getAllByAuthorID(userId: string): Observable<Post[]> {
+    return this.http.get(`${this._firebaseDBUrl}/posts.json?orderBy="userId"&startAt="${userId}"&endAt="${userId}\uf8ff"`)
+      .pipe(
+        map((res: {[key: string]: any}) => {
+          return Object.
+          keys(res)
+            .map(key => {
+              return {
+                ...res[key],
+                id: key,
+                date: new Date(res[key].date)
+              }})
+        })
+      )
+  }
+
 
 
   getById(id: string): Observable<Post> {
@@ -58,12 +83,12 @@ export class PostService {
       )
   }
 
-  // remove(): {
-  //
-  // }
+  remove(id: string): Observable<void> {
+    return this.http.delete<void>(`${this._firebaseDBUrl}/posts/${id}.json`)
+  }
 
-  update(post: Post) {
-
+  update(post: Post): Observable<Post> {
+    return this.http.patch<Post>(`${this._firebaseDBUrl}/posts/${post.id}.json`, post)
   }
 
   uploadImg(formData: FormData): Observable<any> {

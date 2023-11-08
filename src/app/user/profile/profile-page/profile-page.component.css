@@ -1,0 +1,101 @@
+.profile {
+  transition: all 0.5s ease-in;
+}
+.profile .card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile .card .avatar-add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: max(20%, 150px);
+  margin: 0.5rem auto;
+}
+.profile .card .avatar-add .avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: inset 0 0 0 2px #4D4F6E;
+}
+.profile .card .avatar-add .avatar .uploadedimage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  vertical-align: middle;
+  position: relative;
+  padding: 4px;
+  object-fit: scale-down;
+}
+.profile .card .avatar-add .avatar .avatar-frame {
+  position: absolute;
+  pointer-events: none;
+  top: -12.5%;
+  left: -12.5%;
+  max-width: 125%;
+  animation: spin 20s linear infinite;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.profile .card .avatar-add button {
+  font-size: 0.5rem;
+  margin: 1rem auto 0;
+}
+.profile .card .info .name, .profile .card .info .birthday, .profile .card .info select {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem;
+  color: var(--dark-color);
+}
+.profile .card .info .name input, .profile .card .info .birthday input, .profile .card .info select input {
+  width: 150px;
+}
+.profile .card .info .name span,
+.profile .card .info .birthday span {
+  display: inline-block;
+  font-size: 0.5rem;
+  text-transform: lowercase;
+  height: 1.5rem;
+}
+.profile .card .info select {
+  color: var(--dark-color);
+  border: none;
+  border-bottom: 1px solid var(--bg-gradient-dark);
+}
+.profile .card .info select:enabled {
+  outline: none;
+  border-bottom: 1px solid var(--bg-gradient-dark);
+}
+.profile .card .pos-right {
+  float: right;
+}
+.profile h2, .profile h3 {
+  color: var(--dark-color);
+}
+.profile .input, .profile p {
+  border: 0;
+  border-bottom: 1px solid var(--bg-gradient-dark);
+  width: 80%;
+  color: var(--dark-color);
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .card {
+    flex-direction: column;
+  }
+}
+
+/*# sourceMappingURL=profile-page.component.css.map */

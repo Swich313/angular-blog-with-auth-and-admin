@@ -16,24 +16,59 @@ table td {
   padding: 1rem;
   text-align: left;
 }
-
-table th {
-  background: var(--light-color);
+table th .edit-btn,
+table td .edit-btn {
+  width: 5rem;
+  padding: 0.5rem;
+}
+table th .delete-btn,
+table td .delete-btn {
+  width: 5rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  background: var(--primary-color);
+  color: var(--dark-color);
+  text-align: center;
+}
+table th .icons,
+table td .icons {
+  font-size: 1rem;
+  margin: 0 auto;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+table th .icons .checkIcon, table th .icons .cancelIcon,
+table td .icons .checkIcon,
+table td .icons .cancelIcon {
+  padding: 0.7rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+table th .icons .checkIcon,
+table td .icons .checkIcon {
+  color: green;
+}
+table th .icons .checkIcon:hover,
+table td .icons .checkIcon:hover {
+  font-size: 1.2rem;
+}
+table th .icons .cancelIcon,
+table td .icons .cancelIcon {
+  color: red;
+}
+table th .icons .cancelIcon:hover,
+table td .icons .cancelIcon:hover {
+  font-size: 1.2rem;
 }
 
-.form-control {
-  display: block;
-  color: #888;
-  margin-bottom: 0.8rem;
-}
-.form-control.invalid {
-  color: var(--primary-color);
-}
-.form-control.invalid input {
-  border-color: var(--primary-color);
-}
-.form-control .validation {
-  color: var(--primary-color);
+@media (max-width: 768px) {
+  table th,
+table td {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
 }
 
 /*# sourceMappingURL=dashboard-page.component.css.map */

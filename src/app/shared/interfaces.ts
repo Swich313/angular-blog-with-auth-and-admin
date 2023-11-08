@@ -8,6 +8,7 @@ export interface Post {
   tags?: string;
   author: string;
   date: Date;
+  userId?: string;
 }
 
 export interface ShareSocialMedia {
@@ -20,12 +21,23 @@ export interface User {
   email: string;
   password: string;
   returnSecureToken?: boolean;
-  name?: string;
+  userId?: string;
+}
+
+export interface UserInfo {
+  userId?: string;
+  avatarUrl: string;
+  name: string;
+  birthday: string;
+  gender: 'male' | 'female'
 }
 
 export interface FirebaseAuthResponse {
   idToken: string;
   expiresIn: string;
+  localId: string;
+  email?: string;
+  password?: string;
 }
 
 export interface FirebaseCreateResponse {

@@ -18,30 +18,35 @@ import {HttpClientModule} from "@angular/common/http";
 import {QuillModule} from "ngx-quill";
 import { ShareWithSocialComponent } from './shared/components/share-with-social/share-with-social.component';
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
+import { ShowClosePasswordDirective } from './shared/directives/show-close-password.directive';
+import {SharedModule} from "./shared/shared.module";
+import {CloudinaryModule} from "@cloudinary/ng";
+import {AuthService} from "./user/shared/services/auth.service";
+import {AlertService} from "./user/shared/services/alert.service";
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        MainLayoutComponent,
-        HomePageComponent,
-        PostPageComponent,
-        PostComponent,
-        NotFoundPageComponent,
-        FooterComponent,
-        PostSkeletonComponent,
-        ShareWithSocialComponent,
-        SpinnerComponent
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        RouterModule,
-        FontAwesomeModule,
-        HttpClientModule,
-        QuillModule
-    ],
-    providers: [WindowService],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    MainLayoutComponent,
+    HomePageComponent,
+    PostPageComponent,
+    PostComponent,
+    NotFoundPageComponent,
+    FooterComponent,
+    PostSkeletonComponent,
+    ShareWithSocialComponent,
+    SpinnerComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    RouterModule,
+    FontAwesomeModule,
+    SharedModule
+  ],
+  providers: [WindowService, AuthService, AlertService],
+  exports: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

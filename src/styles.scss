@@ -37,6 +37,25 @@ body {
   margin: -5vw auto 10vw;
 }
 
+.btn {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  display: block;
+  border: 0;
+  color: var(--skeleton-loading-grey);
+  background: var(--bg-gradient-dark);
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
 @media (max-width: 1200px){
   .container{
     max-width: 90%;

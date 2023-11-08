@@ -1,5 +1,6 @@
 .container{
   margin: 0 auto;
+  overflow: visible;
 }
 
 .fullWidth {
@@ -22,8 +23,8 @@
   width: 100%;
   background: linear-gradient(90deg, var(--bg-gradient-light), var(--bg-gradient-dark));
   color: #444;
-  opacity: 0.85;
-  z-index: 100;
+  opacity: 0.8;
+  z-index: 1000;
 }
 
 .nav-container{
@@ -31,20 +32,28 @@
   justify-content: space-between;
   height: 3rem;
   align-items: center;
+
+
 }
 
 .menu-items{
   order: 2;
   display: flex;
 
+
   li{
     list-style: none;
     margin-left: 1.5rem;
     font-size: 1.3rem;
 
+    span {
+      cursor: pointer;
+    }
+
     &.active a {
       font-weight: bold;
       cursor: default;
+
     }
   }
 }

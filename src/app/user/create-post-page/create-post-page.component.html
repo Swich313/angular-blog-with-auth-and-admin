@@ -1,85 +1,88 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <h1     (click)="onRadioButtonsChange($event)"
-  >Create New Post</h1>
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h1     (click)="onRadioButtonsChange($event)"
+    >Create New Post</h1>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('title').touched && form.get('title').invalid}"
-  >
-    <label for="title">Post Title:</label>
-    <input type="text" id="title" formControlName="title">
     <div
-      class="validation"
-      *ngIf="form.get('title').touched && form.get('title').invalid"
+      class="form-control"
+      [ngClass]="{invalid: form.get('title').touched && form.get('title').invalid}"
     >
-      <small *ngIf="form.get('title').errors.required">Title is required</small>
-    </div>
-  </div>
-
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('imageUrl').touched && form.get('imageUrl').invalid}"
-  >
-    <div *ngIf="form.get('imageSource').value === imageSources[0].value">
-      <label for="imageUrl" >Image URL</label>
-      <input type="text" id="imageUrl" formControlName="imageUrl">
-    </div>
-
-    <div *ngIf="form.get('imageSource').value === imageSources[1].value">
-      <label for="imageFile" >Image File</label>
-      <input #imageFile type="file" ng2FileSelect [uploader]="uploader" name="imageFile" id="imageFile" class="inputFile" formControlName="imageUrl">
+      <label for="title">Post Title:</label>
+      <input type="text" id="title" formControlName="title">
+      <div
+        class="validation"
+        *ngIf="form.get('title').touched && form.get('title').invalid"
+      >
+        <small *ngIf="form.get('title').errors.required">Title is required</small>
+      </div>
     </div>
 
     <div
-      class="validation"
-      *ngIf="form.get('imageUrl').touched && form.get('imageUrl').invalid"
+      class="form-control"
+      [ngClass]="{invalid: form.get('imageUrl').touched && form.get('imageUrl').invalid}"
     >
-      <small *ngIf="form.get('imageUrl').errors.required">Image Url/File is required</small>
-      <small *ngIf="form.get('imageUrl').errors.pattern && form.get('imageSource').value === imageSources[0].value">Invalid Image Url</small>
-      <small *ngIf="form.get('imageUrl').errors.pattern && form.get('imageSource').value === imageSources[1].value">Invalid Image File Extension</small>
+      <div *ngIf="form.get('imageSource').value === imageSources[0].value">
+        <label for="imageUrl" >Image URL</label>
+        <input type="text" id="imageUrl" formControlName="imageUrl">
+      </div>
+
+      <div *ngIf="form.get('imageSource').value === imageSources[1].value">
+        <label for="imageFile" >Image File</label>
+        <input #imageFile type="file" ng2FileSelect [uploader]="uploader" name="imageFile" id="imageFile" class="inputFile" formControlName="imageUrl">
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('imageUrl').touched && form.get('imageUrl').invalid"
+      >
+        <small *ngIf="form.get('imageUrl').errors.required">Image Url/File is required</small>
+        <small *ngIf="form.get('imageUrl').errors.pattern && form.get('imageSource').value === imageSources[0].value">Invalid Image Url</small>
+        <small *ngIf="form.get('imageUrl').errors.pattern && form.get('imageSource').value === imageSources[1].value">Invalid Image File Extension</small>
+      </div>
     </div>
-  </div>
 
-  <div class="checkbox">
-    <label>Choose Image Source</label>
-    <div *ngFor="let source of imageSources" (change)="onRadioButtonsChange()">
-      <label>
-        <input type="radio"
-               [value]="source.value"
-               formControlName="imageSource"
-        >
-        {{source.name}}
-      </label>
+    <div class="checkbox">
+      <label>Choose Image Source</label>
+      <div *ngFor="let source of imageSources" (change)="onRadioButtonsChange()">
+        <label>
+          <input type="radio"
+                 [value]="source.value"
+                 formControlName="imageSource"
+          >
+          {{source.name}}
+        </label>
+      </div>
     </div>
-  </div>
 
-  <div class="form-control">
-    <label>Post content</label>
-    <quill-editor formControlName="text"></quill-editor>
-  </div>
+    <div class="form-control">
+      <label>Post content</label>
+      <quill-editor formControlName="text"></quill-editor>
+    </div>
 
-  <div
-    class="form-control"
-    [ngClass]="{invalid: form.get('author').touched && form.get('author').invalid}"
-  >
-    <label for="author">Post Author:</label>
-    <input type="text" id="author" formControlName="author">
     <div
-      class="validation"
-      *ngIf="form.get('author').touched && form.get('author').invalid"
+      class="form-control"
+      [ngClass]="{invalid: form.get('author').touched && form.get('author').invalid}"
     >
-      <small *ngIf="form.get('author').errors.required">Author is required</small>
+      <label for="author">Post Author:</label>
+      <input type="text" id="author" formControlName="author">
+      <div
+        class="validation"
+        *ngIf="form.get('author').touched && form.get('author').invalid"
+      >
+        <small *ngIf="form.get('author').errors.required">Author is required</small>
+      </div>
     </div>
-  </div>
 
-  <div class="form-control">
-    <label for="tags">Tags:</label>
-    <input type="text" id="tags" formControlName="tags" placeholder="Add any tags like: #Angular#Coding#Leisure">
-  </div>
+    <div class="form-control">
+      <label for="tags">Tags:</label>
+      <input type="text" id="tags" formControlName="tags" placeholder="Add any tags like: #Angular#Coding#Leisure">
+    </div>
 
-  <button
-    type="submit"
-    class="btn btn-block btn-dark"
-    [disabled]="form.invalid"
-  >Create Post</button>
-</form>
+    <button
+      type="submit"
+      class="btn btn-block btn-dark"
+      [disabled]="form.invalid"
+    >Create Post</button>
+  </form>
+
+</div>

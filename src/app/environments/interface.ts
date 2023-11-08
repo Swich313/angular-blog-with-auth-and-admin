@@ -8,5 +8,6 @@ export interface Environment {
   cloudinaryCloudName: string;
   cloudinaryUploadPreset: string;
 
+  defaultAvatarUrl?: string;
   mockedPosts?: Post[]
 }

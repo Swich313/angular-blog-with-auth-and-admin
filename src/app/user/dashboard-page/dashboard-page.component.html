@@ -6,7 +6,7 @@
     <thead>
     <tr>
       <th>#</th>
-      <th>Author</th>
+<!--      <th>Author</th>-->
       <th>Title</th>
       <th>Date</th>
       <th>Action</th>
@@ -16,15 +16,19 @@
     <tbody>
     <tr *ngFor="let post  of posts; let i = index">
       <td>{{i + 1}}</td>
-      <td>{{post.author}}</td>
+<!--      <td>{{post.author}}</td>-->
       <td>{{post.title}}</td>
       <td>{{post.date | date:'shortDate'}}</td>
       <td>
         <button
           [routerLink]="['/admin', 'post', post.id, 'edit']"
-          class="btn btn-link open"
-        >Open Post</button>
-        <a (click)="remove(post.id)">Delete</a>
+          class="btn edit-btn"
+        >Edit</button>
+        <a class="btn delete-btn" (click)="onDeleteBtn()" *ngIf="!isAboutToDelete">Delete</a>
+        <div class="icons" *ngIf="isAboutToDelete">
+          <fa-icon [icon]="checkIcon" class="checkIcon" (click)="remove(post.id)"></fa-icon>
+          <fa-icon [icon]="cancelIcon" class="cancelIcon" (click)="isAboutToDelete = false"></fa-icon>
+        </div>
       </td>
     </tr>
     </tbody>

@@ -1,23 +1,26 @@
 <nav class="navbar">
   <div class="nav-container content">
-    <input type="checkbox" name="" id="">
+    <input type="checkbox" name="" id="checkbox" >
     <div class="hamburger-lines" *ngIf="authService.isAuth()">
       <span class="line line1"></span>
       <span class="line line2"></span>
       <span class="line line3"></span>
     </div>
     <ul *ngIf="authService.isAuth()" class="menu-items">
+      <li>
+        <a [routerLink]="['/']">Main</a>
+      </li>
       <li routerLinkActive="active">
         <a [routerLink]="['/author', 'profile']">Profile</a>
       </li>
       <li routerLinkActive="active">
-        <a [routerLink]="['/author', 'dashboard']">Main</a>
+        <a [routerLink]="['/author', 'dashboard']">Your Posts</a>
       </li>
       <li routerLinkActive="active">
         <a [routerLink]="['/author', 'create']">Create</a>
       </li>
       <li>
-        <a href="#" (click)="logout($event)">Logout</a>
+        <a [routerLink]="['/author', 'auth', 'login']" (click)="logout($event)">Logout</a>
       </li>
     </ul>
     <h1 class="logo">{{authMode | titlecase}} To Author Page</h1>

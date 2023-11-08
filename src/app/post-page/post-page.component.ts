@@ -4,6 +4,7 @@ import {Observable, switchMap} from "rxjs";
 import {Post} from "../shared/interfaces";
 import {ActivatedRoute, Params} from "@angular/router";
 import {WindowService} from "../shared/services/window.service";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-post-page',
@@ -15,6 +16,7 @@ export class PostPageComponent implements OnInit{
   private window: Window
   private document: Document
   public scrollY: number
+  public defaultAvatar = environment.defaultAvatarUrl
 
   constructor(
     private postService: PostService,
