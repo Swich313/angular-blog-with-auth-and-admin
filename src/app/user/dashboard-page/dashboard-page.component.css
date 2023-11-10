@@ -20,6 +20,7 @@ table th .edit-btn,
 table td .edit-btn {
   width: 5rem;
   padding: 0.5rem;
+  font-size: 0.8rem;
 }
 table th .delete-btn,
 table td .delete-btn {

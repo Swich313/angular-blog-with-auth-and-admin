@@ -35,8 +35,7 @@ import {AlertService} from "./user/shared/services/alert.service";
     NotFoundPageComponent,
     FooterComponent,
     PostSkeletonComponent,
-    ShareWithSocialComponent,
-    SpinnerComponent,
+    ShareWithSocialComponent
   ],
   imports: [
     BrowserModule,

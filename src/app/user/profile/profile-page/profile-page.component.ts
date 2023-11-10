@@ -2,8 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import {UserService} from "../shared/services/user.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {UserInfo} from "../../../shared/interfaces";
+import {AuthService} from "../../shared/services/auth.service";
+import {AlertService} from "../../shared/services/alert.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile-page',
@@ -15,26 +18,38 @@ export class ProfilePageComponent implements OnInit {
   myWidget
   protected _cloudName = environment.cloudinaryCloudName
   protected _cloudinaryPreset = environment.cloudinaryUploadPreset
-  protected nameRegex =  /^[a-zA-Z]+$/
+  protected nameRegex =  new RegExp("^[a-zA-Z -]*$")
   public avatar = environment.defaultAvatarUrl
   checkIcon = faCheck
   isName = false
   isBirthday = false
   isSubmitted = false
+  userSub: Subscription
 
-  constructor(private profileService: UserService) {
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private alertService: AlertService
+  ) {
   }
 
   ngOnInit(): void {
+    this.userSub = this.userService.getUserById(this.authService.userId)
+      .subscribe((user: UserInfo) => {
+        console.log({user})
+
+      })
+
     this.form = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
         Validators.minLength(5),
         Validators.pattern(this.nameRegex)
       ]),
-      birthday: new FormControl(null, [Validators.required]),
+      birthday: new FormControl(null, [this.dateValidator]),
       gender: new FormControl(null, [Validators.required])
     })
+
 
     //@ts-ignore
     this.myWidget = cloudinary.createUploadWidget({
@@ -54,11 +69,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value)
-    console.log('Errors name', this.form.get('name').errors)
-    console.log('Errors birthday', this.form.get('birthday').errors)
-    console.log('Errors gender', this.form.get('gender').errors)
-
     if(this.form.invalid ){
       return
     }
@@ -67,8 +77,20 @@ export class ProfilePageComponent implements OnInit {
       name: this.form.value.name,
       birthday: this.form.value.birthday,
       gender: this.form.value.gender,
-      avatarUrl: this.avatar
+      avatarUrl: this.avatar,
+      userId: this.authService.userId
     }
+    this.userService.addUserInfo(userInfo).subscribe({
+      next: (res) => {
+        this.isSubmitted = false
+        this.alertService.success('Profile was updated!')
+      },
+      error: err => {
+        this.isSubmitted = false
+        this.alertService.danger('Profile was not updated!')
+
+      }
+    })
     console.log({userInfo})
 
   }
@@ -86,7 +108,6 @@ export class ProfilePageComponent implements OnInit {
 
   editMode(type: 'name' | 'birthday'){
     if(type === 'name') {
-      console.log('fired')
       this.isName = false
     }
     if (type === 'birthday') {
@@ -96,5 +117,16 @@ export class ProfilePageComponent implements OnInit {
 
   openWidget() {
     this.myWidget.open();
+  }
+
+  dateValidator(control: FormControl): { [s: string]: boolean } {
+    if (control.value) {
+      const date = new Date(control.value);
+      const today = new Date();
+      if (date > today) {
+        return { 'invalidDate': true }
+      }
+    }
+    return null;
   }
 }

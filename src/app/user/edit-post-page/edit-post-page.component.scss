@@ -1,0 +1,64 @@
+.container {
+  width: min(80%, 800px);
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid var(--skeleton-loading-grey);
+  border-radius: 5px;
+  box-shadow: 4px 4px 8px 6px var(--skeleton-loading-grey);
+
+  form {
+    //max-width: 100%;
+    //margin: 0 auto;
+
+    .form-control {
+      display: block;
+      color: #888;
+      margin-bottom: 0.8rem;
+
+      &.invalid {
+        color: var(--primary-color);
+
+        input {
+          border-color: var(--primary-color);
+        }
+      }
+
+      .validation {
+        color: var(--primary-color);
+      }
+    }
+
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='date'],
+    input[type='file'],
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 0.4rem;
+      font-size: 1.2rem;
+      border: 1px solid #ccc;
+    }
+
+    input[type='submit'],
+    button {
+      font: inherit;
+
+      &:disabled {
+        cursor: not-allowed;
+        color: var(--dark-color);
+        background: var(--skeleton-loading-grey);
+      }
+    }
+
+  }
+}
+
+.spinner{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20vw;
+}

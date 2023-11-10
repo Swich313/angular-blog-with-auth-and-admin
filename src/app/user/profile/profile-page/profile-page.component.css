@@ -74,6 +74,16 @@
   outline: none;
   border-bottom: 1px solid var(--bg-gradient-dark);
 }
+.profile .card .info .validation {
+  color: var(--primary-color);
+  display: block;
+  margin: 1rem;
+}
+.profile .card .info .disabled {
+  cursor: not-allowed;
+  background: var(--skeleton-loading-grey);
+  color: var(--dark-color);
+}
 .profile .card .pos-right {
   float: right;
 }

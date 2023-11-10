@@ -4,12 +4,19 @@ import {HttpClientModule} from "@angular/common/http";
 import {QuillModule} from "ngx-quill";
 import {ShowClosePasswordDirective} from "./directives/show-close-password.directive";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {SpinnerComponent} from "./components/spinner/spinner.component";
+import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
 
 
 
 @NgModule({
-  declarations: [ShowClosePasswordDirective],
+  declarations: [
+    ShowClosePasswordDirective,
+    SpinnerComponent,
+    LoadingBarComponent
+  ],
   imports: [
+    CommonModule,
     HttpClientModule,
     QuillModule.forRoot(),
     FontAwesomeModule
@@ -18,7 +25,9 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     HttpClientModule,
     QuillModule,
     FontAwesomeModule,
-    ShowClosePasswordDirective
+    ShowClosePasswordDirective,
+    SpinnerComponent,
+    LoadingBarComponent
   ]
 })
 export class SharedModule { }

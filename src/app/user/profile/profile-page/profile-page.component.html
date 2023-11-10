@@ -1,10 +1,12 @@
+<app-loading-bar *ngIf="isSubmitted"></app-loading-bar>
+
 <div class="profile">
   <h2>Personal Information</h2>
 
   <div class="card">
     <div class="avatar-add">
       <div class="avatar">
-        <img class="uploadedimage" [src]="avatar" c alt="avatar">
+        <img class="uploadedimage" [src]="avatar" alt="avatar">
         <img src="https://i.imgur.com/0aDdQyR.png" alt="frame" class="avatar-frame">
       </div>
 
@@ -18,7 +20,17 @@
           <input type="text" class="input" id="name" placeholder="What's your name?" formControlName="name" (input)="editMode('name')">
           <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isName"></fa-icon>
         </div>
-          <span class="btn" (click)="passData('name')" *ngIf="!isName">Add</span>
+          <span class="btn" (click)="passData('name')" *ngIf="!isName" [ngClass]="{disabled: !!form.get('name').errors}">Add</span>
+
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('name').touched && form.get('name').invalid"
+      >
+        <small *ngIf="form.get('name').errors.required">To create posts you should specify your full name!</small>
+        <small *ngIf="form.get('name').errors.minlength">Your full name is to short!</small>
+        <small *ngIf="form.get('name').errors.pattern">Your name should only contain letters!</small>
       </div>
 
       <div class="birthday">
@@ -26,7 +38,14 @@
           <input type="date" class="input" id="birthday" min="01.01.1900" formControlName="birthday" (change)="editMode('birthday')">
           <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isBirthday"></fa-icon>
         </div>
-        <span class="btn" (click)="passData('birthday')" *ngIf="!isBirthday">Add</span>
+        <span class="btn" (click)="passData('birthday')" *ngIf="!isBirthday" [ngClass]="{disabled: !!form.get('birthday').errors}">Add</span>
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('birthday').touched && form.get('birthday').invalid"
+      >
+        <small *ngIf="form.get('birthday').errors.invalidDate">Is this your real birthday?</small>
       </div>
 
       <select name="gender" id="gender" formControlName="gender">

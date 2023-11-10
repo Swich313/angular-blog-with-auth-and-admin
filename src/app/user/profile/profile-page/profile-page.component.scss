@@ -72,6 +72,8 @@
         font-size: 0.5rem;
         text-transform: lowercase;
         height: 1.5rem;
+
+
       }
       select {
         color: var(--dark-color);
@@ -81,6 +83,19 @@
           outline: none;
           border-bottom: 1px solid var(--bg-gradient-dark);
         }
+      }
+
+      .validation {
+        color: var(--primary-color);
+        display: block;
+        margin: 1rem;
+
+      }
+
+      .disabled {
+        cursor: not-allowed;
+        background: var(--skeleton-loading-grey);
+        color: var(--dark-color);
       }
     }
 

@@ -1,3 +1,5 @@
+<app-loading-bar *ngIf="isSubmitted"></app-loading-bar>
+
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="submit()">
     <h1     (click)="onRadioButtonsChange($event)"
@@ -43,7 +45,7 @@
 
     <div class="checkbox">
       <label>Choose Image Source</label>
-      <div *ngFor="let source of imageSources" (change)="onRadioButtonsChange()">
+      <div *ngFor="let source of imageSources" (change)="onRadioButtonsChange($event)">
         <label>
           <input type="radio"
                  [value]="source.value"
@@ -76,6 +78,12 @@
     <div class="form-control">
       <label for="tags">Tags:</label>
       <input type="text" id="tags" formControlName="tags" placeholder="Add any tags like: #Angular#Coding#Leisure">
+      <div
+        class="validation"
+        *ngIf="form.get('tags').touched && form.get('tags').invalid"
+      >
+        <small *ngIf="form.get('tags').errors.pattern">Invalid tag, should start with '#'!</small>
+      </div>
     </div>
 
     <button

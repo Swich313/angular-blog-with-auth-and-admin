@@ -9,11 +9,9 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
 import { UserLayoutComponent } from './shared/components/user-layout/user-layout.component';
 import { AlertComponent } from './shared/components/alert/alert.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {AlertService} from "./shared/services/alert.service";
-import {AuthService} from "./shared/services/auth.service";
 import {authGuard} from "./shared/guards/auth.guard";
 import {SharedModule} from "../shared/shared.module";
+import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -27,7 +25,8 @@ import {SharedModule} from "../shared/shared.module";
   imports: [
     CommonModule,
     RouterModule.forChild([
-      {path: '', component: UserLayoutComponent, children: [
+      {
+        path: '', component: UserLayoutComponent, children: [
           {path: '', redirectTo: '/author/auth', pathMatch: 'full'},
           {path: 'auth', redirectTo: '/author/auth/login', pathMatch: 'full'},
           {path: 'auth/:authType', component: AuthPageComponent},
@@ -39,11 +38,13 @@ import {SharedModule} from "../shared/shared.module";
             loadChildren: () => import('./profile/profile.module').then(x => x.ProfileModule),
             canActivate: [authGuard]
           }
-        ]}
+        ]
+      }
     ]),
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    FileUploadModule
   ],
   providers: [],
   exports: [RouterModule]

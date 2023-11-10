@@ -21,7 +21,7 @@
       <td>{{post.date | date:'shortDate'}}</td>
       <td>
         <button
-          [routerLink]="['/admin', 'post', post.id, 'edit']"
+          [routerLink]="['/author', 'post', post.id, 'edit']"
           class="btn edit-btn"
         >Edit</button>
         <a class="btn delete-btn" (click)="onDeleteBtn()" *ngIf="!isAboutToDelete">Delete</a>

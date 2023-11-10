@@ -56,8 +56,8 @@ export class PostService {
     return this.http.get(`${this._firebaseDBUrl}/posts.json?orderBy="userId"&startAt="${userId}"&endAt="${userId}\uf8ff"`)
       .pipe(
         map((res: {[key: string]: any}) => {
-          return Object.
-          keys(res)
+          return Object
+            .keys(res)
             .map(key => {
               return {
                 ...res[key],

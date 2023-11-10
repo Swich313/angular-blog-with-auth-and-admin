@@ -17,9 +17,11 @@ export class CreatePostPageComponent implements OnInit{
     {id: 2, name: 'Choose Image File', value: 'file'}
   ]
   selectedImageSource: string
+  isSubmitted = false
 
   protected _urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
   protected _imageRegex = /.*\.(gif|jpg|jpeg|bmp|png)$/igm
+  protected _tagsRegex = /(#+[a-zA-Z\d(_)]+)/igm
   protected _cloudName = environment.cloudinaryCloudName
   protected _preset = environment.cloudinaryUploadPreset
 
@@ -40,7 +42,7 @@ export class CreatePostPageComponent implements OnInit{
       imageSource: new FormControl(null, Validators.required),
       text: new FormControl(null, Validators.required),
       author: new FormControl(null, Validators.required),
-      tags: new FormControl(null)
+      tags: new FormControl(null, Validators.pattern(this._tagsRegex))
     })
     this.form.patchValue({imageSource: this.imageSources[0].value})
     this.selectedImageSource = this.form.get('imageSource').value
@@ -63,6 +65,8 @@ export class CreatePostPageComponent implements OnInit{
     if(this.form.invalid){
       return
     }
+    this.isSubmitted = true
+
     let post: Post = {
       title: this.form.value.title,
       text: this.form.value.text,
@@ -80,6 +84,7 @@ export class CreatePostPageComponent implements OnInit{
       }
       this.postService.create(post).subscribe(() => {
         this.form.reset()
+        this.isSubmitted = false
         this.form.patchValue({imageSource: this.selectedImageSource})
         this.alertService.success('Post was created successfully!')
       })
@@ -95,6 +100,7 @@ export class CreatePostPageComponent implements OnInit{
           imageUrl: imageData.url
         }
         this.postService.create(post).subscribe(() => {
+          this.isSubmitted = false
           this.form.reset()
           this.form.patchValue({imageSource: this.selectedImageSource})
           this.alertService.success('Post was created successfully!')

@@ -1,0 +1,47 @@
+div {
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  float: bottom;
+
+  progress {
+    appearance: none;
+    position: fixed;
+    width: 100vw;
+    height: 0.8rem;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+
+
+.bar {
+  clear: both;
+
+  progress {
+    text-align: left;
+    overflow: hidden;
+  }
+
+  progress::-webkit-progress-bar,
+  progress::-webkit-progress-value {
+    background: var(--bg-gradient-light);
+  }
+
+  progress::before {
+    content: '';
+    width: 10000%;
+    height: 0.8rem;
+    position: absolute;
+    background: linear-gradient(-45deg, transparent 33%, var(--bg-gradient-dark) 33%, var(--bg-gradient-dark) 66%, transparent 66%);
+    background-size: 40px 1rem;
+    animation: shift 500s linear infinite;
+  }
+}
+
+@keyframes shift {
+  0%   { left: 0; }
+  100%  { left: -9900%; }
+}
