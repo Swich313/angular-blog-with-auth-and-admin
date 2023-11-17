@@ -10,8 +10,10 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { OtherPageComponent } from './other-page/other-page.component';
 import {FileUploadModule} from "ng2-file-upload";
 import {CloudinaryModule} from "@cloudinary/ng";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../../shared/shared.module";
+import {MatButtonModule} from "@angular/material/button";
+import {GeneratePasswordComponent} from "./shared/components/generate-password/generate-password.component";
 
 
 
@@ -24,21 +26,25 @@ import {SharedModule} from "../../shared/shared.module";
     PrivacyPageComponent,
     OtherPageComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild([
-      {path: '', component: ProfileLayoutComponent, children: [
-          {path: '', component: ProfilePageComponent, pathMatch: 'full'},
-          {path: 'password', component: PasswordPageComponent},
-          {path: 'social', component: SocialMediaPageComponent},
-          {path: 'privacy', component: PrivacyPageComponent},
-          {path: 'other', component: OtherPageComponent}
-        ]}
-    ]),
-    FileUploadModule,
-    CloudinaryModule,
-    ReactiveFormsModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild([
+            {
+                path: '', component: ProfileLayoutComponent, children: [
+                    {path: '', component: ProfilePageComponent, pathMatch: 'full'},
+                    {path: 'password', component: PasswordPageComponent},
+                    {path: 'social', component: SocialMediaPageComponent},
+                    {path: 'privacy', component: PrivacyPageComponent},
+                    {path: 'other', component: OtherPageComponent}
+                ]
+            }
+        ]),
+        FileUploadModule,
+        CloudinaryModule,
+        ReactiveFormsModule,
+        FormsModule,
+        SharedModule,
+        MatButtonModule
+    ]
 })
 export class ProfileModule { }

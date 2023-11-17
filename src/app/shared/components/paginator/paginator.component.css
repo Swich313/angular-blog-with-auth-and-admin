@@ -1,0 +1,15 @@
+.paginator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin: 1rem auto;
+}
+
+@media (max-width: 640px) {
+  .paginator {
+    font-size: 0.75rem;
+  }
+}
+
+/*# sourceMappingURL=paginator.component.css.map */

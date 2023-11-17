@@ -1,7 +1,7 @@
 .container {
   width: 540px;
   height: 550px;
-  margin: 10% auto 0;
+  margin: 10px auto 0;
   padding: 1rem;
   border: 1px solid var(--skeleton-loading-grey);
   border-radius: 5px;

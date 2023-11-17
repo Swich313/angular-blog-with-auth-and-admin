@@ -65,13 +65,16 @@
       class="form-control"
       [ngClass]="{invalid: form.get('author').touched && form.get('author').invalid}"
     >
-      <label for="author">Post Author:</label>
-      <input type="text" id="author" formControlName="author">
+      <label for="author">Post Author Name:</label>
+      <div class="author-name">
+        <input type="text" id="author" formControlName="author" readonly>
+        <button [routerLink]="['/author', 'profile']" mat-raised-button *ngIf="!form.get('author').value">Specify Your Name in Profile</button>
+      </div>
       <div
         class="validation"
-        *ngIf="form.get('author').touched && form.get('author').invalid"
+        *ngIf="form.get('author').invalid"
       >
-        <small *ngIf="form.get('author').errors.required">Author is required</small>
+        <small *ngIf="form.get('author').errors.required">Author is required to create Post!</small>
       </div>
     </div>
 

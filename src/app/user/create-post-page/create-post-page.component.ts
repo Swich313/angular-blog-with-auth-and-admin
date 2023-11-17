@@ -4,6 +4,9 @@ import {AlertService} from "../shared/services/alert.service";
 import {PostService} from "../../shared/services/post.service";
 import {Post} from "../../shared/interfaces";
 import {environment} from "../../environments/environment";
+import {UserService} from "../profile/shared/services/user.service";
+import {AuthService} from "../shared/services/auth.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-create-post-page',
@@ -18,6 +21,8 @@ export class CreatePostPageComponent implements OnInit{
   ]
   selectedImageSource: string
   isSubmitted = false
+  userId: string
+  userInfoSub: Subscription
 
   protected _urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
   protected _imageRegex = /.*\.(gif|jpg|jpeg|bmp|png)$/igm
@@ -30,12 +35,13 @@ export class CreatePostPageComponent implements OnInit{
 
   constructor(
     private alertService: AlertService,
-    private postService: PostService
+    private postService: PostService,
+    private userService: UserService,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
-
     this.form = new FormGroup({
       title: new FormControl(null, Validators.required),
       imageUrl: new FormControl(null, Validators.required),
@@ -48,6 +54,13 @@ export class CreatePostPageComponent implements OnInit{
     this.selectedImageSource = this.form.get('imageSource').value
     this.form.controls['imageUrl'].addValidators(Validators.pattern(this.validatorPattern(this.selectedImageSource)))
 
+    this.userId = this.authService.userId
+    this.userInfoSub = this.userService.getUserInfoById(this.userId).subscribe({
+      next: userInfo => {
+        this.form.patchValue({author: userInfo[0].name})
+      },
+      error: err => {}
+      })
   }
 
   onRadioButtonsChange(e) {
@@ -82,7 +95,7 @@ export class CreatePostPageComponent implements OnInit{
         ...post,
         imageUrl: this.form.value.imageUrl
       }
-      this.postService.create(post).subscribe(() => {
+      this.postService.create(post, this.userId).subscribe(() => {
         this.form.reset()
         this.isSubmitted = false
         this.form.patchValue({imageSource: this.selectedImageSource})
@@ -99,7 +112,7 @@ export class CreatePostPageComponent implements OnInit{
           ...post,
           imageUrl: imageData.url
         }
-        this.postService.create(post).subscribe(() => {
+        this.postService.create(post, this.userId).subscribe(() => {
           this.isSubmitted = false
           this.form.reset()
           this.form.patchValue({imageSource: this.selectedImageSource})

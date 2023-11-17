@@ -8,21 +8,18 @@ import { MainLayoutComponent } from './shared/components/main-layout/main-layout
 import { HomePageComponent } from './home-page/home-page.component';
 import { PostPageComponent } from './post-page/post-page.component';
 import { PostComponent } from './shared/components/post/post.component';
-import {environment} from "./environments/environment";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { PostSkeletonComponent } from './shared/components/post-skeleton/post-skeleton.component';
 import {WindowService} from "./shared/services/window.service";
-import {HttpClientModule} from "@angular/common/http";
-import {QuillModule} from "ngx-quill";
 import { ShareWithSocialComponent } from './shared/components/share-with-social/share-with-social.component';
-import { SpinnerComponent } from './shared/components/spinner/spinner.component';
-import { ShowClosePasswordDirective } from './shared/directives/show-close-password.directive';
 import {SharedModule} from "./shared/shared.module";
-import {CloudinaryModule} from "@cloudinary/ng";
 import {AuthService} from "./user/shared/services/auth.service";
 import {AlertService} from "./user/shared/services/alert.service";
+import {provideHotToastConfig} from "@ngneat/hot-toast";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {PaginatorComponent} from "./shared/components/paginator/paginator.component";
 
 
 @NgModule({
@@ -42,9 +39,15 @@ import {AlertService} from "./user/shared/services/alert.service";
     AppRoutingModule,
     RouterModule,
     FontAwesomeModule,
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule
   ],
-  providers: [WindowService, AuthService, AlertService],
+  providers: [
+    WindowService,
+    AuthService,
+    AlertService,
+    provideHotToastConfig()
+  ],
   exports: [],
   bootstrap: [AppComponent]
 })

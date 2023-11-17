@@ -17,10 +17,10 @@
     <form class="info" [formGroup]="form" (ngSubmit)="submit()">
       <div class="name">
         <div>
-          <input type="text" class="input" id="name" placeholder="What's your name?" formControlName="name" (input)="editMode('name')">
+          <input type="text" class="input" id="name" placeholder="What's your name?" formControlName="name" (input)="editMode('name')" disabled>
           <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isName"></fa-icon>
         </div>
-          <span class="btn" (click)="passData('name')" *ngIf="!isName" [ngClass]="{disabled: !!form.get('name').errors}">Add</span>
+          <span class="btn" (click)="passData('name')" *ngIf="!isName && !isNameInDB" [ngClass]="{disabled: !!form.get('name').errors}">Add</span>
 
       </div>
 
@@ -49,34 +49,34 @@
       </div>
 
       <select name="gender" id="gender" formControlName="gender">
-        <option value="" disabled selected>What's your gender?</option>
+        <option value="" [selected]="true" disabled>What's your gender?</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
-      <button class="btn pos-right" >Update</button>
+
+      <button class="btn pos-right" [disabled]="isSubmitted">Update</button>
     </form>
   </div>
 
+  <div class="card">
+    <div class="info">
+      <div class="email">
+        <div>
+          <label for="email">Confirm Your Email</label>
+          <input type="text" class="input" id="email" value="example@gmail.com" [(ngModel)]="email" disabled>
+          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isBirthday"></fa-icon>
+        </div>
+        <span class="btn">Confirm</span>
 
-    <!--    <div ng2FileSelect-->
-<!--         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"-->
-<!--         (fileOver)="fileOverBase($event)"-->
-<!--         [uploader]="uploader"-->
-<!--         class="well my-drop-zone">-->
-<!--      Select Avatar-->
-<!--    </div>-->
-<!--    <div ng2FileDrop-->
-<!--         [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}"-->
-<!--         (fileOver)="fileOverAnother($event)"-->
-<!--         [uploader]="uploader"-->
-<!--         class="well my-drop-zone">-->
-<!--      Drop-->
-<!--      <input type="file" ng2FileSelect [uploader]="uploader" />-->
-<!--    </div>-->
+      </div>
 
-  <h2>Email</h2>
-  <input type="text" class="input" value="example@gmai.com">
-  <h2>Password</h2>
-  <input type="password" class="input" value="Heisen313berg">
-  <button class="btn" >Update</button>
+
+      <div
+        class="validation"
+        *ngIf="form.get('birthday').touched && form.get('birthday').invalid"
+      >
+        <small *ngIf="form.get('birthday').errors.invalidDate">Is this your real birthday?</small>
+      </div>
+    </div>
+  </div>
 </div>

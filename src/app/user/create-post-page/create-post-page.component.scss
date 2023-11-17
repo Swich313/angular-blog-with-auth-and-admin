@@ -15,6 +15,17 @@
       color: #888;
       margin-bottom: 0.8rem;
 
+      .author-name {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+
+        button {
+          font-size: 0.75rem;
+
+        }
+      }
+
       &.invalid {
         color: var(--primary-color);
 

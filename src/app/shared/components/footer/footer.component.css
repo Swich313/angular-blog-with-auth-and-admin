@@ -1,6 +1,6 @@
 footer {
   background-color: var(--bg-gradient-light);
-  position: fixed;
+  position: sticky;
   left: 0;
   bottom: 0;
   height: 4rem;
@@ -9,7 +9,8 @@ footer {
   margin-top: 2rem;
 }
 footer div {
-  padding: 1rem;
+  padding-top: 0.75rem;
+  margin: 1rem;
 }
 footer div a {
   color: var(--dark-color);

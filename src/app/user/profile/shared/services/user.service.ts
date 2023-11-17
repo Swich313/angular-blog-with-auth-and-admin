@@ -31,17 +31,37 @@ export class UserService {
     return this.http.post(`${this._firebaseDBUrl}/userInfo.json`, userInfo)
   }
 
-  getUserById(userId: string): Observable<any> {
+  updateUserInfo(userInfo: UserInfo, userInfoId: string) {
+    return this.http.patch(`${this._firebaseDBUrl}/userInfo/${userInfoId}.json`, userInfo)
+  }
+
+  getUserInfoById(userId: string): Observable<any> {
     console.log(userId)
     return this.http.get<UserInfo>(`${this._firebaseDBUrl}/userInfo.json?orderBy="userId"&startAt="${userId}"&endAt="${userId}\uf8ff"`)
+      .pipe(
+        map((res: {[key: string]: any}) => {
+          console.log({res})
+          return Object
+            .keys(res)
+            .map(key => {
+              return {
+                ...res[key],
+                userInfoId: key
+              }
+            })
+        })
+      )
+  }
+
+  getUserById(userId: string): Observable<any> {
+    return this.http.get<User>(`${this._firebaseDBUrl}/users.json?orderBy="userId"&startAt="${userId}"&endAt="${userId}\uf8ff"`)
       .pipe(
         map((res: {[key: string]: any}) => {
           return Object
             .keys(res)
             .map(key => {
               return {
-                ...res[key],
-                userId: key
+                ...res[key]
               }
             })
         })

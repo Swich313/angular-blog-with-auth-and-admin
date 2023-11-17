@@ -1,6 +1,7 @@
 .profile{
   transition: all 0.5s ease-in;
   .card {
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +55,10 @@
     }
 
     .info {
-      .name, .birthday, select {
+      .name,
+      .birthday,
+      .email,
+      select{
         width: 200px;
         display: flex;
         justify-content: space-between;
@@ -67,18 +71,19 @@
       }
 
       .name span,
-      .birthday span {
+      .birthday span,
+      .email span{
         display: inline-block;
         font-size: 0.5rem;
         text-transform: lowercase;
         height: 1.5rem;
-
-
       }
+
       select {
         color: var(--dark-color);
         border: none;
         border-bottom: 1px solid var(--bg-gradient-dark);
+
         &:enabled {
           outline: none;
           border-bottom: 1px solid var(--bg-gradient-dark);
@@ -89,18 +94,17 @@
         color: var(--primary-color);
         display: block;
         margin: 1rem;
-
-      }
-
-      .disabled {
-        cursor: not-allowed;
-        background: var(--skeleton-loading-grey);
-        color: var(--dark-color);
       }
     }
 
     .pos-right {
       float: right;
+
+      &:disabled {
+        cursor: not-allowed;
+        background: var(--skeleton-loading-grey);
+        color: var(--dark-color);
+      }
     }
 
   }
@@ -109,6 +113,7 @@
     color: var(--dark-color);
 
     }
+
   .input, p {
     border: 0;
     border-bottom: 1px solid var(--bg-gradient-dark);
@@ -117,23 +122,19 @@
     outline: none;
   }
 
-  //.btn {
-  //  display: block;
-  //  text-transform: uppercase;
-  //  border: 0;
-  //  color: var(--skeleton-loading-grey);
-  //  background: var(--bg-gradient-dark);
-  //  padding: 0.5rem;
-  //  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  //  cursor: pointer;
-  //  margin-top: 1rem;
-  //  transition: transform 0.3s, box-shadow 0.3s;
-  //
-  //  &:hover {
-  //    transform: translateY(-3px);
-  //    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  //  }
-  //}
+  .disabled {
+    cursor: not-allowed;
+    background: var(--skeleton-loading-grey);
+    color: var(--dark-color);
+  }
+
+  .email {
+    width: 200px;
+
+    input {
+      width: 150px;
+    }
+  }
 }
 
 @media (max-width: 768px){

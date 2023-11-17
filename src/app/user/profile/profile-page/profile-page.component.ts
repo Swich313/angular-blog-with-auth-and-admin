@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import {UserService} from "../shared/services/user.service";
@@ -13,17 +13,22 @@ import {Subscription} from "rxjs";
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   form: FormGroup
   myWidget
   protected _cloudName = environment.cloudinaryCloudName
   protected _cloudinaryPreset = environment.cloudinaryUploadPreset
   protected nameRegex =  new RegExp("^[a-zA-Z -]*$")
+  private  userInfoId: string
+  private userId: string
   public avatar = environment.defaultAvatarUrl
   checkIcon = faCheck
   isName = false
   isBirthday = false
   isSubmitted = false
+  isNameInDB = false
+  email: string = ''
+  userInfoSub: Subscription
   userSub: Subscription
 
   constructor(
@@ -34,12 +39,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userSub = this.userService.getUserById(this.authService.userId)
-      .subscribe((user: UserInfo) => {
-        console.log({user})
-
-      })
-
     this.form = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
@@ -47,8 +46,32 @@ export class ProfilePageComponent implements OnInit {
         Validators.pattern(this.nameRegex)
       ]),
       birthday: new FormControl(null, [this.dateValidator]),
-      gender: new FormControl(null, [Validators.required])
+      gender: new FormControl(null)
     })
+    this.userId = this.authService.userId
+    this.isName = !!this.form.get('name').value
+    this.isBirthday = !!this.form.get('birthday').value
+    this.userInfoSub = this.userService.getUserInfoById(this.userId)
+      .subscribe((user: UserInfo) => {
+        console.log({user})
+        this.form.patchValue({name: user[0].name})
+        this.form.patchValue({gender: user[0].gender})
+        this.avatar = user[0].avatarUrl
+        if(user[0].birthday) this.form.patchValue({birthday: user[0].birthday})
+        if(user[0].name) {
+          this.isNameInDB = true
+          this.userInfoId = user[0].userInfoId
+          this.form.get('name').disable()
+        }
+        console.log('isNameInDB', this.isNameInDB)
+      })
+    this.userSub = this.userService.getUserById(this.userId)
+      .subscribe({
+        next: (res) => {
+          this.email = res[0].email
+        },
+        error: err=> {}
+      })
 
 
     //@ts-ignore
@@ -62,10 +85,6 @@ export class ProfilePageComponent implements OnInit {
           this.avatar = result.info.secure_url
         }
       })
-    this.isName = !!this.form.get('name').value
-    this.isBirthday = !!this.form.get('birthday').value
-
-
   }
 
   submit() {
@@ -80,17 +99,30 @@ export class ProfilePageComponent implements OnInit {
       avatarUrl: this.avatar,
       userId: this.authService.userId
     }
-    this.userService.addUserInfo(userInfo).subscribe({
-      next: (res) => {
-        this.isSubmitted = false
-        this.alertService.success('Profile was updated!')
-      },
-      error: err => {
-        this.isSubmitted = false
-        this.alertService.danger('Profile was not updated!')
+    if(this.isNameInDB){
+      this.userService.updateUserInfo(userInfo, this.userInfoId).subscribe({
+        next: (res) => {
+          this.isSubmitted = false
+          this.alertService.success('Profile was updated!')
+        },
+        error: err => {
+          this.isSubmitted = false
+          this.alertService.danger('Profile was not updated!')
+        }
+      })
+    } else {
+      this.userService.addUserInfo(userInfo).subscribe({
+        next: (res) => {
+          this.isSubmitted = false
+          this.alertService.success('Profile was updated!')
+        },
+        error: err => {
+          this.isSubmitted = false
+          this.alertService.danger('Profile was not updated!')
+        }
+      })
+    }
 
-      }
-    })
     console.log({userInfo})
 
   }
@@ -100,6 +132,7 @@ export class ProfilePageComponent implements OnInit {
     console.log("form", this.form.value)
     if(type === 'name') {
       this.isName = !!this.form.get('name').value
+      this.alertService.warning('Be careful, you won\'t be able to change your name')
     }
     if (type === 'birthday') {
       this.isBirthday = !!this.form.get('birthday').value
@@ -128,5 +161,8 @@ export class ProfilePageComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  ngOnDestroy(): void {
   }
 }

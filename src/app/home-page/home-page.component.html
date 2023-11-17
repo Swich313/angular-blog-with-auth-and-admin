@@ -9,6 +9,13 @@
   ></app-post>
 
 </div>
+<app-paginator
+  [totalAmount]="totalAmount"
+  [pageSizeOptions]="pageSizeOptions"
+  [perPage]="perPage"
+  (onPageChange)="handlePage($event)">
+
+</app-paginator>
 
 <ng-template #skeleton>
   <div class="posts-container">

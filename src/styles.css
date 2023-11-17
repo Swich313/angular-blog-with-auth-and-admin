@@ -1,68 +1,17 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto");
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.snow.css';
-:root {
-  --primary-color: #dc3545;
-  --dark-color: #333;
-  --light-color: #f4f4f4;
-  --danger-color: #dc3545;
-  --success-color: #28a745;
-  --warning-color: #ff9966 ;
-  --bg-gradient-light: #c7c5f4;
-  --bg-gradient-dark: #776bcc;
-  --box-shadow-color: #4c1c57;
-  --card-hover-font-color: #3c3163;
-  --skeleton-loading-grey: #ededed;
-  --card-img-height: 100px;
-  --transition-time: 0.5s;
-}
+/* Error: Can't find stylesheet to import.
+ *   ,
+ * 4 | @use '@angular/material' as mat;
+ *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *   '
+ *   styles.scss 4:1  root stylesheet */
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: "Roboto", sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #333;
-}
-
-.container {
-  max-width: 1100px;
-  overflow-y: hidden;
-  margin: -5vw auto 10vw;
-}
-
-.btn {
-  font-family: "Roboto", sans-serif;
-  font-size: 1rem;
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
   display: block;
-  border: 0;
-  color: var(--skeleton-loading-grey);
-  background: var(--bg-gradient-dark);
-  padding: 0.5rem;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a   \2577 \a 4 \2502  @use '@angular/material' as mat;\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   styles.scss 4:1  root stylesheet";
 }
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 1200px) {
-  .container {
-    max-width: 90%;
-  }
-}
-@media (max-width: 768px) {
-  .container {
-    max-width: 90%;
-  }
-}
-
-/*# sourceMappingURL=styles.css.map */

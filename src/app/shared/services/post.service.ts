@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {map, Observable} from "rxjs";
+import {count, map, Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {FirebaseCreateResponse, Post} from "../interfaces";
 import {AuthService} from "../../user/shared/services/auth.service";
@@ -15,14 +15,13 @@ export class PostService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
     ) { }
 
-  create(post: Post): Observable<Post> {
-    console.log('PostService', this.authService.userId)
+  create(post: Post, userId: string): Observable<Post> {
+    console.log('PostService', userId)
     const postWithUserId = {
       ...post,
-      userId: this.authService.userId
+      userId
     }
     return this.http.post(`${this._firebaseDBUrl}/posts.json`, postWithUserId)
       .pipe(
@@ -36,8 +35,8 @@ export class PostService {
       )
   }
 
-  getAll(): Observable<Post[]> {
-    return this.http.get(`${this._firebaseDBUrl}/posts.json`)
+  getAll(perPage: number): Observable<Post[]> {
+    return this.http.get(`${this._firebaseDBUrl}/posts.json?orderBy="date"&limitToFirst=${perPage}`)
       .pipe(
         map((res: {[key: string]: any}) => {
           return Object.
@@ -50,6 +49,15 @@ export class PostService {
             }})
         })
       )
+  }
+
+  getAmount(): Observable<number> {
+    return this.http.get(`${this._firebaseDBUrl}/posts.json`)
+        .pipe(
+          map((res: {[key: string]: any}) => {
+            return Object.keys(res).reduce((acc, _cur) => acc + 1, 0)
+          })
+        )
   }
 
   getAllByAuthorID(userId: string): Observable<Post[]> {

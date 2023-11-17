@@ -12,6 +12,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {authGuard} from "./shared/guards/auth.guard";
 import {SharedModule} from "../shared/shared.module";
 import {FileUploadModule} from "ng2-file-upload";
+import { GeneratePasswordComponent } from './profile/shared/components/generate-password/generate-password.component';
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -20,7 +22,7 @@ import {FileUploadModule} from "ng2-file-upload";
     DashboardPageComponent,
     AuthPageComponent,
     UserLayoutComponent,
-    AlertComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import {FileUploadModule} from "ng2-file-upload";
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    FileUploadModule
+    FileUploadModule,
+    MatButtonModule
   ],
   providers: [],
   exports: [RouterModule]

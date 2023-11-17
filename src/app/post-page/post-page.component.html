@@ -1,15 +1,15 @@
-<div *ngIf="post$ | async as post; else loading">
+<div *ngIf="(post$ | async) as post; else loading">
 
   <div class="container">
         <img [src]="post.imageUrl" class="image-content" [alt]="post.title + ' by ' + post.author">
-
         <div class="header">
           <h2>{{post.title}}</h2>
           <button routerLink="/" class="btn">To Main</button>
         </div>
 
         <div class="info">
-          <img [src]="defaultAvatar"
+          <img *ngIf="user$ | async as user; else loading"
+               [src]="!!user[0]?.avatarUrl ? user[0].avatarUrl : defaultAvatar"
                class="avatar"
                alt="default avatar">
           <div>

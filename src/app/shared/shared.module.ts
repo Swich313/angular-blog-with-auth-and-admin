@@ -6,20 +6,28 @@ import {ShowClosePasswordDirective} from "./directives/show-close-password.direc
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
 import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
-
-
+import { CopyToClipboardDirective } from './directives/copy-to-clipboard.directive';
+import { ModalComponent } from './components/modal/modal.component';
+import {AngularMaterialModule} from "./angular-material.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {PaginatorComponent} from "./components/paginator/paginator.component";
 
 @NgModule({
   declarations: [
     ShowClosePasswordDirective,
     SpinnerComponent,
-    LoadingBarComponent
+    LoadingBarComponent,
+    CopyToClipboardDirective,
+    ModalComponent,
+    PaginatorComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     QuillModule.forRoot(),
-    FontAwesomeModule
+    FontAwesomeModule,
+    AngularMaterialModule,
+    ReactiveFormsModule
   ],
   exports: [
     HttpClientModule,
@@ -27,7 +35,10 @@ import { LoadingBarComponent } from './components/loading-bar/loading-bar.compon
     FontAwesomeModule,
     ShowClosePasswordDirective,
     SpinnerComponent,
-    LoadingBarComponent
+    LoadingBarComponent,
+    CopyToClipboardDirective,
+    ModalComponent,
+    PaginatorComponent
   ]
 })
 export class SharedModule { }

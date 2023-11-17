@@ -2,6 +2,7 @@
   transition: all 0.5s ease-in;
 }
 .profile .card {
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,7 +48,10 @@
   font-size: 0.5rem;
   margin: 1rem auto 0;
 }
-.profile .card .info .name, .profile .card .info .birthday, .profile .card .info select {
+.profile .card .info .name,
+.profile .card .info .birthday,
+.profile .card .info .email,
+.profile .card .info select {
   width: 200px;
   display: flex;
   justify-content: space-between;
@@ -55,11 +59,15 @@
   margin: 1rem;
   color: var(--dark-color);
 }
-.profile .card .info .name input, .profile .card .info .birthday input, .profile .card .info select input {
+.profile .card .info .name input,
+.profile .card .info .birthday input,
+.profile .card .info .email input,
+.profile .card .info select input {
   width: 150px;
 }
 .profile .card .info .name span,
-.profile .card .info .birthday span {
+.profile .card .info .birthday span,
+.profile .card .info .email span {
   display: inline-block;
   font-size: 0.5rem;
   text-transform: lowercase;
@@ -79,13 +87,13 @@
   display: block;
   margin: 1rem;
 }
-.profile .card .info .disabled {
+.profile .card .pos-right {
+  float: right;
+}
+.profile .card .pos-right:disabled {
   cursor: not-allowed;
   background: var(--skeleton-loading-grey);
   color: var(--dark-color);
-}
-.profile .card .pos-right {
-  float: right;
 }
 .profile h2, .profile h3 {
   color: var(--dark-color);
@@ -96,6 +104,17 @@
   width: 80%;
   color: var(--dark-color);
   outline: none;
+}
+.profile .disabled {
+  cursor: not-allowed;
+  background: var(--skeleton-loading-grey);
+  color: var(--dark-color);
+}
+.profile .email {
+  width: 200px;
+}
+.profile .email input {
+  width: 150px;
 }
 
 @media (max-width: 768px) {

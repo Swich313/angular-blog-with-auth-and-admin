@@ -16,6 +16,7 @@
   max-width: 1200px;
   width: 90%;
   margin: auto;
+
 }
 
 .navbar{
@@ -24,13 +25,14 @@
   background: linear-gradient(90deg, var(--bg-gradient-light), var(--bg-gradient-dark));
   color: #444;
   opacity: 0.8;
-  z-index: 1000;
+  position: relative;
+  z-index: 100;
 }
 
 .nav-container{
   display: flex;
   justify-content: space-between;
-  height: 3rem;
+  height: 4rem;
   align-items: center;
 
 
