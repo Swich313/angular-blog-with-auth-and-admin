@@ -1,11 +1,13 @@
 <div class="share-wrapper">
   <div class="share">
 
-        <a *ngFor="let item of socialMedia" [href]="item.url" class="icon" [ngClass]="item.name">
+        <a *ngFor="let item of socialMedia" [href]="item.url" class="icon" target="_blank" [ngClass]="item.name">
           <fa-icon [icon]="item.icon" class="share-icon"></fa-icon>
         </a>
 
-<!--    <a href="#" class="icon facebook first-child"><fa-icon [icon]="facebookIcon" class="share-icon"></fa-icon></a>-->
+        <a class="icon qr-code" (click)="openDialog()">
+          <fa-icon [icon]="qrIcon" class="share-icon"></fa-icon>
+        </a>
 <!--    <a href="#" class="icon twitter"><fa-icon [icon]="twitterIcon" class="share-icon"></fa-icon></a>-->
 <!--    <a href="#" class="icon instagram"><fa-icon [icon]="instagramIcon" class="share-icon"></fa-icon></a>-->
 <!--    <a href="#" class="icon telegram"><fa-icon [icon]="telegramIcon" class="share-icon"></fa-icon></a>-->

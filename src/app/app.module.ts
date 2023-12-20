@@ -20,7 +20,17 @@ import {AlertService} from "./user/shared/services/alert.service";
 import {provideHotToastConfig} from "@ngneat/hot-toast";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {PaginatorComponent} from "./shared/components/paginator/paginator.component";
+import {AuthorInfoComponent} from "./author-info/author-info.component";
 
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import {connectFirestoreEmulator, getFirestore, provideFirestore} from '@angular/fire/firestore';
+import {environment} from "./environments/environment";
+import {getDatabase, provideDatabase} from "@angular/fire/database";
+import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
+import {AngularFireModule} from "@angular/fire/compat";
+import {connectAuthEmulator, getAuth, provideAuth} from "@angular/fire/auth";
+import {connectFunctionsEmulator, getFunctions, provideFunctions} from "@angular/fire/functions";
+import {connectStorageEmulator, getStorage, provideStorage} from "@angular/fire/storage";
 
 @NgModule({
   declarations: [
@@ -32,7 +42,8 @@ import {PaginatorComponent} from "./shared/components/paginator/paginator.compon
     NotFoundPageComponent,
     FooterComponent,
     PostSkeletonComponent,
-    ShareWithSocialComponent
+    ShareWithSocialComponent,
+    AuthorInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +51,38 @@ import {PaginatorComponent} from "./shared/components/paginator/paginator.compon
     RouterModule,
     FontAwesomeModule,
     SharedModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => {
+      const firestore = getFirestore()
+      // if(location.hostname === 'localhost') {
+      //   connectFirestoreEmulator(firestore, 'http://127.0.0.1', 8080)
+      // }
+      return firestore
+    }),
+    provideFunctions(() => {
+      const functions  = getFunctions()
+      // if(location.hostname === 'localhost') {
+      //   connectFunctionsEmulator(functions, 'http://127.0.0.1', 5001)
+      // }
+      return functions
+    }),
+    provideStorage(() => {
+      const storage = getStorage()
+      // if(location.hostname === 'localhost') {
+      //   connectStorageEmulator(storage, 'http://127.0.0.1', 9199)
+      // }
+      return storage
+    }),
+    provideAuth(() => {
+      const auth = getAuth()
+      // if(location.hostname === 'localhost') {
+      //   connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings:  true })
+      // }
+      return auth
+    }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
   ],
   providers: [
     WindowService,

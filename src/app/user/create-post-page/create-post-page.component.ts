@@ -2,11 +2,12 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../shared/services/alert.service";
 import {PostService} from "../../shared/services/post.service";
-import {Post} from "../../shared/interfaces";
+import {Post, UserInfo} from "../../shared/interfaces";
 import {environment} from "../../environments/environment";
 import {UserService} from "../profile/shared/services/user.service";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
+import transformJavaScript from "@angular-devkit/build-angular/src/tools/esbuild/javascript-transformer-worker";
 
 @Component({
   selector: 'app-create-post-page',
@@ -20,15 +21,14 @@ export class CreatePostPageComponent implements OnInit{
     {id: 2, name: 'Choose Image File', value: 'file'}
   ]
   selectedImageSource: string
+  currentImageUrl: string
   isSubmitted = false
   userId: string
   userInfoSub: Subscription
 
-  protected _urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
-  protected _imageRegex = /.*\.(gif|jpg|jpeg|bmp|png)$/igm
-  protected _tagsRegex = /(#+[a-zA-Z\d(_)]+)/igm
-  protected _cloudName = environment.cloudinaryCloudName
-  protected _preset = environment.cloudinaryUploadPreset
+  readonly _urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+  readonly _imageRegex = /.*\.(gif|jpg|jpeg|bmp|png)$/
+  readonly _tagsRegex = /(#+[a-zA-Z\d(_, )]+)/
 
   @ViewChild('imageFile')
   imageFile
@@ -55,16 +55,26 @@ export class CreatePostPageComponent implements OnInit{
     this.form.controls['imageUrl'].addValidators(Validators.pattern(this.validatorPattern(this.selectedImageSource)))
 
     this.userId = this.authService.userId
-    this.userInfoSub = this.userService.getUserInfoById(this.userId).subscribe({
-      next: userInfo => {
-        this.form.patchValue({author: userInfo[0].name})
-      },
-      error: err => {}
+    this.userService.getUserInfoById(this.userId)
+      .then(res => {
+        const {name} = res.docs[0].data() as UserInfo
+            this.form.patchValue({author: name})
+      })
+      .catch(err => {
+        console.log(err)
       })
   }
 
   onRadioButtonsChange(e) {
     this.selectedImageSource = this.form.get('imageSource').value
+    if(this.form.value.imageUrl && this.selectedImageSource === this.imageSources[1].value) this.currentImageUrl = this.form.value.imageUrl
+    if(this.selectedImageSource === this.imageSources[1].value){
+      console.log('currentImageUrl', this.currentImageUrl)
+      this.form.patchValue({'imageUrl': ''})
+    } else {
+      console.log('currentImageUrl', this.currentImageUrl)
+      this.form.patchValue({'imageUrl': this.currentImageUrl})
+    }
     this.form.controls['imageUrl'].setValidators([Validators.required, Validators.pattern(this.validatorPattern(this.selectedImageSource))])
     this.form.controls['imageUrl'].updateValueAndValidity()
     console.log('selectedImageSource after change', this.selectedImageSource, 'imageSource control validators after change', this.form.controls['imageUrl'].validator)
@@ -76,52 +86,57 @@ export class CreatePostPageComponent implements OnInit{
 
   submit() {
     if(this.form.invalid){
+      console.log("validation error", this.form.get('tags').value, this.form.get('tags').errors)
       return
     }
+
     this.isSubmitted = true
 
     let post: Post = {
       title: this.form.value.title,
       text: this.form.value.text,
       author: this.form.value.author,
-      date: new Date(),
       tags: this.form.value.tags,
-      imageUrl: ''
+      imageUrl: '',
+      userId: this.userId
     }
     //already have ImageUrl
     if(this.selectedImageSource === this.imageSources[0].value){
-
       post = {
         ...post,
         imageUrl: this.form.value.imageUrl
       }
-      this.postService.create(post, this.userId).subscribe(() => {
-        this.form.reset()
-        this.isSubmitted = false
-        this.form.patchValue({imageSource: this.selectedImageSource})
-        this.alertService.success('Post was created successfully!')
-      })
+      this.create(post)
     } else {
-      const formData = new FormData()
-      formData.append('file', this.imageFile.nativeElement.files[0])
-      formData.append('upload_preset', this._preset)
-      formData.append('cloud_name', this._cloudName)
-      formData.append('public_id', this.imageFile.nativeElement.files[0] + Date.now())
+      const formData = this.postService.createFormData(this.imageFile.nativeElement.files[0])
       this.postService.uploadImg(formData).subscribe(imageData => {
         post = {
           ...post,
           imageUrl: imageData.url
         }
-        this.postService.create(post, this.userId).subscribe(() => {
-          this.isSubmitted = false
-          this.form.reset()
-          this.form.patchValue({imageSource: this.selectedImageSource})
-          this.alertService.success('Post was created successfully!')
-        })
+        this.create(post)
       })
     }
-
-
   }
 
+  private create(post: Post){
+    this.postService.createPost(post).then(_res => {
+      console.log({_res})
+      this.form.reset({
+        author: this.form.get('author').value
+      })
+      this.isSubmitted = false
+      this.form.patchValue({imageSource: this.selectedImageSource})
+      this.alertService.success('Post was created successfully!')
+    })
+      .catch(err => {
+        console.log(err)
+        this.isSubmitted = false
+        this.alertService.danger('Some shit happened! Try again!')
+      })
+  }
+
+  onImageChange($event: Event){
+    this.form.patchValue({'imageUrl': this.imageFile.nativeElement.files[0].name})
+  }
 }

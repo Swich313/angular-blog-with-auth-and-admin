@@ -1,3 +1,47 @@
+.social h2 {
+  color: var(--dark-color);
+}
+.social .form-control {
+  width: 250px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  color: var(--dark-color);
+}
+.social .form-control input {
+  width: 150px;
+  border: none;
+  border-bottom: 1px solid var(--bg-gradient-dark);
+  outline: none;
+}
+.social .form-control fa-icon {
+  color: var(--bg-gradient-dark);
+}
+.social .form-control span {
+  width: 4rem;
+  display: inline;
+}
+.social .form-control .validation {
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  display: block;
+}
+.social .form-control:last-child {
+  color: red;
+}
+.social .pos-right {
+  margin-left: 10rem;
+}
 
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .form-control {
+    font-size: 0.75rem;
+  }
+}
 
 /*# sourceMappingURL=social-media-page.component.css.map */

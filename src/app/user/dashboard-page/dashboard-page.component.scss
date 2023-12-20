@@ -18,14 +18,16 @@ table td {
 
   .edit-btn {
     width: 5rem;
-    padding: 0.5rem;
+    height: 2rem;
+    //padding: 0.5rem;
     font-size: 0.8rem;
 
   }
 
   .delete-btn {
     width: 5rem;
-    padding: 0.5rem;
+    height: 2rem;
+    //padding: 0.5rem;
     font-size: 0.8rem;
     background: var(--primary-color);
     color: var(--dark-color);
@@ -34,17 +36,17 @@ table td {
 
   .icons {
     font-size: 1rem;
-    margin: 0 auto;
+    margin: 1rem auto 0;
     height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
 
     .checkIcon, .cancelIcon {
-      padding: 0.7rem 0.5rem;
+      padding: 0.7rem 0;
       cursor: pointer;
       transition: all 0.2s ease-out;
-
 
     }
 
@@ -66,8 +68,6 @@ table td {
 
   }
 }
-
-
 
 @media (max-width: 768px){
   table th,

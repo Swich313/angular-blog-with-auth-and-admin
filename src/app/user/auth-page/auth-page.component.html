@@ -56,12 +56,14 @@
       </form>
 
 
-      <div class="social-login">
+      <div class="social-login" *ngIf="authMode === 'login'">
         <h3>{{authMode}} via</h3>
         <div class="social-icons">
-          <a href="#" class="social-login_icon"><fa-icon [icon]="googleIcon"></fa-icon></a>
-          <a href="#" class="social-login_icon"><fa-icon [icon]="githubIcon"></fa-icon></a>
-          <a href="#" class="social-login_icon"><fa-icon [icon]="facebookIcon"></fa-icon></a>
+<!--          <asl-google-signin-button data-type="icon" data-shape="circle"></asl-google-signin-button>-->
+
+          <div class="social-login_icon"><fa-icon [icon]="googleIcon" (click)="authService.googleAuth()"></fa-icon></div>
+          <div class="social-login_icon"><fa-icon [icon]="githubIcon" (click)="authService.facebookAuth()"></fa-icon></div>
+          <div class="social-login_icon"><fa-icon [icon]="facebookIcon"></fa-icon></div>
         </div>
       </div>
     </div>

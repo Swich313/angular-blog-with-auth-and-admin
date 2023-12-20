@@ -2,11 +2,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import {UserService} from "../shared/services/user.service";
-import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
-import {UserInfo} from "../../../shared/interfaces";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { UserInfo} from "../../../shared/interfaces";
 import {AuthService} from "../../shared/services/auth.service";
 import {AlertService} from "../../shared/services/alert.service";
-import {Subscription} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
+import firebase from "firebase/compat";
+import UserCredential = firebase.auth.UserCredential;
+import User = firebase.UserInfo;
 
 @Component({
   selector: 'app-profile-page',
@@ -20,16 +23,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   protected _cloudinaryPreset = environment.cloudinaryUploadPreset
   protected nameRegex =  new RegExp("^[a-zA-Z -]*$")
   private  userInfoId: string
-  private userId: string
+  currentUser: any
   public avatar = environment.defaultAvatarUrl
   checkIcon = faCheck
-  isName = false
-  isBirthday = false
+  // flags whether name and birthday specified in firestore userInfo collection for current user
+  isUserInfoInDB = {
+    name: false,
+    birthday: false
+  }
+  //flags whether user clicked on button "add"
+  isValueAddedInForm = {
+    name: false,
+    birthday: false
+  }
+  //info from current user object
+  userEmailState = {
+    email: '',
+    emailVerified: false
+  }
   isSubmitted = false
-  isNameInDB = false
-  email: string = ''
+  isEmailSubmitted = false
   userInfoSub: Subscription
   userSub: Subscription
+  userInfo: UserInfo
 
   constructor(
     private userService: UserService,
@@ -48,31 +64,42 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       birthday: new FormControl(null, [this.dateValidator]),
       gender: new FormControl(null)
     })
-    this.userId = this.authService.userId
-    this.isName = !!this.form.get('name').value
-    this.isBirthday = !!this.form.get('birthday').value
-    this.userInfoSub = this.userService.getUserInfoById(this.userId)
-      .subscribe((user: UserInfo) => {
-        console.log({user})
-        this.form.patchValue({name: user[0].name})
-        this.form.patchValue({gender: user[0].gender})
-        this.avatar = user[0].avatarUrl
-        if(user[0].birthday) this.form.patchValue({birthday: user[0].birthday})
-        if(user[0].name) {
-          this.isNameInDB = true
-          this.userInfoId = user[0].userInfoId
-          this.form.get('name').disable()
-        }
-        console.log('isNameInDB', this.isNameInDB)
-      })
-    this.userSub = this.userService.getUserById(this.userId)
-      .subscribe({
-        next: (res) => {
-          this.email = res[0].email
-        },
-        error: err=> {}
-      })
 
+    this.authService.user$.subscribe({
+      next: user => {
+        this.userEmailState = {
+          email: user.email,
+          emailVerified: user.emailVerified
+        }
+
+        this.userService.getUserInfoById(user.uid)
+          .then(res => {
+            if(!(res.docs[0].data() as UserInfo).id){
+              user.reload()
+            }
+          this.userInfo = res.docs[0].data() as UserInfo
+            const {name, gender, birthday, avatarUrl} = this.userInfo
+            if(name){
+              this.form.patchValue({name})
+              this.isUserInfoInDB.name = true
+              this.form.get('name').disable()
+            }
+            if(avatarUrl) {
+              this.avatar = avatarUrl
+            }
+            if(birthday){
+              this.form.patchValue({birthday})
+              this.isUserInfoInDB.birthday = true
+            }
+            if(gender){
+              this.form.patchValue({gender})
+              this.form.get('gender').disable()
+            }
+        })
+      }
+    })
+    this.isValueAddedInForm.name = !!this.form.get('name').value
+    this.isValueAddedInForm.birthday = !!this.form.get('birthday').value
 
     //@ts-ignore
     this.myWidget = cloudinary.createUploadWidget({
@@ -92,59 +119,51 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       return
     }
     this.isSubmitted = true
+    const avatarUrl = this.avatar
     const userInfo: UserInfo = {
-      name: this.form.value.name,
-      birthday: this.form.value.birthday,
-      gender: this.form.value.gender,
-      avatarUrl: this.avatar,
-      userId: this.authService.userId
+      ...this.userInfo,
+      name: this.form.value.name ?? this.userInfo.name,
+      avatarUrl: avatarUrl,
+      birthday: this.form.value.birthday ?? this.userInfo.birthday,
+      gender: this.form.value.gender ?? this.userInfo.gender,
     }
-    if(this.isNameInDB){
-      this.userService.updateUserInfo(userInfo, this.userInfoId).subscribe({
-        next: (res) => {
-          this.isSubmitted = false
-          this.alertService.success('Profile was updated!')
-        },
-        error: err => {
-          this.isSubmitted = false
-          this.alertService.danger('Profile was not updated!')
-        }
-      })
-    } else {
-      this.userService.addUserInfo(userInfo).subscribe({
-        next: (res) => {
-          this.isSubmitted = false
-          this.alertService.success('Profile was updated!')
-        },
-        error: err => {
-          this.isSubmitted = false
-          this.alertService.danger('Profile was not updated!')
-        }
-      })
-    }
-
     console.log({userInfo})
-
-  }
+    this.userService.updateUserInfo(userInfo)
+      .then(_res => {
+        this.isSubmitted = false
+        this.alertService.success('Your profile was updated successfully!')
+      })
+    }
 
   passData(type: 'name' | 'birthday'){
     console.log('data', this.form.get(type).value)
     console.log("form", this.form.value)
     if(type === 'name') {
-      this.isName = !!this.form.get('name').value
+      this.isValueAddedInForm.name = !!this.form.get('name').value
       this.alertService.warning('Be careful, you won\'t be able to change your name')
     }
     if (type === 'birthday') {
-      this.isBirthday = !!this.form.get('birthday').value
+      this.isValueAddedInForm.birthday = !!this.form.get('birthday').value
     }
+  }
+
+  confirmEmail() {
+    if(this.isEmailSubmitted){
+      return
+    }
+    this.authService.sendVerificationMail()
+      .then(_r => {
+        this.isEmailSubmitted = true
+        this.alertService.success("Email with verification link sent successfully!")
+      })
   }
 
   editMode(type: 'name' | 'birthday'){
     if(type === 'name') {
-      this.isName = false
+      this.isValueAddedInForm.name = false
     }
     if (type === 'birthday') {
-      this.isBirthday = false
+      this.isValueAddedInForm.birthday = false
     }
   }
 

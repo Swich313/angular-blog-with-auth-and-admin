@@ -70,6 +70,30 @@ body {
   max-width: 1100px;
   overflow-y: hidden;
   margin: -5vw auto 10vw;
+  min-height: 80vh;
+
+}
+
+.underlined_animated {
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--dark-color);
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &:hover:before {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
 }
 
 .btn {
@@ -89,6 +113,14 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
+}
+
+.spinner_100vh{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20vw;
+  height: 100vh;
 }
 
 @media (max-width: 1200px){

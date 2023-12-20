@@ -1,7 +1,7 @@
 import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Post} from "../shared/interfaces";
 import {WindowService} from "../shared/services/window.service";
-import {Observable, repeat, startWith, Subject, Subscription, switchMap} from "rxjs";
+import {Observable, repeat, startWith, Subject, Subscription, switchMap, tap} from "rxjs";
 import {PostService} from "../shared/services/post.service";
 import {PaginatorComponent} from "../shared/components/paginator/paginator.component"
 
@@ -12,6 +12,7 @@ import {PaginatorComponent} from "../shared/components/paginator/paginator.compo
 })
 export class HomePageComponent implements OnInit, OnDestroy{
   public posts$: Observable<Post[]>
+  posts: Post[]
   private readonly refreshData$ = new Subject<void>()
   amountSub: Subscription
   innerWidth: number
@@ -35,10 +36,8 @@ export class HomePageComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.innerWidth = this.windowService.windowRef.innerWidth
     this.calculateSkeletons(this.innerWidth)
-    // this.posts$ = this.postService.getAll(this.perPage)
-    this.posts$ = this.refreshData$.pipe(
-      startWith(undefined),
-      switchMap(() => this.postService.getAll(this.perPage))
+    this.posts$ = this.postService.getAllPosts().pipe(
+      tap(res => console.log({res}))
     )
     this.amountSub = this.postService.getAmount().subscribe(amount => {
       this.totalAmount = amount

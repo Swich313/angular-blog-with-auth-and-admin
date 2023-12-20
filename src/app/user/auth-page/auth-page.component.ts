@@ -4,9 +4,15 @@ import {faGithub, faGoogle, faFacebook} from "@fortawesome/free-brands-svg-icons
 import {faChevronRight, faLock, faEnvelope} from "@fortawesome/free-solid-svg-icons";
 import {AuthService} from "../shared/services/auth.service";
 import {ActivatedRoute, ParamMap, Params, Router} from "@angular/router";
-import {Subscription} from "rxjs";
+import {Subscription, tap} from "rxjs";
 import {User} from "../../shared/interfaces";
 import {AlertService} from "../shared/services/alert.service";
+import {GoogleLoginProvider, SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
+import {UserService} from "../profile/shared/services/user.service";
+import transformJavaScript from "@angular-devkit/build-angular/src/tools/esbuild/javascript-transformer-worker";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import firebase from "firebase/compat";
+import UserCredential = firebase.auth.UserCredential;
 
 const ALL_AUTH_MODES = ['login', 'signup'] as const
 type AuthModeTuple = typeof ALL_AUTH_MODES
@@ -29,6 +35,9 @@ export class AuthPageComponent implements OnInit, OnDestroy{
   authMode: AuthMode
 
   authSub: Subscription
+  // for Google login
+  user: SocialUser;
+  loggedIn: boolean;
 
   emailIcon = faEnvelope
   lockIcon = faLock
@@ -39,14 +48,16 @@ export class AuthPageComponent implements OnInit, OnDestroy{
 
   constructor(
     public authService: AuthService,
+    private userService: UserService,
     private alertService: AlertService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private socialAuthService: SocialAuthService
   ) {
   }
 
   ngOnInit(): void {
-    if(this.authService.isAuth()) this.router.navigate(['/author', 'dashboard'])
+    if(this.authService.isAuth) this.router.navigate(['/author', 'dashboard'])
 
     this.route.queryParams.subscribe((params: Params) => {
       if(params['auth']) {
@@ -84,8 +95,32 @@ export class AuthPageComponent implements OnInit, OnDestroy{
     })
 
     this.authService.changeData(this.authMode)
-    console.log(this.form)
 
+    //Subscribe to the Google authentication state
+    // this.socialAuthService.authState.subscribe((user) => {
+    //   this.submitted = true
+    //   this.userService.getUserById(user.id).pipe(
+    //     tap(res => console.log(res))
+    //   ).subscribe(res => {
+    //     if(res.length === 0){
+    //       const newUser: User = {
+    //         userId: user.id,
+    //         email: user.email,
+    //         loginType: "google",
+    //         password: null
+    //       }
+    //       this.userService.create(newUser).subscribe(res => {
+    //         this.submitted = false
+    //         this.alertService.success('Successfully logged in with google!!')
+    //         this.router.navigate(['/author', 'dashboard'])
+    //
+    //       })
+    //     }
+    //   })
+    //   this.user = user
+    //   this.loggedIn = (user != null)
+    //   console.log(user)
+    // })
   }
 
   submit() {
@@ -94,34 +129,80 @@ export class AuthPageComponent implements OnInit, OnDestroy{
       return
     }
     this.submitted = true
-    const user: User = {
-      email: this.form.value.email,
-      password: this.form.value.password
-    }
+    // const user: User = {
+    //   email: this.form.value.email,
+    //   password: this.form.value.password,
+    //   loginType: 'email&password'
+    // }
+    const email = this.form.value.email
+    const password = this.form.value.password
+    // console.log({user})
     //AuthMode login
     if(this.authMode === ALL_AUTH_MODES[0]){
-        this.authService.login(user).subscribe(res => {
-          this.form.reset()
-          this.submitted = false
-          this.router.navigate(['/author', 'dashboard'])
-        }, () => {
-          this.submitted = false
-        })
+    this.authService.login(email, password)
+      .then(_res => {
+        this.submitted = false
+      })
+      .catch(_err => {
+        this.submitted = false
+      })
+      //login with email/password with firebase API
+      // this.authService.login(user)
+      //   .then((res: UserCredential) => {
+      //       this.form.reset()
+      //       this.submitted = false
+      //       this.router.navigate(['/author', 'dashboard'])
+      //   })
+      //   .catch(error => {
+      //     this.submitted = false
+      //   })
+
+      //login with email/password with REST API
+      // this.authService.login(user).subscribe({
+      //     next: (res) => {
+      //       this.form.reset()
+      //       this.submitted = false
+      //       this.router.navigate(['/author', 'dashboard'])
+      //     },
+      //     error: () => {
+      //       this.submitted = false
+      //     }
+      //   })
     }
     //AuthMode signup
     if(this.authMode === ALL_AUTH_MODES[1]){
-      this.authService.signup(user).subscribe(        {
-          next: (res) => {
-            console.log({res})
-            this.form.reset()
-            this.alertService.success('Your account was created successfully!')
-            this.submitted = false
-            this.router.navigate(['/author', 'auth', 'login'])
-          },
-          error: () => {
-            this.submitted = false
-          }
+      this.authService.signup(email, password)
+        .then(_res => {
+          this.submitted = false
         })
+        .catch(_err => {
+          this.submitted = false
+        })
+      //signup with email/password firebase API
+      // this.authService.signup(user)
+      //   .then((res: UserCredential) => {
+      //     console.log("res", res.user)
+      //     this.alertService.success('Your account was created successfully!')
+      //     this.submitted = false
+      //     this.router.navigate(['/author', 'auth', 'login'])
+      // })
+      //   .catch(error => {
+      //     this.submitted = false
+      //   })
+
+      //signup with email/password with REST API
+      // this.authService.signup(user).subscribe({
+      //     next: (res) => {
+      //       console.log({res})
+      //       this.form.reset()
+      //       this.alertService.success('Your account was created successfully!')
+      //       this.submitted = false
+      //       this.router.navigate(['/author', 'auth', 'login'])
+      //     },
+      //     error: () => {
+      //       this.submitted = false
+      //     }
+      //   })
 
     }
   }
@@ -141,5 +222,10 @@ export class AuthPageComponent implements OnInit, OnDestroy{
 
   loginNavigate() {
       this.router.navigate(['/author', 'auth', 'login'])
+  }
+
+  loginWithGoogle() {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then(res => {console.log(res)})
   }
 }

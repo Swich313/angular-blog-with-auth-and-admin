@@ -30,7 +30,7 @@
 
       <div *ngIf="form.get('imageSource').value === imageSources[1].value">
         <label for="imageFile" >Image File</label>
-        <input #imageFile type="file" ng2FileSelect [uploader]="uploader" name="imageFile" id="imageFile" class="inputFile" formControlName="imageUrl">
+        <input #imageFile type="file" ng2FileSelect [uploader]="uploader" name="imageFile" id="imageFile" class="inputFile" (change)="onImageChange($event)">
       </div>
 
       <div

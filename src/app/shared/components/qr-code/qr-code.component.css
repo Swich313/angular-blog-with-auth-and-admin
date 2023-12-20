@@ -1,0 +1,12 @@
+.qrcode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+  flex-direction: column;
+}
+.qrcode div {
+  text-align: center;
+}
+
+/*# sourceMappingURL=qr-code.component.css.map */

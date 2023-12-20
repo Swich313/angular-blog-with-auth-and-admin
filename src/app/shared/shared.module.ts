@@ -11,6 +11,8 @@ import { ModalComponent } from './components/modal/modal.component';
 import {AngularMaterialModule} from "./angular-material.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {PaginatorComponent} from "./components/paginator/paginator.component";
+import {QrCodeComponent} from "./components/qr-code/qr-code.component";
+import {QRCodeModule} from "angularx-qrcode";
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import {PaginatorComponent} from "./components/paginator/paginator.component";
     LoadingBarComponent,
     CopyToClipboardDirective,
     ModalComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    QrCodeComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +30,8 @@ import {PaginatorComponent} from "./components/paginator/paginator.component";
     QuillModule.forRoot(),
     FontAwesomeModule,
     AngularMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    QRCodeModule
   ],
   exports: [
     HttpClientModule,

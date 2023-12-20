@@ -9,7 +9,7 @@ import {AuthService} from "../../services/auth.service";
   templateUrl: './user-layout.component.html',
   styleUrls: ['./user-layout.component.scss']
 })
-export class UserLayoutComponent implements OnInit, AfterContentChecked{
+export class UserLayoutComponent implements OnInit, AfterContentChecked {
   authMode: any
   authModeSub: Subscription
   checkbox: HTMLInputElement
@@ -51,7 +51,6 @@ export class UserLayoutComponent implements OnInit, AfterContentChecked{
   ngAfterContentChecked(): void {
     this.cdref.detectChanges()
   }
-
 
   onclick() {
     console.log('chechbox', this.checkbox.checked = !this.checkbox.checked)

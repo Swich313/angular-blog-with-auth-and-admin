@@ -1,12 +1,12 @@
 <nav class="navbar">
   <div class="nav-container content">
     <input type="checkbox" name="" id="checkbox" >
-    <div class="hamburger-lines" *ngIf="authService.isAuth()">
+    <div class="hamburger-lines" *ngIf="authService.isAuth">
       <span class="line line1"></span>
       <span class="line line2"></span>
       <span class="line line3"></span>
     </div>
-    <ul *ngIf="authService.isAuth()" class="menu-items">
+    <ul *ngIf="authService.isAuth" class="menu-items">
       <li>
         <a [routerLink]="['/']">Main</a>
       </li>

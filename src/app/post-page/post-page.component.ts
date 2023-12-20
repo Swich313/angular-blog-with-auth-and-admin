@@ -6,6 +6,8 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {WindowService} from "../shared/services/window.service";
 import {environment} from "../environments/environment";
 import {UserService} from "../user/profile/shared/services/user.service";
+import {Timestamp} from "@angular/fire/firestore";
+import {DocumentData, QuerySnapshot} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-post-page',
@@ -17,6 +19,7 @@ export class PostPageComponent implements OnInit{
   userInfo: UserInfo
   user$: Observable<UserInfo>
   userInfoSub: Subscription
+  isLoading = false
 
   private window: Window
   private document: Document
@@ -33,26 +36,26 @@ export class PostPageComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.isLoading = true
     this.post$ = this.route.params
       .pipe(
         switchMap((params: Params) => {
-        return this.postService.getById(params['id'])
+        return this.postService.getPostById(params['id'])
+          .pipe(map((post) => {
+            this.userService.getUserInfoById(post.userId)
+              .then(res => {
+                res.forEach(item => {
+                  this.userInfo = item.data() as UserInfo
+                })
+              })
+            return {
+              ...post,
+              createdAt: this.postService.convertFirestoreTimestampToDate(post.createdAt as Timestamp),
+              updatedAt: this.postService.convertFirestoreTimestampToDate(post.updatedAt as Timestamp)
+            }
+          }))
       })
       )
-    this.userInfoSub = this.post$.subscribe(post => {
-      this.user$ = this.userService.getUserInfoById(post.userId)
-        // .pipe(
-        //   tap(x => console.log(x))
-        // )
-
-        // .pipe(
-        //   map(res => {
-        //     this.userInfo = res
-        //     console.log({res})
-        //     return res
-        //   })
-        // )
-    })
 
     this.document = this.windowService.documentRef
     this.window = this.windowService.windowRef

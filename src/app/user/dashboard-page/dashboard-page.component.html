@@ -1,40 +1,53 @@
-<div *ngIf="posts.length; else loading" class="page">
+<div *ngIf="!isLoading; else loading" class="page">
 <!--  <div class="form-control">-->
 <!--    <input type="text" placeholder="Find post..." [(ngModel)]="searchStr">-->
 <!--  </div>-->
-  <table>
-    <thead>
-    <tr>
-      <th>#</th>
-<!--      <th>Author</th>-->
-      <th>Title</th>
-      <th>Date</th>
-      <th>Action</th>
-    </tr>
-    </thead>
+  <div *ngIf="posts.length; else noPosts">
+    <table>
+      <thead>
+      <tr>
+        <th>#</th>
+              <th>Author</th>
+        <th>Title</th>
+        <th>Created At</th>
+        <th>Last Updating</th>
+        <th>Action</th>
+      </tr>
+      </thead>
 
-    <tbody>
-    <tr *ngFor="let post  of posts; let i = index">
-      <td>{{i + 1}}</td>
-<!--      <td>{{post.author}}</td>-->
-      <td>{{post.title}}</td>
-      <td>{{post.date | date:'shortDate'}}</td>
-      <td>
-        <button
-          [routerLink]="['/author', 'post', post.id, 'edit']"
-          class="btn edit-btn"
-        >Edit</button>
-        <a class="btn delete-btn" (click)="onDeleteBtn()" *ngIf="!isAboutToDelete">Delete</a>
-        <div class="icons" *ngIf="isAboutToDelete">
-          <fa-icon [icon]="checkIcon" class="checkIcon" (click)="remove(post.id)"></fa-icon>
-          <fa-icon [icon]="cancelIcon" class="cancelIcon" (click)="isAboutToDelete = false"></fa-icon>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+      <tbody>
+      <tr *ngFor="let post  of posts; let i = index">
+        <td>{{i + 1}}</td>
+            <td>{{post.author}}</td>
+        <td>{{post.title}}</td>
+        <td>{{post.createdAt | date:'MMM d, y, h:mm:ss'}}</td>
+        <td>{{post.updatedAt | date:'MMM d, y, h:mm:ss'}}</td>
+        <td>
+          <button
+            [routerLink]="['/author', 'post', post.id, 'edit']"
+            class="btn edit-btn"
+          >Edit</button>
+          <a class="btn delete-btn" (click)="onDeleteBtn(post.id)" *ngIf="!isAboutToDelete[i].deleting">Delete</a>
+          <div class="icons" *ngIf="isAboutToDelete[i].deleting">
+            <fa-icon [icon]="checkIcon" class="checkIcon" (click)="remove(post.id)"></fa-icon>
+            <fa-icon [icon]="cancelIcon" class="cancelIcon" (click)="isAboutToDelete[i].deleting = false"></fa-icon>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
 </div>
 
 <ng-template #loading>
-  <p class="text-center">Loading ...</p>
+  <div class="spinner_100vh">
+    <app-spinner></app-spinner>
+    <p class="text-center">Posts are loading...</p>
+  </div>
+</ng-template>
+
+<ng-template #noPosts>
+  <p class="text-center">No posts yet ...</p>
 </ng-template>

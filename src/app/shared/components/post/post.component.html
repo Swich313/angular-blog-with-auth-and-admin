@@ -3,9 +3,12 @@
     <div>
       <h1>{{post.title}}</h1>
       <p>by <a href="#">{{post.author}}</a></p>
-      <div class="date">{{post.date | date: 'shortDate'}}</div>
+      <div class="date">{{post.createdAt | date: 'shortDate'}}</div>
       <div class="tags">
-        <div class="tag">{{post.tags | uppercase}}</div>
+<!--        <div class="tag">{{post.tags | uppercase}}</div>-->
+        <div class="tag" *ngFor="let tag of post.tags.split(' ')">
+          {{tag | uppercase}}
+        </div>
       </div>
     </div>
   </a>

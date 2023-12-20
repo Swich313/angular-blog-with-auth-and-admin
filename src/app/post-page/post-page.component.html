@@ -8,13 +8,18 @@
         </div>
 
         <div class="info">
-          <img *ngIf="user$ | async as user; else loading"
-               [src]="!!user[0]?.avatarUrl ? user[0].avatarUrl : defaultAvatar"
+          <img *ngIf="userInfo; else loading"
+               [src]="!!userInfo?.avatarUrl ? userInfo.avatarUrl : defaultAvatar"
                class="avatar"
-               alt="default avatar">
+               alt="default avatar"
+               [routerLink]="['./author-info']">
+
+          <!--               [routerLink]="['/author', user[0]?.userId]">-->
+
           <div>
-            <strong>{{post.author}}</strong>
-            <small>Created: {{post.date | date:'MMMM d, y, h:mm:ss'}}</small>
+<!--            <strong [routerLink]="['/author', (user$ | async)[0]?.userId]">{{post.author}}</strong>-->
+            <strong [routerLink]="['./author-info']">{{post.author}}</strong>
+            <small>Created: {{post.createdAt | date:'MMMM d, y, h:mm'}}</small>
           </div>
         </div>
 

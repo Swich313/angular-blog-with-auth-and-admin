@@ -37,7 +37,8 @@
 
   .tags {
     display: flex;
-
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
     .tag {
       font-size: 0.75em;
       background: rgba(255,255,255,0.5);

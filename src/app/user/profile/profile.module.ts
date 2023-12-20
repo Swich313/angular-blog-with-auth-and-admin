@@ -14,6 +14,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../../shared/shared.module";
 import {MatButtonModule} from "@angular/material/button";
 import {GeneratePasswordComponent} from "./shared/components/generate-password/generate-password.component";
+import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
+import {UserService} from "./shared/services/user.service";
 
 
 
@@ -44,7 +46,9 @@ import {GeneratePasswordComponent} from "./shared/components/generate-password/g
         ReactiveFormsModule,
         FormsModule,
         SharedModule,
-        MatButtonModule
-    ]
+        MatButtonModule,
+        AngularFireDatabaseModule
+    ],
+  providers: []
 })
 export class ProfileModule { }

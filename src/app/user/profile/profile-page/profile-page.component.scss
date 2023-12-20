@@ -5,6 +5,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1rem;
+
 
     .avatar-add {
       display: flex;
@@ -49,7 +51,6 @@
       }
 
       button{
-        font-size: 0.5rem;
         margin: 1rem auto 0;
       }
     }
@@ -74,9 +75,20 @@
       .birthday span,
       .email span{
         display: inline-block;
-        font-size: 0.5rem;
+        //font-size: 0.75rem;
         text-transform: lowercase;
-        height: 1.5rem;
+        max-height: 2.0rem;
+      }
+
+      .email span {
+        margin-left: 0.5rem;
+        padding: 0.5rem;
+
+        &:disabled {
+          cursor: not-allowed;
+          background: var(--skeleton-loading-grey);
+          color: var(--dark-color);
+        }
       }
 
       select {
@@ -93,7 +105,11 @@
       .validation {
         color: var(--primary-color);
         display: block;
-        margin: 1rem;
+      }
+
+      small {
+        margin-left: 1rem;
+        color: var(--success-color);
       }
     }
 

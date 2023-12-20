@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"social-media-page.component.css"}
+{"version":3,"sourceRoot":"","sources":["social-media-page.component.scss"],"names":[],"mappings":"AACE;EACE;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;AAKA;EACE;EACA;EACA;EACA;;AAGF;EACE;;AAEF;EACE;EACA;;AAGF;EACE;EACA;EACA;;AAGF;EACE;;AAIJ;EACE;;;AAOJ;EACE;IACE;IACA;;EAEF;IACE","file":"social-media-page.component.css"}

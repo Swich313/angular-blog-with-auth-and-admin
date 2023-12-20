@@ -1,24 +1,98 @@
-<div class="social tabShow" id="content-2">
+<app-loading-bar *ngIf="isSubmitted"></app-loading-bar>
+
+
+<div class="social">
   <h2>Social Media Links</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-control">
+      <label for="facebook">Facebook</label>
+      <a href="https://facebook.com" target="_blank">
+        <fa-icon [icon]="arrowIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
+      </a>
+      <div>
+        <input type="url" class="input" id="facebook" value="https://facebook.com" formControlName="facebook">
+        <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
+        <span class="btn">Add</span>
 
-  <h3>Facebook</h3>
-  <input type="url" class="input" value="https://facebook.com">
-  <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
-  <button class="btn">Add</button>
+      </div>
 
-  <h3>Instagram</h3>
-  <input type="url" class="input" value="https://Instagram.com">
-  <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
-  <button class="btn">Add</button>
+      <div
+        class="validation"
+        *ngIf="form.get('facebook').touched && form.get('facebook').invalid"
+      >
+        <small *ngIf="form.get('facebook').errors.required">FaceBook is required!</small>
+      </div>
+    </div>
 
-  <h3>Twitter</h3>
-  <input type="url" class="input" value="https://Twitter.com">
-  <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
-  <button class="btn">Add</button>
-  <h3>Youtube Channel</h3>
-  <input type="url" class="input" value="https://youtube.com">
-  <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
-  <button class="btn">Add</button>
+    <div class="form-control">
+      <label for="instagram">Instagram</label>
 
-  <button class="btn">Add another link to your social media account</button>
+      <div>
+        <input type="url" class="input" id="instagram" value="https://Instagram.com" formControlName="instagram">
+        <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
+        <span class="btn">Add</span>
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('instagram').touched && form.get('instagram').invalid"
+      >
+        <small *ngIf="form.get('instagram').errors.required">Instagram is required!</small>
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label for="twitter">Twitter</label>
+
+      <div>
+        <input type="url" class="input" id="twitter" value="https://Twitter.com" formControlName="twitter">
+        <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
+        <span class="btn">Add</span>
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('twitter').touched && form.get('twitter').invalid"
+      >
+        <small *ngIf="form.get('twitter').errors.required">Twitter is required!</small>
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label for="youtube">Youtube Channel</label>
+
+      <div>
+        <input type="url" class="input" id="youtube" value="https://youtube.com" formControlName="youtube">
+        <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
+        <span class="btn">Add</span>
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('youtube').touched && form.get('youtube').invalid"
+      >
+        <small *ngIf="form.get('youtube').errors.required">Youtube is required!</small>
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label for="github">Github</label>
+
+      <div>
+        <input type="url" class="input" id="github" value="https://github.com" formControlName="github">
+        <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green'}"></fa-icon>
+        <span class="btn">Add</span>
+      </div>
+
+      <div
+        class="validation"
+        *ngIf="form.get('twitter').touched && form.get('twitter').invalid"
+      >
+        <small *ngIf="form.get('twitter').errors.required">Github is required!</small>
+      </div>
+    </div>
+
+    <span class="btn" (click)="addAnotherSocial()">Add another link to your social media account</span>
+    <button class="btn" [disabled]="isSubmitted">Update</button>
+  </form>
 </div>

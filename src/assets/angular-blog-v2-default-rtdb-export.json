@@ -1,0 +1,168 @@
+{
+  "posts": {
+    "-NiEJatcePpGShgg3ZSy": {
+      "author": "Brandon Roberts",
+      "date": "2023-11-02T09:11:04.387Z",
+      "id": "-NiEJatcePpGShgg3ZSy",
+      "imageUrl": "http://res.cloudinary.com/ddqsoiyyp/image/upload/v1699615787/angular-blog-v2/%5Bobject%20File%5D1699615416456.png",
+      "tags": "#asda #hjh #kjhkjh #angular",
+      "text": "<p>1111When building applications with Angular, one common thing you should do is have the page title update after each successful navigation. This&nbsp;<a href=\"https://twitter.com/twerske/status/1488313309644214272\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">helps with accessibility</a>&nbsp;and improves the navigation experience. This is something you've had to do manually in the past, but a recent feature added to the Angular Router coming in version 14 handles this natively, while allowing you to customize its behavior. This post shows you how to use the Angular Router's new built-in feature to for setting the page title after each successful navigation.</p><h2>Setting the Page Title using Router Events ♻️</h2><p>Previously, setting the page title with the Angular Router after each successful navigation was code you had to add to every project, or use an Angular library if provided. The example below shows some sample code of how you would do this:</p><p>First, you would use the&nbsp;<code style=\"color: var(--color-body-color);\">data</code>&nbsp;property in the&nbsp;<code style=\"color: var(--color-body-color);\">Route</code>&nbsp;object with a&nbsp;<code style=\"color: var(--color-body-color);\">title</code>&nbsp;key to set the title for the page.</p><pre class=\"ql-syntax\" spellcheck=\"false\">import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './about.component';\nimport { HomeComponent } from './home.component';\n\nconst routes: Routes = [\n  {\n    path: 'home',\n    component: HomeComponent,\n    data: { title: 'Home' }\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    data: { title: 'About Me' }\n  }\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n</pre><p><br></p><p>Next, you would add code to your&nbsp;<code style=\"color: var(--color-body-color);\">AppComponent</code>&nbsp;or some other root-level service that listens to the events from the Angular Router, looks for the&nbsp;<code style=\"color: var(--color-body-color);\">title</code>&nbsp;property on the route, and uses it to set the page title.</p><pre class=\"ql-syntax\" spellcheck=\"false\">import { Component } from '@angular/core';\nimport { Title } from '@angular/platform-browser';\nimport { Router, NavigationEnd, ActivatedRoute } from '@angular/router';\nimport { filter, map } from 'rxjs';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n})\nexport class AppComponent {\n  constructor(\n    private router: Router,\n    private titleService: Title\n  ) {}\n\n  ngOnInit() {\n    this.router.events\n      .pipe(\n        filter((event) =&gt; event instanceof NavigationEnd),\n        map(() =&gt; {\n          let route: ActivatedRoute = this.router.routerState.root;\n          let routeTitle = '';\n          while (route!.firstChild) {\n            route = route.firstChild;\n          }\n          if (route.snapshot.data['title']) {\n            routeTitle = route!.snapshot.data['title'];\n          }\n          return routeTitle;\n        })\n      )\n      .subscribe((title: string) =&gt; {\n        if (title) {\n          this.titleService.setTitle(`My App - ${title}`);\n        }\n      });\n  }\n}\n</pre><p><br></p><p>This same code would have to be copied to each project you worked on. Now, let's look at the new way page titles working natively with the Angular Router.</p><h2>Using the built-in TitleStrategy 🤩</h2><p>In Angular v14, there is a built-in strategy service for collecting the title from the route based on the&nbsp;<strong><em>primary</em></strong>&nbsp;router outlet, and setting the browser's page title.</p><p>Instead of using the&nbsp;<code style=\"color: var(--color-body-color);\">data</code>&nbsp;object with the&nbsp;<code style=\"color: var(--color-body-color);\">title</code>&nbsp;key, there is a new&nbsp;<code style=\"color: var(--color-body-color);\">title</code>&nbsp;property on the route object itself for you to set the page title.</p><pre class=\"ql-syntax\" spellcheck=\"false\">import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { AboutComponent } from './about.component';\nimport { HomeComponent } from './home.component';\n\nconst routes: Routes = [\n  {\n    path: 'home',\n    component: HomeComponent,\n    title: \"'My App - Home' // &lt;-- Page title\"\n  },\n  {\n    path: 'about',\n    component: AboutComponent,\n    title: \"'My App - About Me'  // &lt;-- Page title\"\n  }\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n</pre><p><br></p><p>And now you can delete the all that custom code from the&nbsp;<code style=\"color: var(--color-body-color);\">AppComponent</code>&nbsp;that listens to router events. 👏</p><pre class=\"ql-syntax\" spellcheck=\"false\">import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n})\nexport class AppComponent {}\n</pre><p><br></p><p>And that's it! Now when you navigate to each route successfully, the page title is updated to the title defined in each route.</p><p>One thing to notice is that there isn't a way to define a prefix for each route, such as&nbsp;<code style=\"color: var(--color-body-color);\">My App</code>. In larger applications, this could lead to duplication and inconsistencies with setting the page title.</p><p>And that's where you would use a custom title strategy.</p>",
+      "title": "111Setting Page Titles Natively With The Angular Router",
+      "userId": "mojGHORZI3OPRO5N1p8H0KURa0J2"
+    },
+    "-NiEMJ_UeRvow6uudlzW": {
+      "author": "Nicolas Frankel",
+      "date": "2023-11-02T09:22:55.572Z",
+      "imageUrl": "C:\\fakepath\\ojkg5j0jd86h7re9gj76.png",
+      "tags": "#rust #python #programming #pyo3",
+      "text": "<p>I got plenty of feedback on my post about&nbsp;<a href=\"https://blog.frankel.ch/rust-from-python/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">Calling Rust from Python</a>:</p><ul><li><a href=\"https://news.ycombinator.com/item?id=37811953\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">Hacker News</a></li><li><a href=\"https://www.reddit.com/r/Python/comments/1733gl6/calling_rust_from_python/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">/r/python</a></li><li><a href=\"https://www.reddit.com/r/rust/comments/1733gsb/calling_rust_from_python/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">/r/rust</a></li></ul><p>Many comments mentioned&nbsp;<code style=\"color: var(--color-body-color);\">pyo3</code>, and I should use it instead of cooking my own. Thanks to the authors, I checked: in this post, I explain what it is and how I migrated my code.</p><h2>What is pyo3?</h2><blockquote>Rust bindings for Python, including tools for creating native Python extension modules. Running and interacting with Python code from a Rust binary is also supported.</blockquote><blockquote><a href=\"https://pyo3.rs/v0.20.0/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">-- PyO3 user guide</a></blockquote><p>Indeed,&nbsp;<code style=\"color: var(--color-body-color);\">pyo3</code>&nbsp;fits my use case, calling Rust from Python. Even better, it handles converting Python types to Rust types and back again. Finally, it offers the&nbsp;<code style=\"color: var(--color-body-color);\">maturin</code>&nbsp;utility to make the interaction between the Python project and the Rust project seamless.</p><h2>Maturin</h2><blockquote>Build and publish crates with pyo3, rust-cpython, cffi and uniffi bindings as well as rust binaries as python packages.</blockquote><blockquote><a href=\"https://github.com/PyO3/maturin\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">-- Maturin on GitHub</a></blockquote><p><code style=\"color: var(--color-body-color);\">maturin</code>&nbsp;is available via&nbsp;<code style=\"color: var(--color-body-color);\">pip install</code>. It offers several commands:</p><ul><li><code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">new</code>: create a new Cargo project with maturin configured</li><li><code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">build</code>: build the wheels and store them locally</li><li><code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">publish</code>: build the crate into a Python package and publish it to pypi</li><li><code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">develop</code>: build the crate as a Python module directly into the current virtual environment, making it available to Python</li></ul><p>Note that Maturin started as a companion project to&nbsp;<code style=\"color: var(--color-body-color);\">pyo3</code>&nbsp;but now offers rust-cpython, cffi and uniffi bindings.</p><h2>Migrating the project</h2><p>The term migrating is a bit misleading here since we will start from scratch to fit Maturin's usage. However, we will achieve the same end state. I won't paraphrase&nbsp;<a href=\"https://pyo3.rs/v0.20.0/#using-rust-from-python\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: var(--link-branded-color);\">the tutorial</a>&nbsp;since it works seamlessly. Ultimately, we have a fully functional Rust project with a single&nbsp;<code style=\"color: var(--color-body-color);\">sum_as_string()</code>&nbsp;function, which we can call in a Python shell. Note the dependency to&nbsp;<code style=\"color: var(--color-body-color);\">pyo3</code>:</p><pre class=\"ql-syntax\" spellcheck=\"false\">pyo3 = \"0.20.0\"\n</pre><p><br></p><p>The second step is to re-use the material from the previous project. First, we add our&nbsp;<code style=\"color: var(--color-body-color);\">compute()</code>&nbsp;function at the end of the&nbsp;<code style=\"color: var(--color-body-color);\">lib.rs</code>&nbsp;file:</p><pre class=\"ql-syntax\" spellcheck=\"false\">#[pyfunction]                                                                            //1\nfn compute(command: &amp;str, a: Complex&lt;f64&gt;, b: Complex&lt;f64&gt;) -&gt; PyResult&lt;Complex&lt;f64&gt;&gt; {  //2-3\n    match command {\n        \"add\" =&gt; Ok(a + b),\n        \"sub\" =&gt; Ok(a - b),\n        \"mul\" =&gt; Ok(a * b),\n        _ =&gt; Err(PyValueError::new_err(\"Unknown command\")),                              //4\n    }\n}\n</pre><p><br></p><ol><li>The&nbsp;<code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">pyfunction</code>&nbsp;macro allows the use of the function in Python</li><li>Use regular Rust types for parameters;&nbsp;<code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">pyo3</code>&nbsp;can convert them</li><li>We need to return a&nbsp;<code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">PyResult</code>&nbsp;type, which is an alias over&nbsp;<code style=\"color: var(--color-body-color); background-color: rgba(0, 0, 0, 0.1);\">Result&lt;T, PyErr&gt;</code></li><li>Return a specific Python error if the command doesn't match</li></ol><p><code style=\"color: var(--color-body-color);\">pyo3</code>&nbsp;automatically handles conversion for most types. However, complex numbers require an additional feature. We also need to migrate from the&nbsp;<code style=\"color: var(--color-body-color);\">num</code>&nbsp;crate to the&nbsp;<code style=\"color: var(--color-body-color);\">num-complex</code>:</p><pre class=\"ql-syntax\" spellcheck=\"false\">pyo3 = { version = \"0.20.0\" , features = [\"num-complex\"]}\nnum-complex = \"0.4.4\"\n</pre><p><br></p><p>To convert custom types, you must implement traits&nbsp;<code style=\"color: var(--color-body-color);\">FromPyObject</code>&nbsp;for parameters and&nbsp;<code style=\"color: var(--color-body-color);\">ToPyObject</code>&nbsp;for return values.</p><p>Finally, we only need to add the function to the module:</p><pre class=\"ql-syntax\" spellcheck=\"false\">#[pymodule]\nfn rust_over_pyo3(_py: Python, m: &amp;PyModule) -&gt; PyResult&lt;()&gt; {\n    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;\n    m.add_function(wrap_pyfunction!(compute, m)?)?;              //1\n    Ok(())\n}\n</pre><p><br></p><ol><li>Add the function to the module</li></ol><p>At this point, we can use Maturin to test the project:</p><pre class=\"ql-syntax\" spellcheck=\"false\">maturin develop\n</pre><p><br></p><p>After the compilation finishes, we can start a Python shell in the virtual environment:</p><pre class=\"ql-syntax\" spellcheck=\"false\">python\n\n&gt;&gt;&gt; from rust_over_pyo3 import compute\n&gt;&gt;&gt; compute('add',1+3j,-5j)\n(1-2j)\n&gt;&gt;&gt; compute('sub',1+3j,-5j)\n(1+8j)\n</pre><p><br></p>",
+      "title": "Feedback from calling Rust from Python",
+      "userId": "mojGHORZI3OPRO5N1p8H0KURa0J2"
+    },
+    "-NiEO2wnucP93bQhDKLZ": {
+      "author": "aaaaaa",
+      "date": "2023-11-02T09:30:31.979Z",
+      "imageUrl": "C:\\fakepath\\Book5.jpg",
+      "tags": "#aa #aa",
+      "text": "<p>aaaaaaaaaa</p>",
+      "title": "aaaaaaaa",
+      "userId": "PIg2IqB8GNXhHuCEBzI9iuFHQgt1"
+    },
+    "-NiEPwZoWkDiZ00xiiF-": {
+      "author": "111111111",
+      "date": "2023-11-02T09:38:46.079Z",
+      "tags": "#11111111",
+      "text": "<p>11111111111</p>",
+      "title": "1111111111"
+    },
+    "-NiEzfPcnVjiCz9zQ7FU": {
+      "author": "11111111111111",
+      "date": "2023-11-02T12:19:14.934Z",
+      "imageUrl": "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b3BlbiUyMGJvb2t8ZW58MHx8MHx8&w=1000&q=80",
+      "tags": "111111111",
+      "text": "<p>1111111111</p>",
+      "title": "1111111"
+    },
+    "-NiF-ZH1mEjj1n8eJip6": {
+      "author": "1111111111",
+      "date": "2023-11-02T12:23:08.155Z",
+      "imageUrl": "",
+      "tags": "111111111",
+      "text": "<p>111111111111</p>",
+      "title": "1111111111111"
+    },
+    "-NiF0aCKn0EqRJxYsrR2": {
+      "author": "222222222222222",
+      "date": "2023-11-02T12:27:38.439Z",
+      "imageUrl": "https://st.depositphotos.com/1741875/1237/i/450/depositphotos_12376816-stock-photo-stack-of-old-books.jpg?forcejpeg=true",
+      "tags": "33333333333333",
+      "text": "<p>11111111111111</p>",
+      "title": "111111111111"
+    },
+    "-NiF0iVb63XQbUnJlEtC": {
+      "author": "33333333333333",
+      "date": "2023-11-02T12:28:11.234Z",
+      "imageUrl": "http://res.cloudinary.com/ddqsoiyyp/image/upload/v1698928452/angular-blog-v2/%5Bobject%20File%5D1698928091234.jpg",
+      "tags": "3344444444444444",
+      "text": "<p>333333333333333</p>",
+      "title": "3333333333333"
+    },
+    "-NiF14IDsueWfiVbjvhO": {
+      "author": "Justin Thadathil",
+      "date": "2023-11-02T12:29:44.618Z",
+      "imageUrl": "http://res.cloudinary.com/ddqsoiyyp/image/upload/v1698928545/angular-blog-v2/%5Bobject%20File%5D1698928184618.jpg",
+      "tags": "#beginners #typescript #angular #cloudinary",
+      "text": "<p>Cloudinary is a SaaS based platform that helps you to store high quality images, where in your free tire you can store 25GB of images and videos. it has may other options to customize the image.</p><p>here I required the basic feature that is upload a image to Cloudinary via Angular. in my recent project, I was using firebase storage to store images but this time for a change thought to learn something new taking an inspiration by my tech enthusiast friend I though to try it out.</p><p>I am using Angular version 12. here for this basic upload feature there is&nbsp;<strong>no need to import any Cloudinary package</strong>. let's further roll out into the steps:-</p><p><strong>First lets set up Cloudinary part</strong></p><ol><li>Sign in or login to your Cloudinary account.</li><li>now click on settings and then&nbsp;<strong>upload</strong>&nbsp;tab.</li><li>in the tab find for Upload presets option</li><li>now click on&nbsp;<strong>Add upload preset</strong>&nbsp;and add a Upload preset name.</li><li>select Signing Mode as unsigned and add a folder name.</li><li>now click on save button</li></ol><p><strong>Now in the Angular Project</strong></p><ul><li>From the input type file, get the file value</li><li>Pass it to a function that accept the image data</li></ul><pre class=\"ql-syntax\" spellcheck=\"false\">function onChangeImg(){\n   data.append('file', file);\n   data.append('upload_preset', 'Upload presets name here');\n   data.append('cloud_name', 'copy from dashboard')\n   data.append('public_id', file Name+todaysDate)\n   this.myService.uploadSignature(data).subscribe((imageData) =&gt; {\n     this.imageUrl = imageData.url;\n     this.registrationForm.patchValue({\n       signatureUrl: imageData.url\n     });\n   })\n}\n</pre><p><br></p><ul><li>Now in the Service side</li></ul><pre class=\"ql-syntax\" spellcheck=\"false\">//upload signature\n  uploadSignature(vals): Observable&lt;any&gt;{\n    let data = vals;\n    return this.http.post('https://api.cloudinary.com/v1_1/cloud_name/image/upload',data)\n  }\n</pre><p><br></p><ul><li>In the angular once the function is submitted, then in the response you will get a image URL that can be store and used to access the uploaded image.</li></ul><p>This were the few process to be followed which in return helps tp store image and that can be retrieved properly. Cloudinary is a good tool to fulfill the above requirements.</p><p>Anyone reading the article faces any issues can comment bellow. I will love to reply. Thank you</p>",
+      "title": "Upload images to Cloudinary using Angular"
+    },
+    "-Niir6GNl-oHE1MP8LIG": {
+      "author": "aaaaaaaaaaaaaaa",
+      "date": "2023-11-08T12:09:56.732Z",
+      "imageUrl": "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b3BlbiUyMGJvb2t8ZW58MHx8MHx8&w=1000&q=80",
+      "tags": "#aaaa",
+      "text": "<p>aaaaaaaaaaaaaaaaaaaaa</p>",
+      "title": "aaaaaaaaaaaaaa",
+      "userId": "PIg2IqB8GNXhHuCEBzI9iuFHQgt1"
+    },
+    "-Nij-MMGKB6-XOG5Mky_": {
+      "author": "bbbbbbbbbbb",
+      "date": "2023-11-08T12:50:21.956Z",
+      "imageUrl": "https://static4.depositphotos.com/1015530/309/i/600/depositphotos_3098299-stock-photo-single-green-book.jpg",
+      "tags": "#bbbbbbbb",
+      "text": "<p>bbbbbbbbbbbbbb</p>",
+      "title": "bbbbbbbb",
+      "userId": "EPcBlita1xQ82wvRrPtTJ7eRmIp1"
+    },
+    "-Nit6v3ATu0oS8E6lA4Z": {
+      "author": "qweqweasdasd",
+      "date": "2023-11-10T11:59:29.891Z",
+      "imageUrl": "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b3BlbiUyMGJvb2t8ZW58MHx8MHx8&w=1000&q=80",
+      "tags": "#aaaaaaaaa",
+      "text": "<p>aaaaaaaaaaaaa</p>",
+      "title": "aaaaaaaaaa",
+      "userId": "mojGHORZI3OPRO5N1p8H0KURa0J2"
+    },
+    "-Nit7tttd8eE-QkSndDN": {
+      "author": "123ввввввввв",
+      "date": "2023-11-10T12:03:49.515Z",
+      "imageUrl": "https://st.depositphotos.com/1741875/1237/i/450/depositphotos_12376816-stock-photo-stack-of-old-books.jpg?forcejpeg=true",
+      "tags": "#ddd #ddd #ddd",
+      "text": "<p>вввввввввввввввв</p>",
+      "title": "вввввввввввв",
+      "userId": "mojGHORZI3OPRO5N1p8H0KURa0J2"
+    }
+  },
+  "userInfo": {
+    "-NitOvUq05F6uA4h82dr": {
+      "avatarUrl": "https://res.cloudinary.com/ddqsoiyyp/image/upload/v1699622648/angular-blog-v2/photo-1697094075038-cc2de6c2d952_q1vs6u.jpg",
+      "birthday": "2023-11-01",
+      "gender": "male",
+      "name": "Andrew",
+      "userId": "mojGHORZI3OPRO5N1p8H0KURa0J2"
+    },
+    "-Nj6_n0ZagyAVFNdJAGQ": {
+      "avatarUrl": "https://res.cloudinary.com/ddqsoiyyp/image/upload/v1699860626/angular-blog-v2/photo-1699694927472-46a4fcf68973_aofwep.jpg",
+      "birthday": "1990-10-20",
+      "gender": "male",
+      "name": "Kruzenshtern",
+      "userId": "mtDyoHklRYUm9M0sbFaVsky9plo1"
+    },
+    "-Nj7PcD-zhOxsvJRPM0r": {
+      "avatarUrl": "https://res.cloudinary.com/ddqsoiyyp/image/upload/v1699874764/angular-blog-v2/photo-1682687982204-f1a77dcc3067_dkhjay.jpg",
+      "birthday": "2023-11-06",
+      "gender": "male",
+      "name": "asdasdasdasd",
+      "userId": "PIg2IqB8GNXhHuCEBzI9iuFHQgt1"
+    }
+  },
+  "users": {
+    "-NiimiHDR-8xrW8izTZx": {
+      "email": "admin@test.com",
+      "loginType": "email&password",
+      "password": 123123,
+      "userId": "mtDyoHklRYUm9M0sbFaVsky9plo1"
+    },
+    "-NiinneXzbNGkqwkm8kd": {
+      "email": "test2@test.com",
+      "loginType": "email&password",
+      "password": "qqqqqq"
+    },
+    "-Niio27sJ4x48mfE7Ix5": {
+      "email": "test@test.com",
+      "loginType": "email&password",
+      "password": "123123",
+      "userId": "mojGHORZI3OPRO5N1p8H0KURa0J2"
+    },
+    "-Nis16S7ZV6fdFXj4LN8": {
+      "email": "123@gmail.dcom",
+      "loginType": "email&password",
+      "password": "qwe123",
+      "userId": "PIg2IqB8GNXhHuCEBzI9iuFHQgt1"
+    },
+    "-Nk0cpmQnmudL5tpHSYi": {
+      "email": "swichfist@gmail.com",
+      "loginType": "google",
+      "userId": "104995252162640072499"
+    }
+  }
+}

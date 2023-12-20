@@ -64,6 +64,9 @@
 .share-wrapper .share:hover .viber {
   background: #7360f2;
 }
+.share-wrapper .share:hover .qr-code {
+  background: var(--dark-color);
+}
 
 @media (max-width: 576px) {
   .share-wrapper {

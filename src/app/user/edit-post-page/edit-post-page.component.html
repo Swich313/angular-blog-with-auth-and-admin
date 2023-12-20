@@ -28,18 +28,18 @@
         [ngClass]="{invalid: form.get('imageUrl').touched && form.get('imageUrl').invalid}"
       >
         <div *ngIf="form.get('imageSource').value === imageSources[0].value">
-          <label for="imageUrl" >Image URL</label>
+          <label for="imageUrl">Image URL</label>
           <input type="text" id="imageUrl" formControlName="imageUrl">
         </div>
 
         <div *ngIf="form.get('imageSource').value === imageSources[1].value">
-          <label for="imageFile" >Image File</label>
-          <input #imageFile type="file" ng2FileSelect [uploader]="uploader" name="imageFile" id="imageFile" class="inputFile" formControlName="imageUrl">
+          <label for="imageFile">Image File</label>
+          <input #imageFile type="file" ng2FileSelect [uploader]="uploader" name="imageFile" id="imageFile" class="inputFile" (change)="onImageChange($event)">
         </div>
 
         <div
           class="validation"
-          *ngIf="form.get('imageUrl').touched && form.get('imageUrl').invalid"
+          *ngIf="form.get('imageUrl').invalid"
         >
           <small *ngIf="form.get('imageUrl').errors.required">Image Url/File is required</small>
           <small *ngIf="form.get('imageUrl').errors.pattern && form.get('imageSource').value === imageSources[0].value">Invalid Image Url</small>
@@ -49,7 +49,7 @@
 
       <div class="checkbox">
         <label>Choose Image Source</label>
-        <div *ngFor="let source of imageSources" (change)="onRadioButtonsChange()">
+        <div *ngFor="let source of imageSources" (change)="onRadioButtonsChange($event)">
           <label>
             <input type="radio"
                    [value]="source.value"
@@ -65,7 +65,7 @@
         <input type="text" id="tags" formControlName="tags">
         <div
           class="validation"
-          *ngIf="form.get('tags').touched && form.get('tags').invalid"
+          *ngIf="form.get('tags').invalid"
         >
           <small *ngIf="form.get('tags').errors.pattern">Invalid tag, should start with '#'!</small>
         </div>
@@ -76,7 +76,7 @@
   </div>
 
   <ng-template #loading>
-    <div class="spinner">
+    <div class="spinner_100vh">
       <app-spinner></app-spinner>
       <p class="text-center">The Post is loading...</p>
     </div>

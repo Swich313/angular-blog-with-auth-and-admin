@@ -19,13 +19,13 @@ table td {
 table th .edit-btn,
 table td .edit-btn {
   width: 5rem;
-  padding: 0.5rem;
+  height: 2rem;
   font-size: 0.8rem;
 }
 table th .delete-btn,
 table td .delete-btn {
   width: 5rem;
-  padding: 0.5rem;
+  height: 2rem;
   font-size: 0.8rem;
   background: var(--primary-color);
   color: var(--dark-color);
@@ -34,16 +34,17 @@ table td .delete-btn {
 table th .icons,
 table td .icons {
   font-size: 1rem;
-  margin: 0 auto;
+  margin: 1rem auto 0;
   height: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 table th .icons .checkIcon, table th .icons .cancelIcon,
 table td .icons .checkIcon,
 table td .icons .cancelIcon {
-  padding: 0.7rem 0.5rem;
+  padding: 0.7rem 0;
   cursor: pointer;
   transition: all 0.2s ease-out;
 }

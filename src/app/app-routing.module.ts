@@ -4,12 +4,14 @@ import {MainLayoutComponent} from "./shared/components/main-layout/main-layout.c
 import {HomePageComponent} from "./home-page/home-page.component";
 import {PostPageComponent} from "./post-page/post-page.component";
 import {NotFoundPageComponent} from "./not-found-page/not-found-page.component";
+import {AuthorInfoComponent} from "./author-info/author-info.component";
 
 const routes: Routes = [
   {path: '', component: MainLayoutComponent, children: [
       {path: '', redirectTo: '/', pathMatch: 'full'},
       {path: '', component: HomePageComponent},
-      {path: 'post/:id', component: PostPageComponent}
+      {path: 'post/:id', component: PostPageComponent},
+      {path: 'post/:id/author-info', component: AuthorInfoComponent}
     ]},
   {
     path: 'admin',

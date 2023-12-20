@@ -1,4 +1,5 @@
 import {IconDefinition} from "@fortawesome/free-regular-svg-icons";
+import {Timestamp} from "@angular/fire/firestore";
 
 export interface Post {
   id?: string;
@@ -7,7 +8,8 @@ export interface Post {
   imageUrl: string | File;
   tags?: string;
   author: string;
-  date: Date;
+  createdAt?: Timestamp | Date;
+  updatedAt?: Timestamp | Date;
   userId?: string;
 }
 
@@ -17,19 +19,29 @@ export interface ShareSocialMedia {
   url: string;
 }
 
+// export interface User {
+//   email: string;
+//   password: string;
+//   returnSecureToken?: boolean;
+//   userId?: string;
+//   loginType: 'email&password' | 'facebook' | 'google'
+// }
+
 export interface User {
+  uid: string;
   email: string;
-  password: string;
-  returnSecureToken?: boolean;
-  userId?: string;
+  displayName: string;
+  photoUrl: string;
+  emailVerified: boolean;
 }
 
 export interface UserInfo {
-  userId?: string;
+  userId: string;
   avatarUrl: string;
   name: string;
   birthday: string;
-  gender: 'male' | 'female'
+  gender: 'male' | 'female' | '';
+  id?: string;
 }
 
 export interface FirebaseAuthResponse {
@@ -42,4 +54,12 @@ export interface FirebaseAuthResponse {
 
 export interface FirebaseCreateResponse {
   name: string
+}
+
+export function instanceOfFirebaseAuthResponse(object: any): object is FirebaseAuthResponse{
+  if(object == null){
+    return null
+  } else {
+    return object.includes('expiresIn') && object.includes('idToken') && object.includes('localId')
+  }
 }

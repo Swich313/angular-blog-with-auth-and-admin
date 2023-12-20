@@ -18,10 +18,9 @@
       <div class="name">
         <div>
           <input type="text" class="input" id="name" placeholder="What's your name?" formControlName="name" (input)="editMode('name')" disabled>
-          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isName"></fa-icon>
+          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isValueAddedInForm.name || isUserInfoInDB.name"></fa-icon>
         </div>
-          <span class="btn" (click)="passData('name')" *ngIf="!isName && !isNameInDB" [ngClass]="{disabled: !!form.get('name').errors}">Add</span>
-
+          <span class="btn" (click)="passData('name')" *ngIf="!isValueAddedInForm.name && !isUserInfoInDB.name" [ngClass]="{disabled: !!form.get('name').errors}">Add</span>
       </div>
 
       <div
@@ -36,9 +35,11 @@
       <div class="birthday">
         <div>
           <input type="date" class="input" id="birthday" min="01.01.1900" formControlName="birthday" (change)="editMode('birthday')">
-          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isBirthday"></fa-icon>
+          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isValueAddedInForm.birthday"></fa-icon>
         </div>
-        <span class="btn" (click)="passData('birthday')" *ngIf="!isBirthday" [ngClass]="{disabled: !!form.get('birthday').errors}">Add</span>
+        <span class="btn" (click)="passData('birthday')" *ngIf="!isValueAddedInForm.birthday" [ngClass]="{disabled: !!form.get('birthday').errors}">
+          {{isUserInfoInDB.birthday ? 'Change' : 'Add'}}
+        </span>
       </div>
 
       <div
@@ -63,20 +64,13 @@
       <div class="email">
         <div>
           <label for="email">Confirm Your Email</label>
-          <input type="text" class="input" id="email" value="example@gmail.com" [(ngModel)]="email" disabled>
-          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="isBirthday"></fa-icon>
+          <input type="text" class="input" id="email" [value]="userEmailState.email" disabled>
+          <fa-icon [icon]="checkIcon" [ngStyle]="{'color': 'green', 'margin-left': '1.2rem'}" *ngIf="userEmailState.emailVerified"></fa-icon>
         </div>
-        <span class="btn">Confirm</span>
-
+        <span class="btn" *ngIf="!userEmailState.emailVerified" (click)="confirmEmail()" [ngClass]="{disabled: isEmailSubmitted}">Confirm</span>
       </div>
-
-
-      <div
-        class="validation"
-        *ngIf="form.get('birthday').touched && form.get('birthday').invalid"
-      >
-        <small *ngIf="form.get('birthday').errors.invalidDate">Is this your real birthday?</small>
-      </div>
+      <small *ngIf="isEmailSubmitted">Visit your Email and follow the link</small>
     </div>
   </div>
+
 </div>
