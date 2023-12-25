@@ -11,19 +11,22 @@ table {
   border-collapse: collapse;
 }
 
-table th,
 table td {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   text-align: left;
 }
-table th .edit-btn,
-table td .edit-btn {
+table td.mat-column-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+table td.mat-column-actions .edit-btn {
   width: 5rem;
   height: 2rem;
   font-size: 0.8rem;
 }
-table th .delete-btn,
-table td .delete-btn {
+table td.mat-column-actions .delete-btn {
   width: 5rem;
   height: 2rem;
   font-size: 0.8rem;
@@ -31,8 +34,7 @@ table td .delete-btn {
   color: var(--dark-color);
   text-align: center;
 }
-table th .icons,
-table td .icons {
+table td.mat-column-actions .icons {
   font-size: 1rem;
   margin: 1rem auto 0;
   height: 2rem;
@@ -41,28 +43,34 @@ table td .icons {
   align-items: center;
   gap: 1rem;
 }
-table th .icons .checkIcon, table th .icons .cancelIcon,
-table td .icons .checkIcon,
-table td .icons .cancelIcon {
+table td.mat-column-actions .icons .checkIcon, table td.mat-column-actions .icons .cancelIcon {
   padding: 0.7rem 0;
   cursor: pointer;
   transition: all 0.2s ease-out;
 }
-table th .icons .checkIcon,
-table td .icons .checkIcon {
+table td.mat-column-actions .icons .checkIcon {
   color: green;
 }
-table th .icons .checkIcon:hover,
-table td .icons .checkIcon:hover {
+table td.mat-column-actions .icons .checkIcon:hover {
   font-size: 1.2rem;
 }
-table th .icons .cancelIcon,
-table td .icons .cancelIcon {
+table td.mat-column-actions .icons .cancelIcon {
   color: red;
 }
-table th .icons .cancelIcon:hover,
-table td .icons .cancelIcon:hover {
+table td.mat-column-actions .icons .cancelIcon:hover {
   font-size: 1.2rem;
+}
+
+table th {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--dark-color);
+}
+
+tr.mat-mdc-row:hover {
+  background-color: var(--skeleton-loading-grey);
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -70,6 +78,11 @@ table td .icons .cancelIcon:hover {
 table td {
     font-size: 0.8rem;
     padding: 0.5rem;
+  }
+  table th.mat-column-actions,
+table td.mat-column-actions {
+    flex-direction: column;
+    gap: 0;
   }
 }
 

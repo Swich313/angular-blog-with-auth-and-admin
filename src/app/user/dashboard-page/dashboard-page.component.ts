@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {of, Subscription} from "rxjs";
 import {AlertService} from "../shared/services/alert.service";
 import {Post} from "../../shared/interfaces";
@@ -7,15 +7,25 @@ import {AuthService} from "../shared/services/auth.service";
 import {faCancel, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {DocumentData, QuerySnapshot} from "@angular/fire/compat/firestore";
 import {Timestamp} from "@angular/fire/firestore";
+import {MatSort, MatSortModule, Sort} from "@angular/material/sort";
+import {MatTableDataSource, MatTableModule} from "@angular/material/table";
+import {LiveAnnouncer} from "@angular/cdk/a11y";
+import {CommonModule} from "@angular/common";
 // import {DocumentData, QuerySnapshot} from "@angular/fire/compat/firestore";
 
 @Component({
   selector: 'app-dashboard-page',
   templateUrl: './dashboard-page.component.html',
-  styleUrls: ['./dashboard-page.component.scss']
+  styleUrls: ['./dashboard-page.component.scss'],
 })
-  export class DashboardPageComponent implements OnInit, OnDestroy{
-  public posts: Post[] = []
+  export class DashboardPageComponent implements OnInit, AfterViewInit, OnDestroy{
+  public posts: Post[]
+  public sortedPosts: Post[]
+  // public columnHeaders = ['#', 'Author', 'Title', 'When created', 'Last Updated', 'Actions']
+  public displaysColumns = ['position', 'author', 'title', 'createdAt', 'updatedAt', 'actions']
+  public dataSource
+  // public clickedRow = new Set<Post>()
+
   private postSub: Subscription
   private deleteSub: Subscription
   checkIcon = faCheck
@@ -24,12 +34,16 @@ import {Timestamp} from "@angular/fire/firestore";
   isLoading = false
   private userId: string
 
+
   constructor(
     private alertService: AlertService,
     private postService: PostService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _liveAnnouncer: LiveAnnouncer
  ) {
   }
+
+  @ViewChild(MatSort) sort: MatSort
 
   ngOnInit(): void {
     this.userId = this.authService.userId
@@ -37,6 +51,12 @@ import {Timestamp} from "@angular/fire/firestore";
     // this.postService.getAllPosts().subscribe(res => {
     //   this.posts = res
     // })
+  }
+
+  ngAfterViewInit(): void {
+    console.log('dataSource', this.dataSource)
+    console.log('sort', this.sort)
+    // this.dataSource.sort = this.sort
   }
 
   ngOnDestroy(): void {
@@ -69,6 +89,7 @@ import {Timestamp} from "@angular/fire/firestore";
 
   loadPosts(userId: string){
     this.posts = []
+    this.sortedPosts = []
     this.isAboutToDelete = []
 
     this.isLoading = true
@@ -87,10 +108,33 @@ import {Timestamp} from "@angular/fire/firestore";
           })
           this.isAboutToDelete.push({id: post.id, deleting: false})
         })
+        this.sortedPosts = this.posts.slice()
+        this.dataSource = new MatTableDataSource(this.posts)
       }
     })
       .catch(err => {
         console.log({err})
       })
+  }
+
+  // sortData(sort: Sort) {
+  //   console.log({sort})
+  //   const data = this.posts.slice()
+  //   if(!sort.active || sort.direction === ''){
+  //     this.sortedPosts = data
+  //     return
+  //   }
+  //   console.log("from sortData method", this.sortedPosts)
+  // }
+
+
+  announceSortChange(sortState: Sort) {
+    this.dataSource.sort = this.sort
+    if(sortState.direction){
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction} ending`)
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+
   }
 }

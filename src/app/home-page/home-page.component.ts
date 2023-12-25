@@ -4,6 +4,7 @@ import {WindowService} from "../shared/services/window.service";
 import {Observable, repeat, startWith, Subject, Subscription, switchMap, tap} from "rxjs";
 import {PostService} from "../shared/services/post.service";
 import {PaginatorComponent} from "../shared/components/paginator/paginator.component"
+import {Timestamp} from "@angular/fire/firestore";
 
 @Component({
   selector: 'app-home-page',
@@ -39,13 +40,18 @@ export class HomePageComponent implements OnInit, OnDestroy{
     this.posts$ = this.postService.getAllPosts().pipe(
       tap(res => console.log({res}))
     )
-    this.amountSub = this.postService.getAmount().subscribe(amount => {
+
+    this.postService.getAmount().then(amount => {
       this.totalAmount = amount
+      console.log('total amount', this.totalAmount)
     })
+    // this.amountSub = this.postService.getAmount().subscribe(amount => {
+    //   this.totalAmount = amount
+    // })
   }
 
   ngOnDestroy(): void {
-    this.amountSub.unsubscribe()
+    if(this.amountSub) this.amountSub.unsubscribe()
     this.refreshData$.complete()
   }
 
@@ -62,9 +68,34 @@ export class HomePageComponent implements OnInit, OnDestroy{
   }
 
   handlePage(e) {
-    this.perPage = e.pageSize
+    if(e) this.perPage = e.pageSize
     this.refreshData$.next()
-    console.log("event", e.pageSize)
+    console.log("event", e)
+    const perPage = this.perPage;
+    const startAt = e.pageIndex
+    const orderByField = 'title'
+    const ascOrDesc = 'desc'
+    const queryParams = {
+      orderByField: orderByField,
+      ascOrDesc: ascOrDesc,
+      limitPosts: perPage,
+      start: startAt * perPage
+    }
+    console.log('queryParams', ...Object.values(queryParams))
+    // console.log('queryParams', ...queryParams)
+    this.postService.getAllPostsWithQuery(orderByField, ascOrDesc, perPage, 0).then(res => {
+      const posts = []
+      res.forEach(item => {
+        posts.push(item.data())
+      })
+      const shortenPosts = posts.map(item => {
+        return {
+          title: item.title,
+          createdAt: this.postService.convertFirestoreTimestampToDate(item.createdAt as Timestamp)
+        }
+      })
+      console.log({shortenPosts})
+    })
   }
 
 

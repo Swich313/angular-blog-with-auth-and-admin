@@ -26,7 +26,8 @@ export class CreatePostPageComponent implements OnInit{
   userId: string
   userInfoSub: Subscription
 
-  readonly _urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+  // readonly _urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+  readonly _urlRegex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
   readonly _imageRegex = /.*\.(gif|jpg|jpeg|bmp|png)$/
   readonly _tagsRegex = /(#+[a-zA-Z\d(_, )]+)/
 

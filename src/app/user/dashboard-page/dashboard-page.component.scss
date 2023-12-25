@@ -11,62 +11,78 @@ table {
   border-collapse: collapse;
 }
 
-table th,
 table td {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   text-align: left;
 
-  .edit-btn {
-    width: 5rem;
-    height: 2rem;
-    //padding: 0.5rem;
-    font-size: 0.8rem;
-
-  }
-
-  .delete-btn {
-    width: 5rem;
-    height: 2rem;
-    //padding: 0.5rem;
-    font-size: 0.8rem;
-    background: var(--primary-color);
-    color: var(--dark-color);
-    text-align: center;
-  }
-
-  .icons {
-    font-size: 1rem;
-    margin: 1rem auto 0;
-    height: 2rem;
+  &.mat-column-actions {
     display: flex;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
 
-    .checkIcon, .cancelIcon {
-      padding: 0.7rem 0;
-      cursor: pointer;
-      transition: all 0.2s ease-out;
-
+    .edit-btn {
+      width: 5rem;
+      height: 2rem;
+      //padding: 0.5rem;
+      font-size: 0.8rem;
     }
 
-    .checkIcon {
-      color: green;
+    .delete-btn {
+      width: 5rem;
+      height: 2rem;
+      //padding: 0.5rem;
+      font-size: 0.8rem;
+      background: var(--primary-color);
+      color: var(--dark-color);
+      text-align: center;
+    }
 
-      &:hover {
-        font-size: 1.2rem;
+    .icons {
+      font-size: 1rem;
+      margin: 1rem auto 0;
+      height: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      .checkIcon, .cancelIcon {
+        padding: 0.7rem 0;
+        cursor: pointer;
+        transition: all 0.2s ease-out;
+
+      }
+
+      .checkIcon {
+        color: green;
+
+        &:hover {
+          font-size: 1.2rem;
+        }
+      }
+
+      .cancelIcon {
+        color: red;
+
+        &:hover {
+          font-size: 1.2rem;
+        }
       }
     }
-
-    .cancelIcon {
-      color: red;
-
-      &:hover {
-        font-size: 1.2rem;
-      }
-    }
-
   }
+}
+
+table th {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--dark-color);
+}
+
+tr.mat-mdc-row:hover {
+  background-color: var(--skeleton-loading-grey);
+  cursor: pointer;
 }
 
 @media (max-width: 768px){
@@ -74,6 +90,11 @@ table td {
   table td {
     font-size: 0.8rem;
     padding: 0.5rem;
+
+    &.mat-column-actions {
+      flex-direction: column;
+      gap: 0;
+    }
   }
 }
 

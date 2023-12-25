@@ -11,6 +11,7 @@
 }
 .navbar h1 {
   cursor: pointer;
+  margin-bottom: 0.5rem;
 }
 
 /*# sourceMappingURL=main-layout.component.css.map */

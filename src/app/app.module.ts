@@ -31,20 +31,22 @@ import {AngularFireModule} from "@angular/fire/compat";
 import {connectAuthEmulator, getAuth, provideAuth} from "@angular/fire/auth";
 import {connectFunctionsEmulator, getFunctions, provideFunctions} from "@angular/fire/functions";
 import {connectStorageEmulator, getStorage, provideStorage} from "@angular/fire/storage";
+import {SearchAndSortComponent} from "./shared/components/search-and-sort/search-and-sort.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainLayoutComponent,
-    HomePageComponent,
-    PostPageComponent,
-    PostComponent,
-    NotFoundPageComponent,
-    FooterComponent,
-    PostSkeletonComponent,
-    ShareWithSocialComponent,
-    AuthorInfoComponent
-  ],
+    declarations: [
+        AppComponent,
+        MainLayoutComponent,
+        HomePageComponent,
+        PostPageComponent,
+        PostComponent,
+        NotFoundPageComponent,
+        FooterComponent,
+        PostSkeletonComponent,
+        ShareWithSocialComponent,
+        AuthorInfoComponent,
+        SearchAndSortComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

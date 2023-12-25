@@ -12,11 +12,15 @@ import {
   docData,
   Firestore, getDocs, serverTimestamp,
   setDoc,
-  updateDoc, where, query, Timestamp
+  updateDoc, where, query, Timestamp, orderBy, limit, startAt, endAt, getCountFromServer
 } from "@angular/fire/firestore";
 import { AngularFireDatabase} from '@angular/fire/compat/database';
 import {Auth, authState} from "@angular/fire/auth";
 import {CollectionReference, DocumentData} from "@angular/fire/compat/firestore";
+
+type OrderByField = "title" | "createdAt" | "author"
+type AscOrDesc = "asc" | "desc"
+
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +60,11 @@ export class PostService {
     })
   }
 
+  getAllPostsWithQuery(orderByField: OrderByField = 'createdAt', ascOrDesc: AscOrDesc, limitPosts: number, start: number  ){
+    const q = query(this.postsCollection, orderBy(orderByField, ascOrDesc), limit(limitPosts), startAt(start))
+    return getDocs(q)
+  }
+
   getAllPosts() {
     return this.post$.pipe(
       map(posts => {
@@ -78,13 +87,10 @@ export class PostService {
     return  docData(doc(this.firestore, 'posts', id), {idField:  'id'}) as  Observable<Post>
   }
 
-  getAmount(): Observable<number> {
-    return this.http.get(`${this._firebaseDBUrl}/posts.json`)
-      .pipe(
-        map((res: {[key: string]: any}) => {
-          return Object.keys(res).reduce((acc, _cur) => acc + 1, 0)
-        })
-      )
+  async getAmount(): Promise<number> {
+    const snapshot = await  getCountFromServer(this.postsCollection)
+    console.log({snapshot}, 'amount', snapshot.data().count)
+    return snapshot.data().count
   }
 
 

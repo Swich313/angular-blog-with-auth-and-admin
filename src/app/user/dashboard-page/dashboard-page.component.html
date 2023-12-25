@@ -3,42 +3,78 @@
 <!--    <input type="text" placeholder="Find post..." [(ngModel)]="searchStr">-->
 <!--  </div>-->
   <div *ngIf="posts.length; else noPosts">
-    <table>
-      <thead>
-      <tr>
-        <th>#</th>
-              <th>Author</th>
-        <th>Title</th>
-        <th>Created At</th>
-        <th>Last Updating</th>
-        <th>Action</th>
-      </tr>
-      </thead>
 
-      <tbody>
-      <tr *ngFor="let post  of posts; let i = index">
-        <td>{{i + 1}}</td>
-            <td>{{post.author}}</td>
-        <td>{{post.title}}</td>
-        <td>{{post.createdAt | date:'MMM d, y, h:mm:ss'}}</td>
-        <td>{{post.updatedAt | date:'MMM d, y, h:mm:ss'}}</td>
-        <td>
+    <table
+      mat-table [dataSource]="dataSource"
+      matSort
+      (matSortChange)="announceSortChange($event)"
+      class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+          No.
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index" [routerLink]="['/post', element.id]">{{i + 1}}</td>
+      </ng-container>
+
+      <!-- Author Column -->
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef>
+          Author
+        </th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/post', element.id]">{{element.author}}</td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by title">
+          Title
+        </th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/post', element.id]">{{element.title}}</td>
+      </ng-container>
+
+      <!-- CreatedAt Column -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by createdAt">
+          When created
+        </th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/post', element.id]">{{element.createdAt | date:'MMM d, y, h:mm:ss'}}</td>
+      </ng-container>
+
+      <!-- UpdatedAt Column -->
+      <ng-container matColumnDef="updatedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by updatedAt">
+          Last updated
+        </th>
+        <td mat-cell *matCellDef="let element" [routerLink]="['/post', element.id]">{{element.updatedAt | date:'MMM d, y, h:mm:ss'}}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+          Actions
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index">
           <button
-            [routerLink]="['/author', 'post', post.id, 'edit']"
+            [routerLink]="['/author', 'post', element.id, 'edit']"
             class="btn edit-btn"
           >Edit</button>
-          <a class="btn delete-btn" (click)="onDeleteBtn(post.id)" *ngIf="!isAboutToDelete[i].deleting">Delete</a>
+          <button class="btn delete-btn" (click)="onDeleteBtn(element.id)" *ngIf="!isAboutToDelete[i].deleting">Delete</button>
           <div class="icons" *ngIf="isAboutToDelete[i].deleting">
-            <fa-icon [icon]="checkIcon" class="checkIcon" (click)="remove(post.id)"></fa-icon>
+            <fa-icon [icon]="checkIcon" class="checkIcon" (click)="remove(element.id)"></fa-icon>
             <fa-icon [icon]="cancelIcon" class="cancelIcon" (click)="isAboutToDelete[i].deleting = false"></fa-icon>
           </div>
         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displaysColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displaysColumns;">
       </tr>
-      </tbody>
     </table>
   </div>
-
-
 </div>
 
 <ng-template #loading>

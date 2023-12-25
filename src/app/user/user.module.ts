@@ -26,7 +26,7 @@ import {UserService} from "./profile/shared/services/user.service";
     DashboardPageComponent,
     AuthPageComponent,
     UserLayoutComponent,
-    AlertComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,

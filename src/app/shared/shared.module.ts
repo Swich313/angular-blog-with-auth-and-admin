@@ -13,6 +13,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {PaginatorComponent} from "./components/paginator/paginator.component";
 import {QrCodeComponent} from "./components/qr-code/qr-code.component";
 import {QRCodeModule} from "angularx-qrcode";
+import {MatSortModule} from "@angular/material/sort";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -31,9 +33,12 @@ import {QRCodeModule} from "angularx-qrcode";
     FontAwesomeModule,
     AngularMaterialModule,
     ReactiveFormsModule,
-    QRCodeModule
+    QRCodeModule,
+    MatSortModule,
+    MatTableModule
   ],
   exports: [
+    CommonModule,
     HttpClientModule,
     QuillModule,
     FontAwesomeModule,
@@ -42,7 +47,9 @@ import {QRCodeModule} from "angularx-qrcode";
     LoadingBarComponent,
     CopyToClipboardDirective,
     ModalComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    MatSortModule,
+    MatTableModule
   ]
 })
 export class SharedModule { }
