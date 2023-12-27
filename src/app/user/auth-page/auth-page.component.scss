@@ -83,7 +83,7 @@ form{
 
 .login {
   width: 320px;
-  padding: 104px 30px 30px;
+  padding: 104px 30px 20px;
 
   &.signup {
     padding-top: 76px !important;
@@ -92,6 +92,11 @@ form{
   &_field {
     padding: 20px 0 calc(20px + 1.6rem);
     position: relative;
+
+    &.h150{
+      height: 150px;
+
+    }
 
     &.invalid {
       padding: 20px 0;

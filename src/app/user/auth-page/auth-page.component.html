@@ -27,11 +27,14 @@
         </div>
 
         <div
-          class="login_field"
+          class="login_field h150"
           [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
         >
           <fa-icon [icon]="lockIcon" class="login_icon"></fa-icon>
           <input type="password" id="password" formControlName="password" class="login_input" placeholder="Password">
+
+          <app-password-strength *ngIf="authMode === 'signup'" [password]="password$" [customWidth]="195"></app-password-strength>
+
           <div
             class="validation"
             *ngIf="form.get('password').touched && form.get('password').invalid"

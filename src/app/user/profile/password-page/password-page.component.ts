@@ -3,7 +3,7 @@ import { faCopy, faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../../shared/components/modal/modal.component";
-import {from} from "rxjs";
+import {from, Observable} from "rxjs";
 import {GeneratePasswordComponent} from "../shared/components/generate-password/generate-password.component";
 import {ModalService} from "../../../shared/services/modal.service";
 import {PasswordService} from "../shared/services/password.service";
@@ -34,7 +34,7 @@ export class PasswordPageComponent implements OnInit{
     {color: '#9dff00', message: 'Good', textColor: '#9dff00'}
   ]
   message: string = ''
-
+  password$: Observable<string>
 
   private lazyLoadsGeneratePassword$ = from(
     import('../shared/components/generate-password/generate-password.component')
@@ -61,7 +61,7 @@ export class PasswordPageComponent implements OnInit{
 
       ])
     })
-    this.onChanges()
+    this.password$ = this.form.get('newPassword').valueChanges
   }
 
   submit() {
@@ -88,23 +88,4 @@ export class PasswordPageComponent implements OnInit{
     );
   }
 
-  onChanges(): void {
-    this.form.valueChanges.subscribe(value => {
-      if(!value.newPassword) {
-        this.message = ''
-        this.sectionColor = '#EDEDEDFF'
-        return
-      }
-      const password = value.newPassword
-      if(password?.length === 0) {
-        this.sectionColor = '#EDEDEDFF'
-        this.message = ''
-      }
-      this.passwordStrength = this.passwordService.checkStrength(password)
-
-      this.sectionColor = this.colorsAndMessages[`${Math.floor(this.passwordStrength/10) - 1}`].color
-      this.message = this.colorsAndMessages[`${Math.floor(this.passwordStrength/10) - 1}`].message
-      this.textColor = this.colorsAndMessages[`${Math.floor(this.passwordStrength/10) - 1}`].textColor
-    })
-  }
 }

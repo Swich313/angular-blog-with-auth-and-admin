@@ -4,7 +4,7 @@ import {faGithub, faGoogle, faFacebook} from "@fortawesome/free-brands-svg-icons
 import {faChevronRight, faLock, faEnvelope} from "@fortawesome/free-solid-svg-icons";
 import {AuthService} from "../shared/services/auth.service";
 import {ActivatedRoute, ParamMap, Params, Router} from "@angular/router";
-import {Subscription, tap} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
 import {User} from "../../shared/interfaces";
 import {AlertService} from "../shared/services/alert.service";
 import {GoogleLoginProvider, SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
@@ -33,6 +33,7 @@ export class AuthPageComponent implements OnInit, OnDestroy{
   submitted = false
   message: string
   authMode: AuthMode
+  password$: Observable<string>
 
   authSub: Subscription
   // for Google login
@@ -121,6 +122,8 @@ export class AuthPageComponent implements OnInit, OnDestroy{
     //   this.loggedIn = (user != null)
     //   console.log(user)
     // })
+
+    this.password$ = this.form.get('password').valueChanges
   }
 
   submit() {

@@ -15,6 +15,7 @@ import {QrCodeComponent} from "./components/qr-code/qr-code.component";
 import {QRCodeModule} from "angularx-qrcode";
 import {MatSortModule} from "@angular/material/sort";
 import {MatTableModule} from "@angular/material/table";
+import {PasswordStrengthComponent} from "./components/password-strength/password-strength.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {MatTableModule} from "@angular/material/table";
     CopyToClipboardDirective,
     ModalComponent,
     PaginatorComponent,
-    QrCodeComponent
+    QrCodeComponent,
+    PasswordStrengthComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +51,8 @@ import {MatTableModule} from "@angular/material/table";
     ModalComponent,
     PaginatorComponent,
     MatSortModule,
-    MatTableModule
+    MatTableModule,
+    PasswordStrengthComponent
   ]
 })
 export class SharedModule { }
