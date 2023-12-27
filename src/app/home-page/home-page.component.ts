@@ -99,4 +99,12 @@ export class HomePageComponent implements OnInit, OnDestroy{
   }
 
 
+  handleSorting($event: any) {
+    console.log('Sorting event:::', $event)
+  }
+
+  handleSearch($event: any) {
+    console.log('Search event:::', $event)
+
+  }
 }

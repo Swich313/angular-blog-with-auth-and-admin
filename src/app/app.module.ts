@@ -32,6 +32,7 @@ import {connectAuthEmulator, getAuth, provideAuth} from "@angular/fire/auth";
 import {connectFunctionsEmulator, getFunctions, provideFunctions} from "@angular/fire/functions";
 import {connectStorageEmulator, getStorage, provideStorage} from "@angular/fire/storage";
 import {SearchAndSortComponent} from "./shared/components/search-and-sort/search-and-sort.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -53,6 +54,7 @@ import {SearchAndSortComponent} from "./shared/components/search-and-sort/search
     RouterModule,
     FontAwesomeModule,
     SharedModule,
+    FormsModule,
     BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => {

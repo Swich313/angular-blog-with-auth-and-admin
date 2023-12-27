@@ -1,4 +1,7 @@
-<app-search-and-sort></app-search-and-sort>
+<app-search-and-sort
+  (sortingState)="handleSorting($event)"
+  (searchString)="handleSearch($event)"
+></app-search-and-sort>
 
 <div
   *ngIf="posts$ | async as posts; else skeleton"

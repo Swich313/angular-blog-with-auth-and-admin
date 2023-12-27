@@ -5,7 +5,8 @@ h2 {
 .content {
   box-sizing: content-box;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
+  max-height: 400px;
 }
 
 button {

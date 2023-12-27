@@ -1,19 +1,45 @@
-<div id="hacker-list">
-  <div class="form-inline">
-    <!-- The search class allows List.js to search through the list -->
-    <div class="form-group">
-      <input type="text" placeholder="Search" class="search form-control"/>
+<div class="search-panel">
+
+  <div class="sort-btns">
+    <div>
+      <button class="btn" (click)="onSortChange('author')">
+        Sort by Author
+        <p *ngIf="currentSortingStates.author === 'desc'">
+          <fa-icon class="icon" [icon]="arrowUpIconAZ"></fa-icon>
+        </p>
+        <p *ngIf="currentSortingStates.author === 'asc'">
+          <fa-icon class="icon" [icon]="arrowDownIconAZ"></fa-icon>
+        </p>
+      </button>
     </div>
 
-    <!-- The sort class allows List.js to sort the list depending on the value of the data-sort attribute assigned to the element -->
-    <div class="form-group">
-      <span class="sort btn btn-default" data-sort="name">Sort by Name</span>
-      <span class="sort btn btn-default" data-sort="city">Sort by City</span>
+    <div>
+      <button class="btn"  (click)="onSortChange('title')">
+        Sort by Title
+        <p *ngIf="currentSortingStates.title === 'desc'">
+          <fa-icon class="icon" [icon]="arrowUpIconAZ"></fa-icon>
+        </p>
+        <p *ngIf="currentSortingStates.title === 'asc'">
+          <fa-icon class="icon" [icon]="arrowDownIconAZ"></fa-icon>
+        </p>
+      </button>
     </div>
 
-    <!-- The filter buttons -->
-    <div class="form-group">
-      <span id="filter" class="btn btn-default">Show People in Edmonton (Filter)</span>
-      <span id="removeFilters" class="btn btn-default">Remove Filters</span>
+    <div>
+      <button class="btn"  (click)="onSortChange('createdAt')">
+        Sort by Creation
+        <p *ngIf="currentSortingStates.createdAt === 'desc'">
+          <fa-icon class="icon" [icon]="arrowUpIcon19"></fa-icon>
+        </p>
+        <p *ngIf="currentSortingStates.createdAt === 'asc'">
+          <fa-icon class="icon" [icon]="arrowDownIcon19"></fa-icon>
+        </p>
+      </button>
     </div>
   </div>
+
+  <div class="search">
+    <label for="search">Search</label>
+    <input name="search" id="search" type="text" [(ngModel)]="search" (ngModelChange)="searchHandler($event)">
+  </div>
+</div>

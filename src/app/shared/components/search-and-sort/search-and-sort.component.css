@@ -1,3 +1,45 @@
-
+.search-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8vw;
+}
+.search-panel .sort-btns {
+  display: flex;
+  justify-content: space-around;
+  order: 2;
+}
+.search-panel .sort-btns button {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.search-panel .sort-btns button .icon {
+  font-size: 1rem;
+}
+.search-panel .search {
+  position: relative;
+}
+.search-panel .search input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--bg-gradient-dark);
+  outline: none;
+  padding: 0.5rem;
+}
+.search-panel .search input:focus label {
+  color: red;
+  font-size: 2rem;
+}
+.search-panel .search label {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  opacity: 0.5;
+  cursor: text;
+}
 
 /*# sourceMappingURL=search-and-sort.component.css.map */
