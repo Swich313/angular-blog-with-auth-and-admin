@@ -45,7 +45,7 @@ export class SearchAndSortComponent implements OnInit{
     if(!this.currentSortingStates[sortingField]){
       this.currentSortingStates[sortingField] = this.sortingStates[0]
     }
-      // if authorSortingState/createdAtSortingState/titleSortingState = 'asc' (sortingStates[0])
+    // if authorSortingState/createdAtSortingState/titleSortingState = 'asc' (sortingStates[0])
     // then it should be switched to 'desc' (sortingStates[1])
     else if (this.currentSortingStates[sortingField] === 'asc') {
       this.currentSortingStates[sortingField] = this.sortingStates[1]
@@ -57,11 +57,15 @@ export class SearchAndSortComponent implements OnInit{
       this.currentSortingStates[sortingField] = this.sortingStates[2]
     }
     // this.currentSortingStates = {author: this.authorSortingState, title: this.titleSortingState, createdAt: this.createdAtSortingState}
+
+    //resetting other fields of currentSortingStates object except one we are working with (sortingField)
+    const otherSortingFields = Object.keys(this.currentSortingStates).filter(item => item !== sortingField)
+    otherSortingFields.forEach(item => this.currentSortingStates[item] = null)
+
     this.sortingState.emit(this.currentSortingStates)
   }
 
   searchHandler($event: any) {
-    console.log('Input event:::', $event)
     this.searchString.emit($event)
   }
 }

@@ -19,6 +19,13 @@ export interface ShareSocialMedia {
   url: string;
 }
 
+export interface PostQueryParams {
+  orderByField: 'author' | 'title' | 'createdAt';
+  ascOrDesc: 'asc' | 'desc';
+  limitPosts: number;
+  start: number
+}
+
 // export interface User {
 //   email: string;
 //   password: string;

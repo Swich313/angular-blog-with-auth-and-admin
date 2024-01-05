@@ -1,5 +1,5 @@
 import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Post} from "../shared/interfaces";
+import {Post, PostQueryParams} from "../shared/interfaces";
 import {WindowService} from "../shared/services/window.service";
 import {Observable, repeat, startWith, Subject, Subscription, switchMap, tap} from "rxjs";
 import {PostService} from "../shared/services/post.service";
@@ -18,7 +18,7 @@ export class HomePageComponent implements OnInit, OnDestroy{
   amountSub: Subscription
   innerWidth: number
   amountOfSkeletons: number
-  totalAmount: number = 58
+  totalAmount: number
   pageSizeOptions: number[] = [5, 10, 25, 100]
   perPage: number = this.pageSizeOptions[0];
 
@@ -75,7 +75,7 @@ export class HomePageComponent implements OnInit, OnDestroy{
     const startAt = e.pageIndex
     const orderByField = 'title'
     const ascOrDesc = 'desc'
-    const queryParams = {
+    const queryParams: PostQueryParams = {
       orderByField: orderByField,
       ascOrDesc: ascOrDesc,
       limitPosts: perPage,
@@ -101,6 +101,22 @@ export class HomePageComponent implements OnInit, OnDestroy{
 
   handleSorting($event: any) {
     console.log('Sorting event:::', $event)
+    const field = Object.keys($event).filter(item => $event[item])[0]
+    const ascOrDesc = $event[field]
+    console.log('sorting field', field, 'ascOrDesc', ascOrDesc)
+    // this.postService.getAllPostsWithQuery(field, ascOrDesc, this.perPage, 0).then(res => {
+    //   const posts = []
+    //   res.forEach(item => {
+    //     posts.push(item.data())
+    //   })
+    //   const shortenPosts = posts.map(item => {
+    //     return {
+    //       title: item.title,
+    //       createdAt: this.postService.convertFirestoreTimestampToDate(item.createdAt as Timestamp)
+    //     }
+    //   })
+    //   console.log({shortenPosts})
+    // })
   }
 
   handleSearch($event: any) {
