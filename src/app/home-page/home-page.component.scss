@@ -8,3 +8,18 @@
   transition: all 200ms ease-in-out;
   margin-top: 3rem;
 }
+
+table {
+  table-layout: auto;
+  width: 100%;
+  border: 3px solid purple;
+
+}
+
+tbody tr:nth-child(odd) {
+  background-color: limegreen;
+}
+
+tbody tr:nth-child(even) {
+  background-color: lightgreen;
+}

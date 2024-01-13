@@ -13,14 +13,22 @@ import {Timestamp} from "@angular/fire/firestore";
 })
 export class HomePageComponent implements OnInit, OnDestroy{
   public posts$: Observable<Post[]>
-  posts: Post[]
+  posts: Post[] = []
   private readonly refreshData$ = new Subject<void>()
   amountSub: Subscription
   innerWidth: number
   amountOfSkeletons: number
   totalAmount: number
-  pageSizeOptions: number[] = [5, 10, 25, 100]
-  perPage: number = this.pageSizeOptions[0];
+  pageSizeOptions: number[] = [8, 16, 25, 100]
+  sortingParams = {
+    orderByField: undefined,
+    ascOrDesc: undefined,
+    perPage: this.pageSizeOptions[0],
+    startAt: 0,
+    currentPage: 1,
+    toFirstPage: false
+  }
+  paginator: any
 
   constructor(
     private windowService: WindowService,
@@ -37,9 +45,9 @@ export class HomePageComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.innerWidth = this.windowService.windowRef.innerWidth
     this.calculateSkeletons(this.innerWidth)
-    this.posts$ = this.postService.getAllPosts().pipe(
-      tap(res => console.log({res}))
-    )
+    // this.posts$ = this.postService.getAllPosts().pipe(
+    //   tap(res => console.log({res}))
+    // )
 
     this.postService.getAmount().then(amount => {
       this.totalAmount = amount
@@ -48,6 +56,19 @@ export class HomePageComponent implements OnInit, OnDestroy{
     // this.amountSub = this.postService.getAmount().subscribe(amount => {
     //   this.totalAmount = amount
     // })
+
+    // this.postService.getAllPostsWithQuery(undefined, undefined, this.perPage, 0).then(res => {
+    //   res.forEach(item => {
+    //     this.posts.push({
+    //       ...item.data() as Post,
+    //       createdAt: this.postService.convertFirestoreTimestampToDate((item.data() as Post).createdAt as Timestamp),
+    //       updatedAt: this.postService.convertFirestoreTimestampToDate((item.data() as Post).updatedAt as Timestamp)
+    //     })
+    //   })
+    //   console.log('this.posts', this.posts)
+    // })
+    const {orderByField, ascOrDesc, perPage, startAt} = this.sortingParams
+    this.getPosts(orderByField, ascOrDesc, perPage, startAt)
   }
 
   ngOnDestroy(): void {
@@ -68,43 +89,46 @@ export class HomePageComponent implements OnInit, OnDestroy{
   }
 
   handlePage(e) {
-    if(e) this.perPage = e.pageSize
+    if(e) this.sortingParams.perPage = e.pageSize
     this.refreshData$.next()
     console.log("event", e)
-    const perPage = this.perPage;
-    const startAt = e.pageIndex
-    const orderByField = 'title'
-    const ascOrDesc = 'desc'
-    const queryParams: PostQueryParams = {
-      orderByField: orderByField,
-      ascOrDesc: ascOrDesc,
-      limitPosts: perPage,
-      start: startAt * perPage
-    }
-    console.log('queryParams', ...Object.values(queryParams))
-    // console.log('queryParams', ...queryParams)
-    this.postService.getAllPostsWithQuery(orderByField, ascOrDesc, perPage, 0).then(res => {
-      const posts = []
-      res.forEach(item => {
-        posts.push(item.data())
-      })
-      const shortenPosts = posts.map(item => {
-        return {
-          title: item.title,
-          createdAt: this.postService.convertFirestoreTimestampToDate(item.createdAt as Timestamp)
-        }
-      })
-      console.log({shortenPosts})
-    })
+    this.paginator = e.paginator
+    this.sortingParams.startAt = e.pageIndex * this.sortingParams.perPage
+
+    const {orderByField, ascOrDesc, perPage, startAt} = this.sortingParams
+
+    console.log(this.sortingParams)
+    this.getPosts(orderByField, ascOrDesc, perPage, startAt)
+
+    // this.postService.getAllPostsWithQuery(queryParams.orderByField, queryParams.ascOrDesc, queryParams.limitPosts, queryParams.start).then(res => {
+    //   const posts = []
+    //   res.forEach(item => {
+    //     posts.push(item.data())
+    //   })
+    //   const shortenPosts = posts.map(item => {
+    //     return {
+    //       title: item.title,
+    //       createdAt: this.postService.convertFirestoreTimestampToDate(item.createdAt as Timestamp)
+    //     }
+    //   })
+    //   console.log({shortenPosts})
+    // })
   }
 
 
   handleSorting($event: any) {
     console.log('Sorting event:::', $event)
     const field = Object.keys($event).filter(item => $event[item])[0]
-    const ascOrDesc = $event[field]
-    console.log('sorting field', field, 'ascOrDesc', ascOrDesc)
-    // this.postService.getAllPostsWithQuery(field, ascOrDesc, this.perPage, 0).then(res => {
+    this.sortingParams.orderByField = field
+    this.sortingParams.ascOrDesc = $event[field]
+    // this.sortingParams.startAt = 0
+    this.paginator.firstPage()
+    this.sortingParams.toFirstPage = true
+    const {orderByField, ascOrDesc, perPage, startAt} = this.sortingParams
+    this.getPosts(orderByField, ascOrDesc, perPage, startAt)
+    this.sortingParams.toFirstPage = false
+
+    // this.postService.getAllPostsWithQuery(orderByField, ascOrDesc, perPage, startAt).then(res => {
     //   const posts = []
     //   res.forEach(item => {
     //     posts.push(item.data())
@@ -123,4 +147,24 @@ export class HomePageComponent implements OnInit, OnDestroy{
     console.log('Search event:::', $event)
 
   }
+
+  getPosts(orderByField, ascOrDesc, perPage, start) {
+    this.postService.getAllPostsWithQuery(orderByField, ascOrDesc, perPage, start).then(res => {
+      this.posts = []
+      res.forEach(item => {
+        this.posts.push({
+          ...item.data() as Post,
+          createdAt: this.postService.convertFirestoreTimestampToDate((item.data() as Post).createdAt as Timestamp),
+          updatedAt: this.postService.convertFirestoreTimestampToDate((item.data() as Post).updatedAt as Timestamp)
+        })
+      })
+      console.log('this.posts', this.posts)
+    })
+  }
+
+  identifyPost(index, item){
+    return item.id
+  };
+
 }
+

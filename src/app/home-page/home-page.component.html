@@ -4,22 +4,47 @@
 ></app-search-and-sort>
 
 <div
-  *ngIf="posts$ | async as posts; else skeleton"
+  *ngIf="posts; else skeleton"
   class="posts-container"
 >
-
   <app-post
     *ngFor="let post of posts"
     [post]="post"
   ></app-post>
+<!--<div-->
+<!--  *ngIf="posts; else skeleton"-->
+<!--  class="posts-container"-->
+<!--&gt;-->
+<!--  <table>-->
+<!--    <thead >-->
+<!--      <tr>-->
+<!--        <th>#</th>-->
+<!--        <th>id</th>-->
+<!--        <th>title</th>-->
+<!--        <th>author</th>-->
+<!--        <th>createdAt</th>-->
+<!--        <th>updatedAt</th>-->
+<!--      </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr *ngFor="let post of posts; index as i; trackBy: identifyPost" >-->
+<!--      <td>{{i+1}}</td>-->
+<!--      <td>{{post.id}}</td>-->
+<!--      <td>{{post.title}}</td>-->
+<!--      <td>{{post.author}}</td>-->
+<!--      <td>{{post.createdAt | date:'short'}}</td>-->
+<!--      <td>{{post.updatedAt | date: 'short'}}</td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
 
 </div>
 <app-paginator
   [totalAmount]="totalAmount"
   [pageSizeOptions]="pageSizeOptions"
-  [perPage]="perPage"
+  [perPage]="sortingParams.perPage"
+  [toFirstPage]="sortingParams.toFirstPage"
   (onPageChange)="handlePage($event)">
-
 </app-paginator>
 
 <ng-template #skeleton>

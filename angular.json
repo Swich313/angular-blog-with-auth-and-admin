@@ -101,6 +101,14 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "https://github.com/Swich313/angular-blog-with-auth-and-admin.git/",
+            "name": "Swich",
+            "email": "andruha313@gmail.com"
+          }
         }
       }
     }

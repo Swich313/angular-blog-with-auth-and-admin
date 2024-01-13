@@ -12,7 +12,7 @@ import {
   docData,
   Firestore, getDocs, serverTimestamp,
   setDoc,
-  updateDoc, where, query, Timestamp, orderBy, limit, startAt, endAt, getCountFromServer
+  updateDoc, where, query, Timestamp, orderBy, limit, startAt, endAt, getCountFromServer, startAfter, and
 } from "@angular/fire/firestore";
 import { AngularFireDatabase} from '@angular/fire/compat/database';
 import {Auth, authState} from "@angular/fire/auth";
@@ -60,10 +60,32 @@ export class PostService {
     })
   }
 
-  getAllPostsWithQuery(orderByField: OrderByField = 'createdAt', ascOrDesc: AscOrDesc, limitPosts: number, start: number  ){
-    const q = query(this.postsCollection, orderBy(orderByField, ascOrDesc), limit(limitPosts), startAt(start))
-    return getDocs(q)
+  // getAllPostsWithQuery(orderByField: string | undefined, ascOrDesc: AscOrDesc, limitPosts: number, start: number  ){
+  //   // if no orderByField return list of posts as in firestore
+  //   if(!orderByField) return getDocs(query(this.postsCollection, limit(limitPosts), startAt(start)))
+  //
+  //   const q =   query(this.postsCollection, orderBy(orderByField, ascOrDesc), limit(limitPosts), startAt(start))
+  //   return getDocs(q)
+  // }
+
+  async getAllPostsWithQuery(orderByField: string | undefined, ascOrDesc: AscOrDesc | undefined, limitPosts: number, start: number){
+    // if no orderByField return list of posts as in firestore
+    if(!orderByField) {
+      const q = query(this.postsCollection, orderBy("id", "asc"))
+      const documentSnapshots = getDocs(q)
+      const firstVisible = (await documentSnapshots).docs[start]
+      // const lastVisible = (await documentSnapshots).docs[end]
+
+      return getDocs(query(this.postsCollection, orderBy("id", "asc"), startAt(firstVisible), limit(limitPosts)))
+    }
+    console.log({orderByField, ascOrDesc})
+    const q = query(this.postsCollection, orderBy(orderByField, ascOrDesc))
+    const documentSnapshots = getDocs(q)
+    const firstVisible = (await documentSnapshots).docs[start]
+
+    return getDocs(query(this.postsCollection, orderBy(orderByField, ascOrDesc), startAt(firstVisible), limit(limitPosts)))
   }
+
 
   getAllPosts() {
     return this.post$.pipe(
@@ -89,7 +111,7 @@ export class PostService {
 
   async getAmount(): Promise<number> {
     const snapshot = await  getCountFromServer(this.postsCollection)
-    console.log({snapshot}, 'amount', snapshot.data().count)
+    // console.log({snapshot}, 'amount', snapshot.data().count)
     return snapshot.data().count
   }
 
