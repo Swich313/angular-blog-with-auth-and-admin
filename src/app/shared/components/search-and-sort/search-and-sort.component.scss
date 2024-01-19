@@ -17,6 +17,17 @@
       & .icon {
         font-size: 1rem;
       }
+
+      &:disabled {
+        cursor: default;
+        background-color: gray;
+        box-shadow: none;
+
+        &:hover{
+          transform: none;
+          box-shadow: none;
+        }
+      }
     }
   }
 

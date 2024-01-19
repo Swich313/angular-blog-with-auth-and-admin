@@ -1,16 +1,22 @@
 <app-search-and-sort
   (sortingState)="handleSorting($event)"
   (searchString)="handleSearch($event)"
+  [disabled]="!!searchString"
 ></app-search-and-sort>
 
-<div
-  *ngIf="posts; else skeleton"
+<!--<div-->
+<!--  *ngIf="posts; else skeleton"-->
+<!--  class="posts-container"-->
+<!--&gt;-->
+  <div
   class="posts-container"
 >
-  <app-post
-    *ngFor="let post of posts"
-    [post]="post"
-  ></app-post>
+  <ng-container [ngTemplateOutlet]="!!searchString ? filteredPostsTemplate : !!posts ? postsTemplate : skeleton"></ng-container>
+<!--  <app-post-->
+<!--    *ngFor="let post of Aposts"-->
+<!--    [post]="post"-->
+<!--  ></app-post>-->
+
 <!--<div-->
 <!--  *ngIf="posts; else skeleton"-->
 <!--  class="posts-container"-->
@@ -40,12 +46,25 @@
 
 </div>
 <app-paginator
-  [totalAmount]="totalAmount"
+  [totalAmount]="!!searchString ? (filteredPosts$ | async)?.metadata?.totalAmount : totalAmount"
   [pageSizeOptions]="pageSizeOptions"
   [perPage]="sortingParams.perPage"
-  [toFirstPage]="sortingParams.toFirstPage"
   (onPageChange)="handlePage($event)">
 </app-paginator>
+
+<ng-template #postsTemplate>
+    <app-post
+      *ngFor="let post of posts"
+      [post]="post"
+    ></app-post>
+</ng-template>
+
+<ng-template #filteredPostsTemplate>
+    <app-post
+      *ngFor="let filteredPost of (filteredPosts$ | async)?.data"
+      [post]="filteredPost"
+    ></app-post>
+</ng-template>
 
 <ng-template #skeleton>
   <div class="posts-container">

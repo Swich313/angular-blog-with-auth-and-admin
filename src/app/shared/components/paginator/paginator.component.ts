@@ -1,15 +1,13 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
 })
-export class PaginatorComponent implements OnChanges{
+export class PaginatorComponent {
   showFirstLastButtons = true;
-  private toFirstPage$: Subject<boolean> = new Subject<boolean>()
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator
@@ -29,14 +27,6 @@ export class PaginatorComponent implements OnChanges{
   @Output()
   onPageChange = new EventEmitter()
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log("this.toFirstPage before next", this.toFirstPage)
-    this.toFirstPage$.next(this.toFirstPage)
-    console.log("this.toFirstPage after next", this.toFirstPage)
-
-
-  }
-
   handlePageEvent(e: PageEvent) {
     const length = e.length;
     const pageSize = e.pageSize;
@@ -48,12 +38,7 @@ export class PaginatorComponent implements OnChanges{
       pageIndex,
       paginator: this.paginator
     }
-    // this.onPageChange.emit(e)
     this.onPageChange.emit(paginator)
   }
 
-
-  toFirst() {
-    this.paginator.firstPage()
-  }
 }

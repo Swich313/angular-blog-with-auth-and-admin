@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, WritableSignal} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, WritableSignal} from '@angular/core';
 import {faArrowDown19, faArrowDownAZ, faArrowUp91, faArrowUpAZ} from "@fortawesome/free-solid-svg-icons";
 import {BehaviorSubject, switchMap} from "rxjs";
 
@@ -9,7 +9,7 @@ type SortingStateType = 'asc' | 'desc' | null;
   templateUrl: './search-and-sort.component.html',
   styleUrls: ['./search-and-sort.component.scss']
 })
-export class SearchAndSortComponent implements OnInit{
+export class SearchAndSortComponent implements OnInit, OnChanges{
   readonly arrowUpIconAZ = faArrowUpAZ
   readonly arrowDownIconAZ = faArrowDownAZ
   readonly arrowUpIcon19 = faArrowUp91
@@ -18,6 +18,10 @@ export class SearchAndSortComponent implements OnInit{
   readonly sortingStates: SortingStateType[] = ['asc', 'desc', null];
   currentSortingStates: {author: SortingStateType, title: SortingStateType, createdAt: SortingStateType} = {author: null, title: null, createdAt: null}
   search: string
+
+  @Input()
+  disabled: false
+
   @Output()
   sortingState = new EventEmitter()
 
@@ -28,13 +32,10 @@ export class SearchAndSortComponent implements OnInit{
 
   ngOnInit(): void {
     this.currentSortingStates = {author: this.sortingStates[2], title: this.sortingStates[2], createdAt: this.sortingStates[2]}
+  }
 
-    // this.authorSortingState = this.sortingStates[2]
-    // this.createdAtSortingState = this.sortingStates[2]
-    // this.titleSortingState = this.sortingStates[2]
-
-
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.disabled = changes['disabled'].currentValue
   }
 
   onSortChange(sortingField: string) {

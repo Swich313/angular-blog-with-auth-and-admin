@@ -1,10 +1,21 @@
 import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Post, PostQueryParams} from "../shared/interfaces";
 import {WindowService} from "../shared/services/window.service";
-import {Observable, repeat, startWith, Subject, Subscription, switchMap, tap} from "rxjs";
+import {filter, map, Observable, repeat, startWith, Subject, Subscription, switchMap, tap} from "rxjs";
 import {PostService} from "../shared/services/post.service";
 import {PaginatorComponent} from "../shared/components/paginator/paginator.component"
 import {Timestamp} from "@angular/fire/firestore";
+
+interface PaginationMetadata {
+  perPage: number;
+  startAt: number;
+  totalAmount: number;
+}
+
+interface FilteredPostsResponse {
+  metadata: PaginationMetadata;
+  data: Post[];
+}
 
 @Component({
   selector: 'app-home-page',
@@ -13,20 +24,21 @@ import {Timestamp} from "@angular/fire/firestore";
 })
 export class HomePageComponent implements OnInit, OnDestroy{
   public posts$: Observable<Post[]>
+  public filteredPosts$: Observable<Post[]>
+  searchString: string
   posts: Post[] = []
-  private readonly refreshData$ = new Subject<void>()
   amountSub: Subscription
   innerWidth: number
   amountOfSkeletons: number
   totalAmount: number
+  totalAmountOfFiltered: number
   pageSizeOptions: number[] = [8, 16, 25, 100]
   sortingParams = {
     orderByField: undefined,
     ascOrDesc: undefined,
     perPage: this.pageSizeOptions[0],
     startAt: 0,
-    currentPage: 1,
-    toFirstPage: false
+    currentPage: 1
   }
   paginator: any
 
@@ -45,35 +57,18 @@ export class HomePageComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.innerWidth = this.windowService.windowRef.innerWidth
     this.calculateSkeletons(this.innerWidth)
-    // this.posts$ = this.postService.getAllPosts().pipe(
-    //   tap(res => console.log({res}))
-    // )
+    this.posts$ = this.postService.getAllPosts()
+    // this.posts$.subscribe(console.log)
 
     this.postService.getAmount().then(amount => {
       this.totalAmount = amount
-      console.log('total amount', this.totalAmount)
     })
-    // this.amountSub = this.postService.getAmount().subscribe(amount => {
-    //   this.totalAmount = amount
-    // })
-
-    // this.postService.getAllPostsWithQuery(undefined, undefined, this.perPage, 0).then(res => {
-    //   res.forEach(item => {
-    //     this.posts.push({
-    //       ...item.data() as Post,
-    //       createdAt: this.postService.convertFirestoreTimestampToDate((item.data() as Post).createdAt as Timestamp),
-    //       updatedAt: this.postService.convertFirestoreTimestampToDate((item.data() as Post).updatedAt as Timestamp)
-    //     })
-    //   })
-    //   console.log('this.posts', this.posts)
-    // })
     const {orderByField, ascOrDesc, perPage, startAt} = this.sortingParams
     this.getPosts(orderByField, ascOrDesc, perPage, startAt)
   }
 
   ngOnDestroy(): void {
     if(this.amountSub) this.amountSub.unsubscribe()
-    this.refreshData$.complete()
   }
 
   calculateSkeletons(width: number): void {
@@ -90,29 +85,17 @@ export class HomePageComponent implements OnInit, OnDestroy{
 
   handlePage(e) {
     if(e) this.sortingParams.perPage = e.pageSize
-    this.refreshData$.next()
-    console.log("event", e)
+
     this.paginator = e.paginator
+    this.sortingParams.currentPage = e.pageIndex + 1
     this.sortingParams.startAt = e.pageIndex * this.sortingParams.perPage
 
     const {orderByField, ascOrDesc, perPage, startAt} = this.sortingParams
 
-    console.log(this.sortingParams)
     this.getPosts(orderByField, ascOrDesc, perPage, startAt)
 
-    // this.postService.getAllPostsWithQuery(queryParams.orderByField, queryParams.ascOrDesc, queryParams.limitPosts, queryParams.start).then(res => {
-    //   const posts = []
-    //   res.forEach(item => {
-    //     posts.push(item.data())
-    //   })
-    //   const shortenPosts = posts.map(item => {
-    //     return {
-    //       title: item.title,
-    //       createdAt: this.postService.convertFirestoreTimestampToDate(item.createdAt as Timestamp)
-    //     }
-    //   })
-    //   console.log({shortenPosts})
-    // })
+    if(!!this.searchString) this.filteredPosts$ = this.paginatePosts(this.posts$, this.searchString, perPage, startAt)
+
   }
 
 
@@ -121,31 +104,19 @@ export class HomePageComponent implements OnInit, OnDestroy{
     const field = Object.keys($event).filter(item => $event[item])[0]
     this.sortingParams.orderByField = field
     this.sortingParams.ascOrDesc = $event[field]
-    // this.sortingParams.startAt = 0
-    this.paginator.firstPage()
-    this.sortingParams.toFirstPage = true
+    if(this.sortingParams.currentPage > 1) this.paginator.firstPage()
     const {orderByField, ascOrDesc, perPage, startAt} = this.sortingParams
     this.getPosts(orderByField, ascOrDesc, perPage, startAt)
-    this.sortingParams.toFirstPage = false
-
-    // this.postService.getAllPostsWithQuery(orderByField, ascOrDesc, perPage, startAt).then(res => {
-    //   const posts = []
-    //   res.forEach(item => {
-    //     posts.push(item.data())
-    //   })
-    //   const shortenPosts = posts.map(item => {
-    //     return {
-    //       title: item.title,
-    //       createdAt: this.postService.convertFirestoreTimestampToDate(item.createdAt as Timestamp)
-    //     }
-    //   })
-    //   console.log({shortenPosts})
-    // })
   }
 
   handleSearch($event: any) {
-    console.log('Search event:::', $event)
+    //go to 1st page after starting searching
+    this.sortingParams.startAt = 0
+    if(this.sortingParams.currentPage > 1) this.paginator.firstPage()
 
+    const {perPage, startAt} = this.sortingParams
+    this.searchString = $event.toLowerCase()
+    this.filteredPosts$ = this.paginatePosts(this.posts$, this.searchString, perPage, startAt)
   }
 
   getPosts(orderByField, ascOrDesc, perPage, start) {
@@ -160,6 +131,26 @@ export class HomePageComponent implements OnInit, OnDestroy{
       })
       console.log('this.posts', this.posts)
     })
+  }
+
+  paginatePosts(posts: Observable<Post[]>, searchString: string, perPage: number, startAt: number): any{
+    return posts.pipe(
+      map((posts) => {
+        const filterResult = posts.filter(post => post.title.toLowerCase().includes(searchString) ||
+          post.text.toLowerCase().includes(searchString) ||
+          post.author.toLowerCase().includes(searchString) ||
+          post.tags.toLowerCase().includes(searchString))
+        return {
+          metadata: {
+            perPage: perPage,
+            startAt: startAt,
+            totalAmount: filterResult.length,
+          },
+          // data: filterResult.slice(startAt, (startAt + 1) * perPage)
+          data: filterResult.slice(startAt, startAt + perPage)
+        }
+      })
+    )
   }
 
   identifyPost(index, item){

@@ -18,6 +18,15 @@
 .search-panel .sort-btns button .icon {
   font-size: 1rem;
 }
+.search-panel .sort-btns button:disabled {
+  cursor: default;
+  background-color: gray;
+  box-shadow: none;
+}
+.search-panel .sort-btns button:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
 .search-panel .search {
   position: relative;
 }

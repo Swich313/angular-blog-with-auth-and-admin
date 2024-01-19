@@ -23,14 +23,13 @@ import {PaginatorComponent} from "./shared/components/paginator/paginator.compon
 import {AuthorInfoComponent} from "./author-info/author-info.component";
 
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import {connectFirestoreEmulator, getFirestore, provideFirestore} from '@angular/fire/firestore';
+import { getFirestore, provideFirestore} from '@angular/fire/firestore';
 import {environment} from "./environments/environment";
-import {getDatabase, provideDatabase} from "@angular/fire/database";
 import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
 import {AngularFireModule} from "@angular/fire/compat";
-import {connectAuthEmulator, getAuth, provideAuth} from "@angular/fire/auth";
-import {connectFunctionsEmulator, getFunctions, provideFunctions} from "@angular/fire/functions";
-import {connectStorageEmulator, getStorage, provideStorage} from "@angular/fire/storage";
+import {getAuth, provideAuth} from "@angular/fire/auth";
+import {getFunctions, provideFunctions} from "@angular/fire/functions";
+import {getStorage, provideStorage} from "@angular/fire/storage";
 import {SearchAndSortComponent} from "./shared/components/search-and-sort/search-and-sort.component";
 import {FormsModule} from "@angular/forms";
 
